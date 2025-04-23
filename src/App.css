@@ -1,38 +1,97 @@
-.App {
-  text-align: center;
-}
+*{margin: 0px; padding: 0px;}
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+body{font-family: "Lato", sans-serif; font-size:14px}
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
+.bg-blue{background:#233a95 }
+.headerWrapper .top-strip{padding: 8px 0px;}
+.headerWrapper .top-strip p{color: #fff; font-size: 12px;font-weight: 500;}
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.headerWrapper .header{width: 100%; height:auto; padding:10px 0px;}
+.logoWrapper .header{width:100%; height: auto;padding: 15px 0px;}
+.logoWrapper img{width:65%;}
+
+
+.headerWrapper .header .part2 .countryDrop{width:150px; height: auto; min-width: 150px; color:#000 !important; border: 1px solid rgba(0,0,0,2) !important
+; border-radius: 7px !important; line-height: 16px; padding: 10px 20px !important;}
+.headerWrapper .header .part2 .countryDrop{text-align: left; justify-content: flex-start !important;}
+.headerWrapper .header .part2 .countryDrop .label{font-size: 12px !important; text-transform: capitalize !important; color: rgba(0,0,0,7) !important;}
+.headerWrapper .header .part2 .countryDrop .name{font-size: 14px !important; text-transform: capitalize !important; color: #233a95 !important; font-weight: 700;}
+.headerWrapper .header .part2 .CountryDrop span.ml-auto svg{opacity: 0.7;}
+
+.header .headerSearch {
+    position: relative; 
+    width: 60%;
+    height: 60px;
+    background: #f3f4f7;
+    padding: 10px;
+    border: 1px 
+    solid rgba(0,0,0,1);
+    border-radius: 8px;
+
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+  .header .headerSearch input {
+    background: transparent !important;
+    outline: none !important;
+    font-size: 14px;
+    color: rgba(0,0,0,0.8);
+    width: 100%;
+    height: 40px;
+    border: 0px !important;
+    padding: 0px 50px 0px 20px !important; 
+    box-sizing: border-box;
   }
-  to {
-    transform: rotate(360deg);
+
+  .header .headerSearch button {
+    position: absolute;
+    top: 10px;          
+    right: 10px;         
+    z-index: 70;
+    min-width: 40px !important;
+    height: 40px !important;
+    width: 40px !important;
+    border-radius: 50% !important;
+    background: #ccc;
+    border: none;
+    color: #000;
+    cursor: pointer;
+    opacity: 0.6;
   }
+.header .headerSearch button svg{
+    font-size: 25px;
+}
+
+.header .part3 .circle{
+    align-items: center;
+    justify-self: content;
+    min-width: 50px !important;
+    height: 50px !important;
+    width: 50px !important;
+    border-radius: 50% !important;
+    border: 1px solid rgba(0,0,0,1) !important;
+    color: #000;
+}
+.header .part3 .circle svg{
+    font-size: 25px;
+}
+.cartTab .price{
+    font-size: 18px;
+    color: rgba(0,0,0,8);
+    font-weight: 700;
+}
+.cartTab button{
+    background: #fff1ee !important;
+}
+.cartTab button svg{
+    color: #ea2b0f !important;
+}
+.cartTab .count{
+    position: absolute; 
+    top: -6px;
+    right: -4px;
+    background: #ea2b0f; 
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    width: 25px;
+    height: 25px;
 }
