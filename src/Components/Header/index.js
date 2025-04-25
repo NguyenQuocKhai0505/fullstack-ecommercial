@@ -2,10 +2,11 @@ import logo from "../../assets/images/logo.png"
 import { Link } from 'react-router-dom';
 import React from 'react';
 import CountryDropDown from "../ContryDropDown";
-import { IoIosSearch, IoMdSearch } from "react-icons/io";
 import Button from '@mui/material/Button';
 import { FaUserCircle } from "react-icons/fa";
 import { FaCartPlus } from "react-icons/fa6";
+import SearchBox from "./SearchBox";
+import Navigation from "./Navigation";
 
 
 const Header =()=>
@@ -28,13 +29,7 @@ const Header =()=>
                         <div className="col-sm-10 d-flex align-items-center part2">
                             <CountryDropDown/>
 
-                            {/*Header Search Start Here*/}
-                            <div className="headerSearch ml-3 mr-3">
-                                <input type="text" placeholder="Searching for Products...."/>
-                                <Button><IoMdSearch/></Button>
-                            </div>
-
-                            {/*Header Search End Here*/}
+                           <SearchBox/>
 
 
                             <div className="part3 d-flex align-items-center ml-auto">
@@ -49,6 +44,7 @@ const Header =()=>
                     </div>
                 </div>
             </header>
+           <Navigation/>
         </div>
         </>
     )
