@@ -9,6 +9,16 @@ body{font-family: "Lato", sans-serif; font-size:14px}
         max-width: 1200px;
     }
 }
+::-webkit-scrollbar{
+    width: 8px !important;
+    height: 8px !important;
+}
+::-webkit-scrollbar-thumb{
+    background-color: #ccc !important;
+}
+::-webkit-scrollbar-track{
+    background-color: transparent !important;
+}
 
 .headerWrapper .top-strip{padding: 8px 0px;}
 .headerWrapper .top-strip p{color: #fff; font-size: 12px;font-weight: 500;}
@@ -20,12 +30,66 @@ body{font-family: "Lato", sans-serif; font-size:14px}
 
 .headerWrapper .header .part2 .countryDrop{width:150px; height: auto; min-width: 150px; color:#000 !important; border: 1px solid rgba(0,0,0,2) !important
 ; border-radius: 7px !important; line-height: 16px; padding: 10px 20px !important;}
+
+nav .navPart1{
+    max-width: 20%;
+    flex: 0 0 20%;
+}
+nav .navPart2{
+    max-width: 80%;
+    flex: 0 0 80%;
+}
+
 .headerWrapper .header .part2 .countryDrop{text-align: left; justify-content: flex-start !important;}
 .headerWrapper .header .part2 .countryDrop .label{font-size: 12px !important; text-transform: capitalize !important; color: rgba(0,0,0,7) !important;}
 .headerWrapper .header .part2 .countryDrop .name{font-size: 14px !important; text-transform: capitalize !important; color: #233a95 !important; font-weight: 700;}
 .headerWrapper .header .part2 .CountryDrop span.ml-auto svg{opacity: 0.7;}
 
-.header .headerSearch {
+.locationModal .MuiPaper-elevation{
+    position: relative;
+    padding: 25px;
+}
+.locationModal .countryList{
+    margin-bottom: 0px;
+}
+.locationModal .countryList li{
+    width: 100% !important;         
+    height: auto !important;       
+    border-radius: 0 !important;    
+    list-style: none;
+    padding: 5px 0;
+    display: flex
+}
+.locationModal .countryList li button{
+    width: 100%;
+    text-transform: none !important;
+    color: #000 !important;
+    justify-content: flex-start !important;
+    white-space: nowrap;         
+    overflow: hidden;
+    text-overflow: ellipsis;      
+    font-size: 16px;
+    padding: 6px 10px;
+    text-align: left;
+    background: none;
+    border: none;
+}
+.locationModal .close_{
+    position:absolute;
+    top:10px;
+    right: 10px;
+    color:#000 !important;
+    min-width:30px !important;
+}
+.locationModal .close_ svg{
+    font-size:20px;
+}
+.locationModal .close_ :hover{
+    background-color:#ea2b0f;
+}
+
+
+ .headerSearch {
     position: relative; 
     width: 60%;
     height: 60px;
@@ -36,7 +100,7 @@ body{font-family: "Lato", sans-serif; font-size:14px}
     border-radius: 8px;
 
   }
-  .header .headerSearch input {
+.headerSearch input {
     background: transparent !important;
     outline: none !important;
     font-size: 14px;
@@ -48,7 +112,7 @@ body{font-family: "Lato", sans-serif; font-size:14px}
     box-sizing: border-box;
   }
 
-  .header .headerSearch button {
+ .headerSearch button {
     position: absolute;
     top: 10px;          
     right: 10px;         
@@ -116,6 +180,7 @@ nav .allCatTab:hover{
 }
 nav .allCatTab .text{
     font-weight: 700;
+    font-size: 14px;
 }
 nav .allCatTab .icon1 svg{
     font-size: 15px !important;
@@ -130,6 +195,11 @@ nav.navPart2 ul{
     margin-bottom: 0px;
 }
 nav .navPart2 ul li a{
+    text-decoration: none;
+    
+}
+
+nav .navPart2 ul li a button{
     font-size: 15px;
     font-weight: 600;
     text-decoration: none;
@@ -137,8 +207,9 @@ nav .navPart2 ul li a{
     text-transform: uppercase;
     display: flex;
     align-items: center;
-    padding: 15px 22px;
+    padding: 8px 15px;
     transition: all 0.2s ease-in-out;
+    border-radius: 25px;
 }
 
 nav .navPart2 ul li svg{
