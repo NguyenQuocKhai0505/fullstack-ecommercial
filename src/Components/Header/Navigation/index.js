@@ -9,8 +9,8 @@ const Navigation =()=>
         <nav>
         <div className="container">
             <div className ="row">
-                <div className ="col-sm-2 navPart1">
-                    <Button className="allCatTab align-items-center">
+                <div className ="col-sm-10 navPart1">
+                    <Button className="allCatTab align-items-center mt-2">
                     <span className="icon1 mr-2"><IoMenu/></span>
                     <span class="text">ALL CATEGORIES</span>
                     <span className="icon2 ml-2"><FaAnglesDown/></span>
@@ -19,7 +19,7 @@ const Navigation =()=>
                 </div>
 
                 <div className ="col-sm-10 navPart2 d-flex align-items-center ">
-                    <ul className="list list-inline ml-auto">
+                    <ul className="list list-inline ml-1">
                         <li className="list-inline-item"><Link to="/"><Button>Home</Button></Link></li>
                         <li className="list-inline-item"><Link to="/"><Button>Fashion</Button></Link></li>
                         <li className="list-inline-item"><Link to="/"><Button>Electronic</Button></Link></li>
