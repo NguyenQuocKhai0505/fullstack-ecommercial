@@ -1,7 +1,8 @@
 *{margin: 0px; padding: 0px;}
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 body{font-family: "Lato", sans-serif; font-size:14px}
-
+@import url("https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css");
 .bg-blue{background:#233a95 }
 
 @media(min-width: 1300px){
@@ -27,7 +28,6 @@ body{font-family: "Lato", sans-serif; font-size:14px}
 .headerWrapper .header{width: 100%; height:auto; padding:10px 0px;}
 .logoWrapper .header{width:100%; height: auto;padding: 25px 17px;}
 .logoWrapper img{width:70%; border-radius: 15px; margin-left: -100px;}
-
 
 
 .headerWrapper .header .part2 .countryDrop{width:200px; height: auto; min-width: 150px; color:#000 !important; border: 1px solid rgba(0,0,0,2) !important
@@ -176,6 +176,50 @@ nav .navPart2{
     height: 25px;
 }
 
+nav .navPart1 .catWrapper{
+    position: relative;
+}
+nav .navPart1 .catWrapper .sidebarNav{
+ 
+    width: 100%;
+    height: 0px;
+    opacity: 0;
+    background: #ffff;
+    position: absolute;
+    top: 135%;
+    left: 0px;
+    margin-left: -135px;
+    border: 1px solid rgba(0,0,0,1);
+    padding: 15px 0px;
+    transition: all 0.2s;
+    visibility: hidden;
+    z-index: 100;
+}
+nav .navPart1 .catWrapper .sidebarNav.open{
+    height:auto;
+    opacity: 1;
+    visibility: inherit;
+}
+
+
+nav .navPart1 .catWrapper .sidebarNav ul li button{
+    color: #000;
+    width: 100%;
+    justify-content: flex-start;
+    text-transform: capitalize !important;
+}
+nav .navPart1 .catWrapper .sidebarNav ul li{
+ 
+    width: 100%;
+    list-style: none;
+    padding: 0px 15px;
+   
+ }
+ nav .navPart1 .catWrapper .sidebarNav ul li button:hover{
+    background: transparent !important;
+ }
+
+
 nav .allCatTab{
     background-color: #2bbef9 !important;
     color: white;
@@ -214,7 +258,9 @@ nav.navPart2 ul{
 nav .navPart2 ul li a{
     text-decoration: none;
 }
-
+nav .navPart2 ul li{
+    padding-bottom:20px;
+}
 nav .navPart2 ul li a button{
     font-size: 14px;
     font-weight: 700;
@@ -223,7 +269,7 @@ nav .navPart2 ul li a button{
     text-transform: uppercase;
     display: flex;
     align-items: center;
-    padding: 10px 10px;
+    padding: 8px 15px;
     transition: all 0.2s ease-in-out;
     border-radius: 25px;
     margin-right: 5px;
@@ -239,4 +285,97 @@ nav .navPart2 ul li svg{
 nav .navPart2 ul li a:hover{
     background-color: #f0faff;
     color: #2bbef9;
+}
+
+nav .navPart2 ul li{
+    position:relative;
+}
+nav .navPart2 ul li .submenu{
+    position:absolute;
+    top:100%;
+    left: 0px;
+    min-width:200px;
+    background: #fff;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease-in-out;
+    z-index: 100;
+}
+nav .navPart2 ul li .submenu a{
+   display: block;
+   width:100%;
+}
+nav .navPart2 ul li .submenu a button{
+    width:100%;
+    justify-content: flex-start !important;
+    border-radius: 0px !important;
+    text-transform: capitalize !important;
+    font-weight: 500;
+}
+nav .navPart2 ul li:hover .submenu{
+    opacity: 1;
+    visibility: inherit;
+    top:100%;
+}
+  
+.homeBannerSection{
+    margin-top: -15px ;
+    text-align: center;
+    margin-left: 50px;
+    position:relative;
+    overflow: hidden;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+.homeBannerSection .item img{
+  object-fit: cover;
+  display: inline-block;
+  border-radius: 8px; /* Tuỳ chọn: làm ảnh mềm mại hơn */
+  max-width: 100%;
+  height: 100%;
+  width: 100%;
+
+}
+.homeBannerSection .slick-arrow{
+    position: absolute;
+    top:45%;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px !important;
+    height: 40px !important;
+    background: #000;
+    border-radius:80%;
+    font-family: FontAwesome !important;
+    font-weight: bold;
+    
+}
+
+.homeBannerSection .slick-arrow.slick-next{
+    right: 25px !important;
+    opacity: 0.2;
+    transition: opacity 0.3s ease;
+}
+.homeBannerSection .slick-arrow.slick-prev{
+    left: 25px !important;
+     opacity: 0.2; 
+    transition: opacity 0.3s ease;
+}
+.homeBannerSection .slick-arrow.slick-next::before{
+    font-family: FontAwesome !important;
+    color: #fff;
+   
+}
+.homeBannerSection .slick-arrow.slick-prev::before{
+    font-family: FontAwesome !important;
+    color: #fff;
+}
+.homeBannerSection .slick-arrow.slick-next:hover{
+    background-color: #ea2b0f;
+    opacity: 1;
+}
+.homeBannerSection .slick-arrow.slick-prev:hover{
+    background-color: #ea2b0f;
+    opacity: 1;
 }
