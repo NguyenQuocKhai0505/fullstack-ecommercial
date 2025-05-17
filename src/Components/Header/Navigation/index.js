@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import { FaAnglesDown } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
-
+import { FaAngleRight } from "react-icons/fa";
 
 const Navigation =()=>
 {
@@ -24,8 +24,28 @@ const Navigation =()=>
                         </Button>
                         <div className={`sidebarNav ${isopenSidebarVal===true ? 'open':''}`}>
                                <ul>
-                                <li><Link to="/"><Button>Men</Button></Link></li>
-                                <li><Link to="/"><Button>Woman</Button></Link></li>
+                                <li><Link to="/"><Button>Men<FaAngleRight className="ml-auto"/></Button></Link>
+
+                                 <div className="submenu">
+                                        <Link to="/"><Button>Clothing</Button></Link>
+                                        <Link to="/"><Button>Footwear</Button></Link>
+                                        <Link to="/"><Button>Watches</Button></Link>
+                                        <Link to="/"><Button>Shirts</Button></Link>
+                                        <Link to="/"><Button>Trousers</Button></Link>
+                                 </div>
+
+                                </li>
+                                <li><Link to="/"><Button>Woman<FaAngleRight className="ml-auto"/></Button></Link>
+
+                                  <div className="submenu">
+                                        <Link to="/"><Button>Clothing</Button></Link>
+                                        <Link to="/"><Button>Footwear</Button></Link>
+                                        <Link to="/"><Button>Watches</Button></Link>
+                                        <Link to="/"><Button>Shirts</Button></Link>
+                                        <Link to="/"><Button>Trousers</Button></Link>
+                                 </div>
+
+                                </li>
                                 <li><Link to="/"><Button>Beauty</Button></Link></li>
                                 <li><Link to="/"><Button>Watches</Button></Link></li>
                                 <li><Link to="/"><Button>Kids</Button></Link></li>

@@ -1,6 +1,6 @@
 *{margin: 0px; padding: 0px;}
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
-body{font-family: "Lato", sans-serif; font-size:14px}
+body{font-family: "Lato", sans-serif; font-size:14px; color: rgba(0,0,0,0.8);overflow-x: hidden;}
 @import url("https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css");
 .bg-blue{background:#233a95 }
@@ -186,7 +186,7 @@ nav .navPart1 .catWrapper .sidebarNav{
     opacity: 0;
     background: #ffff;
     position: absolute;
-    top: 135%;
+    top: 130%;
     left: 0px;
     margin-left: -135px;
     border: 1px solid rgba(0,0,0,1);
@@ -212,12 +212,47 @@ nav .navPart1 .catWrapper .sidebarNav ul li{
  
     width: 100%;
     list-style: none;
-    padding: 0px 15px;
+    padding: 0px 10px;
    
  }
  nav .navPart1 .catWrapper .sidebarNav ul li button:hover{
     background: transparent !important;
  }
+
+ nav .navPart1 .catWrapper .sidebarNav ul li button svg{
+    font-size: 13px;
+    opacity: 0.6;
+ }
+
+
+nav .navPart1 .catWrapper .sidebarNav ul li{
+    position: static;
+    
+}
+nav .navPart1 .catWrapper .sidebarNav ul li .submenu{
+    position: absolute;
+    top:0px;
+    left: 105%;
+    width:250px;
+    height:100%;
+    background:#ffff;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease-in-out;
+    border-left: 1px solid rgba(0,0,0,0.1);
+    padding: 20px;
+}
+nav .navPart1 .catWrapper .sidebarNav ul li:hover .submenu{
+    opacity: 1;
+    visibility: inherit;
+    left:100%;
+    
+}
+nav .part1 .catWrapper .sidebarNav ul li:hover .submenu button{
+    border-radius: 0px !important;
+}
+
 
 
 nav .allCatTab{
@@ -319,7 +354,7 @@ nav .navPart2 ul li:hover .submenu{
 }
   
 .homeBannerSection{
-    margin-top: -15px ;
+    margin-top: -18px ;
     text-align: center;
     margin-left: 50px;
     position:relative;
@@ -379,3 +414,282 @@ nav .navPart2 ul li:hover .submenu{
     background-color: #ea2b0f;
     opacity: 1;
 }
+
+
+.cursor{
+    cursor: pointer;
+}
+.text-light{
+    color:#8b8b8b !important;
+}
+.text-sml{
+    font-size: 14px;
+}
+.homeProducts{
+    padding: 25px 0px;
+    width:100%;
+}
+.homeProducts .banner{
+   width: 100%;
+    border-radius: 7px;
+    
+   
+}
+.homeProducts .banner img{
+    width: 150%;
+    height: auto;
+    max-width: none;
+    display: block;
+}
+.homeProducts .banner .cursor{
+    position: relative;
+    left: -230px;
+}
+.homeProducts .info{
+    position: relative;
+    left: -100px;
+}
+.productRow .hd{
+    font-size:25px;
+    font-weight: 600;
+}
+
+.viewAllBtn{
+    padding: 5px 25px in !important;
+    background: #ffff;
+    border: 1px solid rgba(0,0,0,0);
+    border-radius: 30px !important;
+    color: #000;
+    font-weight: 600;
+    text-transform: capitalize !important;
+}
+.viewAllBtn svg{
+    font-size: 20px;
+}
+.viewAllBtn:hover{
+    background: #d8b8b8;
+}
+/* Mũi tên trái & phải */
+.bestSellerSlider .slick-arrow {
+  position: absolute;
+  top: 35%;
+  z-index: 10;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: #000;
+  border-radius: 50%;
+  font-family: FontAwesome !important;
+  opacity: 0.2;
+  transition: opacity 0.3s ease;
+}
+
+.bestSellerSlider .slick-arrow:hover {
+  background-color: #ea2b0f;
+  opacity: 1;
+}
+
+/* Vị trí mũi tên trái */
+.bestSellerSlider .slick-prev {
+  left: -15px;
+}
+
+/* Vị trí mũi tên phải */
+.bestSellerSlider .slick-next {
+  right: -15px;
+}
+
+/* Biểu tượng mũi tên */
+.bestSellerSlider .slick-prev::before,
+.bestSellerSlider .slick-next::before {
+  font-family: FontAwesome !important;
+  color: #fff;
+  font-size: 20px;
+}
+
+/* Nếu muốn dấu chấm nhỏ ở dưới */
+.bestSellerSlider .slick-dots {
+  bottom: -30px;
+}
+
+/* Tùy chọn khác */
+.bestSellerSlider .productItem {
+  padding: 10px;
+}
+.productItem{
+    width: 100%;
+    height: auto;
+    border: 1px solid rgba(0,0,0,0.1);
+    cursor: pointer;
+    position: relative;
+}
+.bestSellerSlider{
+    margin-left: -50px;
+}
+.productItem  h4{
+    font-size: 16px;
+    font-weight:600;
+    padding: 10px;
+   
+    
+}
+.productItem .info{
+    padding:15px;
+}
+
+.productItem .oldPrice{
+    font-size: 17px;
+    font-weight: bold;
+    color: rgba(0,0,0,0.4);  
+    text-decoration: line-through;
+}
+.productItem .newPrice{
+    font-size:20px;
+    font-size:bold;
+}
+
+.productItem .badge{
+    display: inline-block;
+    padding: 7px 10px;
+    position:absolute;
+    top: 10px;
+    left:10px;
+    z-index:100
+}
+.badge-primary{
+    background: #ea2b0f !important;
+}
+.productItem .actions{
+    position: absolute;
+    top:20px;
+    right:-100%;
+    z-index:100;
+    display: flex;
+    flex-direction:column;
+    gap:10px;
+    transition: all 0.3s ease-in-out;
+    opacity: 0;
+}
+.productItem .imgWrapper:hover .actions{
+    opacity: 1;
+    right:10px;
+}
+.productItem .imgWrapper{
+   overflow: hidden;
+}
+.productItem .actions button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px !important;
+    height:40px !important;
+    width:40px !important;
+    border: 1px solid rgba(0,0,0,0.1) !important;
+    border-radius: 50% !important;
+    background: #fff !important;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 12%) , 0 1px 2px rgb(0 0 0 / 24%);
+}
+.product .actions button svg{
+    color: #000 !important;   
+    opacity: 1;               
+    pointer-events: none;
+    font-size: 16px !important;
+    transition: all 0.3s !important;
+}
+.productItem .actions button:hover{
+    background: #233a95 !important;
+}
+.productItem .actions button:hover svg{
+    color:#fff;
+}
+.homeCat .container{
+    width:90%;
+    max-width: 100%;
+    padding-left: 0;
+    padding-right:0;
+    margin:0;
+}
+.homeCat .swiper-wrapper {
+  gap: 0 !important;           /* nếu swiper version mới có sử dụng gap */
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.homeCat{
+    width:100%;
+    background-color: #fff;
+    padding: 20px 10px;
+}
+.homeCat .swiper{
+    width:100%;
+    padding-left: 15px;
+    overflow: inherit !important;
+}
+.homeCat .swiper-slide {
+   width: auto !important;
+}
+.homeCat .item {
+    width: 90px;              
+    text-align: center;
+    border-radius: 10px;
+}
+.homeCat .item img {
+    width: 90px;              
+    height: 90px;
+    object-fit: contain;
+    margin-bottom: 5px;
+}
+.homeCat .item h6 {
+    font-size: 16px;
+    margin: 0;
+    color: #333;
+}
+.hd{
+    font-size: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding-left: 15px;
+}
+
+.homeCat .swiper-button-prev, .homeCat .swiper-button-next{
+    top:-30px !important;
+    width: 30px !important;
+    height: 30px !important;
+    background-color: #f0faff;
+    border-radius: 20px;
+
+}
+.homeCat .swiper-button-prev{
+    left:inherit !important;
+    right:50px;
+   
+}
+.homeCat .swiper-button-prev::after, .homeCat .swiper-button-next::after{
+    font-size:20px !important;
+    font-weight: 700;
+}
+.homeCat .swiper-button-prev:hover, .homeCat .swiper-button-next:hover{
+   background:#ea2b0f;
+}
+.productRow,
+.productRow2 {
+    min-height: 500px; /* Bạn có thể điều chỉnh chiều cao tùy thực tế */
+}
+.productRow2{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap:15px;
+    margin-left: -50px;
+    
+    
+
+}
+.productRow2 .productItem {
+   flex: 1 1 calc(25% - 10px); /* Chia đều sản phẩm */
+   padding-left: 15px;
+   padding-right: 15px;
+   overflow: hidden;
+}  
+
