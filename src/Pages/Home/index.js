@@ -4,7 +4,10 @@ import { IoIosArrowRoundForward } from "react-icons/io";
 import Slider from "react-slick";
 import ProductItem from "../../Components/ProductItem";
 import HomeCat from "../../Components/HomeCat";
-
+import banner1 from "../../assets/images/banner1.png"
+import banner2 from "../../assets/images/Banner2.png"
+import coupon from "../../assets/images/banner3.png"
+import { IoMdMail } from "react-icons/io";
 const Home = () => {
     const productSliderOptions = {
         dots: true,
@@ -103,11 +106,53 @@ const Home = () => {
                                       <ProductItem />
                                       <ProductItem />
                                 </div>
+                                
+                                <div className="d-flex mt-4 mb-5 bannerSec">
+                                       <div className="banner">
+                                       <img src={banner1} className="cursor w-100 "/>
+                                       </div>
+                                       <div className="banner">
+                                       <img src={banner2} className="cursor w-100"/>
+                                       </div>
+                                </div>
+
+
+
+
+
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
+
+            <section className="newsLetterSection mt-3 mb-3 d-flex align-items-center">
+                <div className="container ">
+                    <div className="row">
+                       <div className="col-md-6">
+                         <p className="text-white mb-0">$20 discount for your first order</p>
+                         <h3 className="text-white">Join our  newsletter and get ....</h3>
+                         <p className="text-light">Join our email subscription noew to get updates on <br/>promotions and coupons.</p>
+
+                        <form>
+                            <IoMdMail />
+                            <input className="text" placeholder="Your Email Address"></input>
+                            <Button>Subscribe</Button>
+                        </form>
+                       </div>
+                        
+                        <div className="col-md-6">
+                            <img src={coupon}></img>
+                        </div>
+
+
+                    </div>
+                </div>
+            </section>
+
+        
+
+
         </>
     );
 };

@@ -444,6 +444,8 @@ nav .navPart2 ul li:hover .submenu{
 .homeProducts .banner .cursor{
     position: relative;
     left: -230px;
+    border-radius: 20px;
+   
 }
 .homeProducts .info{
     position: relative;
@@ -687,9 +689,115 @@ nav .navPart2 ul li:hover .submenu{
 
 }
 .productRow2 .productItem {
-   flex: 1 1 calc(25% - 10px); /* Chia đều sản phẩm */
+   flex: 1 1 calc(26% - 10px); /* Chia đều sản phẩm */
    padding-left: 15px;
    padding-right: 15px;
    overflow: hidden;
 }  
 
+.bannerSec {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    align-items: center;
+    height: auto;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    height: 240px;
+}
+
+.bannerSec .banner {
+    flex: 1;
+    max-width: 500%;
+    height: 100%;
+    
+}
+
+.bannerSec .banner img {
+    width: 80%;
+    height: 80%;
+    object-fit: cover;
+    aspect-ratio: 2 / 1; /* Tỉ lệ 2:1, hoặc có thể là 16/9, tuỳ vào hình bạn muốn */
+    border-radius: 8px; /* tuỳ chọn: giúp bo góc cho đẹp */
+    transition: transform 0.3s ease;
+}
+
+.banner img:hover {
+   
+    cursor: pointer;
+}
+.bannerSec .banner .cursor{
+    margin-left: 180px;
+}
+.sticky{
+    position: sticky;
+    top:10px;
+    z-index: 100;
+}
+
+.newsLetterSection{
+    width:100%;
+    height:400px;
+    background: #3c057e;
+    position: relative;
+}
+.newsLetterSection p{
+    font-size: 18px;
+    margin: 10px 0px;
+    top:20px;
+}
+.newsLetterSection h3{
+    font-size: 35px;
+    font-weight: bold;
+
+}
+.newsLetterSection p.text-light{
+    color:#fff !important;
+    opacity: 0.5;
+    font-size:15px;
+}
+.newsLetterSection img{
+    position: absolute;
+    bottom: 0px;
+    right:0px;
+    width:500px;
+    height: auto;
+}
+.newsLetterSection .col-md-6{
+    position: static !important;
+}
+.newsLetterSection form{
+    width:100%;
+    height: 60px;
+    background: #fff;
+    padding:10px;
+    position: relative;
+    border-radius: 10px;
+}
+.newsLetterSection form svg{
+    position: absolute;
+    top: 17px;
+    left: 10px;
+    font-size: 25px;
+    opacity: 0.3;
+}
+.newsLetterSection form input{
+    width: 100%;
+    height: 100%;
+    background: #fff !important;
+    outline: none !important;
+    border: 0px !important;
+    padding-left: 40px;
+    padding-right: 200px;
+}
+.newsLetterSection form button{
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    background: #0f288e !important;
+    font-size: 16px 0 !important;
+    padding: 10px 20px !important;
+    color: #fff !important;
+    text-transform: capitalize !important;
+    font-weight: 600 !important;
+}
