@@ -8,6 +8,7 @@ import banner1 from "../../assets/images/banner1.png"
 import banner2 from "../../assets/images/Banner2.png"
 import coupon from "../../assets/images/banner3.png"
 import { IoMdMail } from "react-icons/io";
+import Footer from "../../Components/Footer/index"
 const Home = () => {
     const productSliderOptions = {
         dots: true,
@@ -150,7 +151,7 @@ const Home = () => {
                 </div>
             </section>
 
-        
+            <Footer/>
 
 
         </>
