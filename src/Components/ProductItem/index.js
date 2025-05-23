@@ -2,16 +2,31 @@ import Rating from '@mui/material/Rating';
 import { TfiFullscreen } from "react-icons/tfi";
 import Button from "@mui/material/Button"
 import { CiHeart } from "react-icons/ci";
+import { useContext, useState } from 'react';
+import product from "../../assets/images/iphone16.jpg"
+import { MyContext } from '../../App';
 const ProductItem =()=>{
+    
+  const context = useContext(MyContext)
+
+
+    const viewProductDetails =(id)=>{
+        context.setisOpenProductModal(true)
+    }
+   
+    
+   
+
     return(
+         <>
          <div className="item productItem">
             <div className="imgWrapper">
-                <img src="https://media.gucci.com/style/DarkGray_Center_0_0_1200x1200/1741684531/833312_Z7AQM_6066_002_100_0000_Light-Printed-GG-cotton-jacquard-shirt.jpg"
+                <img src={product}
                 className="w-100"></img>
-                    <h4>Printed GG shirt</h4>
+                    <h4>iPhone 16 Pro</h4>
                         <span className="badge badge-primary">28%</span>
                             <div className="actions">
-                                <Button><TfiFullscreen /></Button>
+                                <Button onClick={()=>viewProductDetails()}><TfiFullscreen /></Button>
                                 <Button><CiHeart /></Button>
                             </div>
                                     <span className="text-success d-block">In Stock</span>
@@ -22,6 +37,9 @@ const ProductItem =()=>{
                             </div>
                 </div>
          </div>
+        
+       
+         </>
     )
 
 
