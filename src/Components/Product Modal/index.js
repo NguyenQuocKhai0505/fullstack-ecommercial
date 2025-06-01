@@ -2,36 +2,16 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import { IoClose } from "react-icons/io5";
 import Rating from "@mui/material/Rating";
-import { useContext, useState } from "react";
-import InnerImageZoom from 'react-inner-image-zoom';
-import 'react-inner-image-zoom/lib/styles.min.css';
-import item1 from "../../assets/images/itemDetails1.png";
-import item2 from "../../assets/images/itemDetails2.png";
-import item3 from "../../assets/images/itemDetails3.webp";
-import item4 from "../../assets/images/itemDetails4.webp";
+import { useContext} from "react";
 import QuantityBox from "../QuantityBox";
 import { FaHeart } from "react-icons/fa";
 import { IoGitCompare } from "react-icons/io5";
 import { MyContext } from "../../App";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
+import ProductZoom from "../ProductZoom";
 
 const ProductModal = () => {
-  const [slideIndex, setSlideIndex] = useState(0);
-  const [zoomSlider, setZoomSlider] = useState(null);
-  const [zoomSliderBig, setZoomSliderBig] = useState(null);
+
   const context = useContext(MyContext);
-
-  const images = [item1, item2, item3, item4];
-
-  const goto = (index) => {
-    setSlideIndex(index);
-    zoomSlider?.slideTo(index);
-    zoomSliderBig?.slideTo(index);
-  };
-
   return (
     <Dialog open={true} className="productModal" onClose={() => context.setisOpenProductModal(false)}>
       <Button className="close_" onClick={() => context.setisOpenProductModal(false)}>
@@ -48,42 +28,9 @@ const ProductModal = () => {
       <hr />
       <div className="row mt-2 productDetailModal">
         <div className="col-md-5">
-          <div className="productZoom position-relative">
-            <div className="badge badge-primary">23%</div>
-            <Swiper
-              slidesPerView={1}
-              spaceBetween={0}
-              navigation={false}
-              modules={[Navigation]}
-              className="zoomSliderBig"
-              onSwiper={setZoomSliderBig}
-            >
-              {images.map((img, i) => (
-                <SwiperSlide key={i}>
-                  <div className="item">
-                    <InnerImageZoom zoomType="hover" zoomScale={2} src={img} />
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
 
-          <Swiper
-            slidesPerView={4}
-            spaceBetween={10}
-            navigation={true}
-            modules={[Navigation]}
-            className="zoomSlider"
-            onSwiper={setZoomSlider}
-          >
-            {images.map((img, i) => (
-              <SwiperSlide key={i}>
-                <div className={`item ${slideIndex === i ? "item_active" : ""}`}>
-                  <img src={img} className="w-100" onClick={() => goto(i)} alt={`thumb-${i}`} />
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+          <ProductZoom/>
+
         </div>
 
         <div className="col-md-7">

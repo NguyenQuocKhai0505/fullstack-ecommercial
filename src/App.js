@@ -3,11 +3,13 @@ import './App.css';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./Components/Header/index"
 import Home from "./Pages/Home/index"
-import Listing from "./Components/Listing"
+import Listing from "./Pages/Listing"
+import ProductDetails from "./Pages/ProductDetails"
 import { createContext, useState,useEffect } from "react";
 import axios from "axios"
 import Footer from "./Components/Footer/index"
 import ProductModal from "./Components/Product Modal";
+import Cart from "./Pages/Cart";
 const MyContext = createContext();
 
 function App() {
@@ -41,6 +43,8 @@ function App() {
         <Routes>
            <Route path="/" exact={true} element={<Home />} />
            <Route path="/cat/:id" exact={true} element={<Listing />} />
+           <Route exact={true} path="/product/:id" element={<ProductDetails/>}/>
+            <Route exact={true} path="/cart" element={<Cart/>}/>
         </Routes>
          {
             isOpenProductModal ===true && <ProductModal/>

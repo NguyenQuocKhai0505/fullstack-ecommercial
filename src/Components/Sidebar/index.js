@@ -15,6 +15,7 @@ const Sidebar = () => {
      const statusProduct = ["In Stock", "On Sale"]
      const brandProduct =["iPhone", "SamSung","Huawei","Xiaomi", "Nokia", "Oppo"]
   return (
+
     <div className="sidebar">
       <div className="filterBox">
         <h6>PRODUCT CATEGORIES</h6>

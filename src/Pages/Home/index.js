@@ -40,7 +40,7 @@ const Home = () => {
                             </div>
                             <div className="banner mt-4">
                                 <img
-                                    src="https://scj.vn/modules/floattopbanner/img/fee39a70d6ff225c53068ba9c5bf3dfa.png"
+                                    src="https://cdnv2.tgdd.vn/mwg-static/tgdd/Banner/a8/9f/a89f043284f6f9bd6791afb78bf5f154.png"
                                     className="cursor"
                                     alt="banner"/>
                             </div>
@@ -64,7 +64,7 @@ const Home = () => {
                                     </Button>
                                 </div>
 
-                                <div className="product-row w-100">
+                                <div className="product-row w-100 mt-2">
                                     <Slider {...productSliderOptions} className="bestSellerSlider">
                                         <ProductItem />
                                         <ProductItem />
@@ -116,11 +116,6 @@ const Home = () => {
                                        <img src={banner2} className="cursor w-100"/>
                                        </div>
                                 </div>
-
-
-
-
-
                             </div>
                         </div>
                     </div>

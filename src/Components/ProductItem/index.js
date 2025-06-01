@@ -5,7 +5,7 @@ import { CiHeart } from "react-icons/ci";
 import { useContext, useState } from 'react';
 import product from "../../assets/images/iphone16.jpg"
 import { MyContext } from '../../App';
-const ProductItem =()=>{
+const ProductItem =(props)=>{
     
   const context = useContext(MyContext)
 
@@ -19,11 +19,11 @@ const ProductItem =()=>{
 
     return(
          <>
-         <div className="item productItem">
+         <div className={`productItem ${props.itemView}`}>
             <div className="imgWrapper">
                 <img src={product}
                 className="w-100"></img>
-                    <h4>iPhone 16 Pro</h4>
+                    <h4>iPhone 16 Pro Max 256GB | Chính hãng VN/A</h4>
                         <span className="badge badge-primary">28%</span>
                             <div className="actions">
                                 <Button onClick={()=>viewProductDetails()}><TfiFullscreen /></Button>
