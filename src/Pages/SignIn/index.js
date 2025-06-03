@@ -73,7 +73,7 @@ const SignIn =()=>{
                    <p>Not Registered? <Link to="/signUp" className="border-effect cursor mb-3">Sign Up</Link></p>
 
                    <h6 className="mt-3 text-center font-weight-bold">Or continue with your social account</h6>
-                    <Button className="loginWithGoogle mt-2" variant="outlined"><img src={googleImg}/>Sign In with Google</Button>
+                    <Button className="loginWithGoogle mt-2 mb-3" variant="outlined"><img src={googleImg}/>Sign In with Google</Button>
                 </form>
                 
                 
