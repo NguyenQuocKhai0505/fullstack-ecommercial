@@ -1961,6 +1961,326 @@ a:hover{
     border-bottom: 1px solid rgba(0,0,0,0.1);
     padding-bottom: 10px;
 }
-.cartDetails span{
-    
+/* Sign In Page Styles */
+.signInPage {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background Shape */
+.shape-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  z-index: 0;
+}
+
+.shape-bottom svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Container */
+.container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Main Card */
+.box.card {
+  max-width: 450px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 40px 30px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.box.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+/* Logo */
+.banner {
+  border-radius: 50%;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.banner:hover {
+  transform: scale(1.05);
+}
+
+/* Form Styles */
+form h2 {
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 30px;
+  text-align: center;
+  font-size: 28px;
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+/* MUI TextField Overrides */
+.MuiTextField-root {
+  margin-bottom: 20px;
+}
+
+.MuiInput-underline:before {
+  border-bottom-color: #ddd;
+}
+
+.MuiInput-underline:hover:not(.Mui-disabled):before {
+  border-bottom-color: #667eea;
+}
+
+.MuiInput-underline:after {
+  border-bottom-color: #667eea;
+}
+
+.MuiInputLabel-root {
+  color: #666;
+}
+
+.MuiInputLabel-root.Mui-focused {
+  color: #667eea;
+}
+
+.MuiInputBase-input {
+  padding: 10px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Forget Password Link */
+.border-effect {
+  color: #667eea;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px;
+  transition: color 0.3s ease;
+}
+
+.border-effect:hover {
+  color: #764ba2;
+  text-decoration: none;
+}
+
+.border-effect::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  transition: width 0.3s ease;
+}
+
+.border-effect:hover::after {
+  width: 100%;
+}
+
+/* Custom Button Styles */
+.btn-blue {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 15px 30px;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.btn-blue:hover {
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
+  color: white;
+}
+
+.btn-blue:active {
+  transform: translateY(0);
+}
+
+.btn-lg {
+  padding: 18px 35px;
+  font-size: 18px;
+}
+
+.btn-big {
+  width: 100%;
+}
+
+/* Sign Up Link */
+p {
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+  margin: 20px 0;
+}
+
+p .MuiLink-root {
+  color: #667eea;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+p .MuiLink-root:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+/* Social Section */
+h6 {
+  color: #666;
+  font-size: 14px;
+  margin: 30px 0 20px;
+  position: relative;
+}
+
+h6::before,
+h6::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 100px;
+  height: 1px;
+  background: #ddd;
+}
+
+h6::before {
+  left: 0;
+}
+
+h6::after {
+  right: 0;
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+  .signInPage {
+    padding: 20px 10px;
+  }
+  
+  .box.card {
+    margin: 20px;
+    padding: 30px 20px;
+    max-width: none;
+  }
+  
+  form h2 {
+    font-size: 24px;
+    margin-bottom: 25px;
+  }
+  
+  .banner {
+    width: 80px !important;
+    height: 80px !important;
+  }
+  
+  .btn-lg {
+    padding: 15px 25px;
+    font-size: 16px;
+  }
+  
+  h6::before,
+  h6::after {
+    width: 60px;
+  }
+  
+  .socials {
+    gap: 15px;
+  }
+  
+  .socials .MuiLink-root {
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .box.card {
+    margin: 10px;
+    padding: 25px 15px;
+  }
+  
+  .banner {
+    width: 70px !important;
+    height: 70px !important;
+  }
+  
+  h6::before,
+  h6::after {
+    width: 40px;
+  }
+}
+
+/* Animation for page load */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.box.card {
+  animation: fadeInUp 0.6s ease-out;
+}
+.loginWithGoogle{
+   width: 100%;
+   font-weight: bold !important;
+   color: rgba(0,0,0,0.8) !important;
+    /* Thêm hiệu ứng hover đơn giản */
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    padding: 12px 20px;
+    border: 1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+}
+.loginWithGoogle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-color: #4285f4;
+    background: #f8f9ff;
+}
+.loginWithGoogle img{
+    width: 30px;
+    transition: transform 0.3s ease;
+    margin-right: 15px;
+}
+
+.loginWithGoogle:hover img {
+    transform: scale(1.1);
 }
