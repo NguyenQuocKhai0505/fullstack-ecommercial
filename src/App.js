@@ -11,6 +11,7 @@ import Footer from "./Components/Footer/index"
 import ProductModal from "./Components/Product Modal";
 import Cart from "./Pages/Cart";
 import SignIn from "./Pages/SignIn";
+import SignUp from "./Pages/SignUp";
 const MyContext = createContext();
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
   const [selectedCountry,setselectedCountry] = useState('')
   const [isOpenProductModal, setisOpenProductModal] = useState(false)
   const [isHeaderFooterShow, setisHeaderFooterShow] = useState(true)
+  const [isLogin, setIsLogin] = useState(false)
   useEffect(()=>{
     getCountry("https://countriesnow.space/api/v0.1/countries/")
   },[])
@@ -36,7 +38,9 @@ function App() {
     isOpenProductModal,
     setisOpenProductModal,
     isHeaderFooterShow,
-    setisHeaderFooterShow
+    setisHeaderFooterShow,
+    isLogin,
+    setIsLogin
   }
 
   return (
@@ -52,6 +56,7 @@ function App() {
           <Route exact={true} path="/product/:id" element={<ProductDetails/>}/>
           <Route exact={true} path="/cart" element={<Cart/>}/>
           <Route exact={true} path="/signIn" element={<SignIn/>}/>
+          <Route exact={true} path="/signUp" element={<SignUp/>}/>
         </Routes>
          {
             isOpenProductModal ===true && <ProductModal/>

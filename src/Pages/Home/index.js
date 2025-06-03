@@ -51,12 +51,9 @@ const Home = () => {
                         <div className="col-md-9">
                             {/* BEST SELLERS */}
                             <div className="productRow">
-                                <div className="d-flex align-items-center">
+                                <div className="d-flex align-items-center shift-content-right">
                                     <div className="info w-75">
                                         <h3 className="mb-0 hd">BEST SELLERS</h3>
-                                        <p className="text-light text-sml mb-0">
-                                            Do not miss the current offers until the end of December
-                                        </p>
                                     </div>
 
                                     <Button className="viewAllBtn ml-auto">
@@ -79,13 +76,10 @@ const Home = () => {
                             </div>
 
                             {/* NEW PRODUCTS */}
-                            <div className="productRow mt-5">
+                            <div className="productRow shift-content-right mt-5 ">
                                 <div className="d-flex align-items-center">
                                     <div className="info w-75">
                                         <h3 className="mb-0 hd">NEW PRODUCTS</h3>
-                                        <p className="text-light text-sml mb-0">
-                                           New products with updated stocks
-                                        </p>
                                     </div>
 
                                     <Button className="viewAllBtn ml-auto">
@@ -93,7 +87,7 @@ const Home = () => {
                                     </Button>
                                 </div>
 
-                                <div className="product-row productRow2 w-100 mt-4 d-flex">
+                                <div className="product-row productRow2 w-100 mt-4 d-flex ml-2">
                                       <ProductItem />
                                       <ProductItem />
                                       <ProductItem />
@@ -107,15 +101,7 @@ const Home = () => {
                                       <ProductItem />
                                       <ProductItem />
                                 </div>
-                                
-                                <div className="d-flex mt-4 mb-5 bannerSec">
-                                       <div className="banner">
-                                       <img src={banner1} className="cursor w-100 "/>
-                                       </div>
-                                       <div className="banner">
-                                       <img src={banner2} className="cursor w-100"/>
-                                       </div>
-                                </div>
+                              
                             </div>
                         </div>
                     </div>
@@ -132,7 +118,7 @@ const Home = () => {
 
                         <form>
                             <IoMdMail />
-                            <input className="text" placeholder="Your Email Address"></input>
+                            <input className="text" placeholder="Your Email Address" style={{color:"black"}}></input>
                             <Button>Subscribe</Button>
                         </form>
                        </div>

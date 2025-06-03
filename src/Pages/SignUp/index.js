@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import { Button} from "@mui/material";
 import googleImg from "../../assets/images/googleImg.png"
 import { Link } from 'react-router-dom';
-const SignIn =()=>{
+const SignUp =()=>{
 
     const context = useContext(MyContext)
 
@@ -14,7 +14,7 @@ const SignIn =()=>{
     },[])
 
     return(
-      <section className="section signInPage">
+      <section className="section signUpPage">
           <div className="shape-bottom">
                 <svg
                 fill="#fff"
@@ -39,38 +39,60 @@ const SignIn =()=>{
                 </div>
 
                 <form className="mt-3">
-                <h2>Sign In</h2>
+                <h2>Sign Up</h2>
+                <div  className="row">
+                    <div className="col-md-6">
+                         <div className="form-group">
+                            <TextField label="Name" 
+                            variant="standard"  required type="text" className="w-100"/>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                          <div className="form-group">
+                            <TextField label="Phone No." 
+                            variant="standard"  required type="number" className="w-100"/>
+                         </div>
+                    </div>
+                </div>
+                  
                     <div className="form-group">
                          <TextField id="standard-basic" label="Email" 
                          variant="standard"  required type="email" className="w-100"/>
                     </div>
+
                      <div className="form-group">
                          <TextField id="standard-basic" label="Password" 
                          variant="standard"  required type="password" className="w-100"/>
                     </div>
                     
-                  <div className="d-flex gap-3 mt-3 mb-3">
-                        <Button
-                            className="btn-blue col btn-lg btn-big mr-2"
-                        >
-                            Sign In
-                        </Button>
-                        
-                        <Link to="/" style={{ textDecoration: 'none' }}>
-                            <Button
-                            className="btn-lg btn-big"
-                            variant="outlined"
-                            onClick={() => context.setisHeaderFooterShow(true)}
-                            >
-                            Cancel
+                  <div className="d-flex align-items-center mt-3 mb-3">
+                        <div className="row w-100">
+                            
+                            {/* Nút Create Account */}
+                            <div className="col-md-6">
+                            <Button className="btn-blue w-100 btn-lg btn-big">
+                                Create Account
                             </Button>
-                        </Link>
-                </div>
+                            </div>
 
-                    <a className="border-effect cursor mb-3">Forget Password?</a>
+                            {/* Nút Cancel */}
+                            <div className="col-md-6">
+                            <Link to="/signIn" className="d-block w-100">
+                                <Button
+                                className="btn-lg btn-big w-100 ml-3"
+                                variant="outlined"
+                                onClick={() => context.setisHeaderFooterShow(true)}
+                                >
+                                Cancel
+                                </Button>
+                            </Link>
+                            </div>
+
+                    </div>
+                    </div>
                     
 
-                   <p>Not Registered? <Link to="/signUp" className="border-effect cursor mb-3 ml-2">Sign Up</Link></p>
+                   <p>Account Created?<Link to="/signIn" className="border-effect cursor mb-3 ml-2">Sign In</Link></p>
 
                    <h6 className="mt-3 text-center font-weight-bold">Or continue with your social account</h6>
                     <Button className="loginWithGoogle mt-2 mb-3" variant="outlined"><img src={googleImg}/>Sign In with Google</Button>
@@ -83,4 +105,4 @@ const SignIn =()=>{
     )
 
 }
-export default SignIn
+export default SignUp

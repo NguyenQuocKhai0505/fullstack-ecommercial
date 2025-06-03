@@ -14,9 +14,6 @@ const ProductItem =(props)=>{
         context.setisOpenProductModal(true)
     }
    
-    
-   
-
     return(
          <>
          <div className={`productItem ${props.itemView}`}>

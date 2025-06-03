@@ -34,11 +34,15 @@ const Header =()=>
                                 context.countryList.length !==0 && <CountryDropDown/>
                             }
                            <SearchBox/>
+                           
                             <div className="part3 d-flex align-items-center ml-auto">
-                                <Button className="circle mr-3"><FaUserCircle/></Button>
+                                {
+                                    context.isLogin !==true ?<Link to="/signIn"><Button className="btn-blue btn-lg btn-big btn-round mr-2">Sign In</Button></Link>
+                                    :<Button className="circle mr-3"><FaUserCircle/></Button>
+                                }
                                 <div className="ml-auto cartTab">
-                                    <span className="price">$3.29</span>
-                                    <Button className="circle ml-2"><FaCartPlus/></Button>
+                                    <span className="price ml-3">$3.29</span>
+                                    <Button className="circle ml-3"><FaCartPlus/></Button>
                                 </div>
                             </div>
                             
