@@ -152,7 +152,10 @@ router.delete("/:id", async (req, res) => {
 //ROUTER PUT "/:id"
 router.put("/:id", async (req, res) => {
   try {
-    let imgurl = []; // Khai báo biến bên ngoài để có thể truy cập
+    // console.log("Request params ID:", req.params.id); // Debug log
+    // console.log("Request body:", req.body); // Debug log
+    
+    let imgurl = [];
     
     // Nếu có ảnh mới được gửi lên, thực hiện upload
     if (req.body.images && Array.isArray(req.body.images)) {
@@ -164,18 +167,18 @@ router.put("/:id", async (req, res) => {
         return limit(async () => {
           // Upload từng ảnh lên Cloudinary
           const result = await cloudinary.uploader.upload(image);
-          return result; // Trả về thông tin ảnh đã upload
+          return result;
         });
       });
-
+      
       // Chờ tất cả ảnh upload xong
       const uploadStatus = await Promise.all(imagesToUpload);
       
       // Lấy URL của các ảnh đã upload thành công
       imgurl = uploadStatus.map((item) => {
-        return item.secure_url; // URL bảo mật của ảnh trên Cloudinary
+        return item.secure_url;
       });
-
+      
       // Kiểm tra xem có ảnh nào upload thành công không
       if (!uploadStatus || uploadStatus.length === 0) {
         return res.status(500).json({
@@ -184,23 +187,44 @@ router.put("/:id", async (req, res) => {
         });
       }
     }
-
-    // Tạo object cập nhật động
-    const updateData = {
-      name: req.body.name,
-      color: req.body.color
-    };
-
+    
+    // Tạo object cập nhật động - KHÔNG bao gồm id từ body
+    const updateData = {};
+    
+    // Chỉ thêm các field cần thiết
+    if (req.body.name) {
+      updateData.name = req.body.name;
+    }
+    
+    if (req.body.color) {
+      updateData.color = req.body.color;
+    }
+    
     // Chỉ thêm images nếu có upload ảnh mới
     if (imgurl.length > 0) {
       updateData.images = imgurl;
     }
-
+    
+    // console.log("Update data:", updateData); // Debug log
+    
+    // Kiểm tra xem có dữ liệu để cập nhật không
+    if (Object.keys(updateData).length === 0) {
+      return res.status(400).json({
+        message: "Không có dữ liệu để cập nhật!",
+        success: false
+      });
+    }
+    
     const category = await Category.findByIdAndUpdate(
       req.params.id,
       updateData,
-      { new: true }
+      { 
+        new: true, // Trả về document sau khi update
+        runValidators: true // Chạy validation
+      }
     );
+    
+    // console.log("Updated category:", category); // Debug log
     
     if (!category) {
       return res.status(404).json({
@@ -214,7 +238,9 @@ router.put("/:id", async (req, res) => {
       message: "Cập nhật danh mục thành công!",
       data: category
     });
+    
   } catch (error) {
+    // console.error("Update error:", error); // Debug log
     res.status(500).json({
       message: "Lỗi khi cập nhật danh mục",
       success: false,

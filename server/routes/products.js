@@ -202,7 +202,6 @@ router.get("/:id", async(req, res) => {
         });
     }
 });
-//PUT "/:id"
 //PUT "/:id" - Cập nhật sản phẩm
 router.put("/:id", async(req, res) => {
     try {
