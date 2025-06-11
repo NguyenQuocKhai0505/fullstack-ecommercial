@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+*{margin: 0px; padding: 0px;}
+body{
+    font-family: "Open Sans", sans-serif;
+    background: #e6dfdf !important;
+}
+.btn-blue{
+    background: #0858f7 !important;
+    font-size: 15px !important;
+    font-weight: 500;
+    color: #fff !important;
+
+}
+header{
+    width: 100%;
+    height: 80px;
+    background:white;
+}
+header .logo img{
+    width: 70px;
+    height: auto;
+    border-radius: 80px;
+    margin-left: 10px;
+}
+header .logo{
+    text-decoration: none !important;
+}
+header .logo span{
+    color:black;
+    font-size: 30px;
+    font-weight: bold;
+}
+header button.rounded-circle{
+    min-width: 40px !important;
+    width: 40px !important;
+    height: 40px !important;
+    background: #f0f5ff;
+    color: #292929;
+}
+header button.rounded-circle svg{
+    color: #292929;
+    font-size: 18px !important;
+    transform: all 0 2s ease-in-out;
+}
+header button.rounded-circle:hover svg{
+    color: #0858f7 !important;
+}
+.searchBox{
+   width: 300px;
+   height: 40px;
+   background: #f0f5ff;
+   border-radius: 6px !important;
+   padding: 3px;
+}
+.searchBox input{
+    background: transparent;
+    border: 0px;
+    outline: none;
+    padding-left: 5px;
+    font-size: 15px;
+    color: #292929;
+}
+.searchBox input::-webkit-input-placeholder{
+    color: rgba(0,0,0,0.5);
+}
+.searchBox svg{
+    font-size: 18px;
+    color: #292929;
+
+}
+ .userImg{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    width: 45px;
+    height: 45px;
+    border: 1px solid #0858f7;
+    padding: 2px;
+    border-radius: 100%;
+}
+.userImg .rounded-circle{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    width: 100%px;
+    height: 100%px;
+    cursor: pointer;
+    position: relative;
+}
+.userImg .rounded-circle img{
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+}
+.myAcc .userInfo{
+    padding-left: 15px;
+}
+.myAcc .userInfo h4{
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 0px;
+}
+.myAcc .userInfo p{
+    margin-top: 0px;
+    font-size:14px;
+    color: #000;
+    opacity: 0.7;
+}
+.myAcc{
+    text-align: left !important;
+    color: #000 !important;
+    text-transform: capitalize !important;
+}
+#account-menu li{
+    font-size: 15px !important;
+    padding: 12px 15px !important;
+}
+#account-menu li svg{
+    font-size: 20px !important;
+}
+.notifications {
+    margin-top: 10px !important;
+}
+.dropdown_list h4{
+    font-size: 20px;
+    font-weight: 600;
+}
+.dropdown_list li.MuiButtonBase-root{
+    background: #ebf6ff;
+    color: #000;
+    padding: 10px 15px !important;
+}
+.dropdown_list .scroll{
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+.dropDownInfo {
+    max-width: 200px; /* Giới hạn chiều rộng */
+}
+.dropDownInfo h4 {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 21px !important;
+    margin-left: 10px;
+    word-wrap: break-word; /* Tự động xuống hàng */
+    overflow-wrap: break-word;
+    white-space: normal; /* Thay vì break-spaces */
+}
+
+.dropDownInfo h4 b {
+  font-weight: 600;
+  margin-right: 3px;
+}
+.text-sky {
+  color: #0858f7 !important;
+  font-size: 12px;
+  margin-top: 5px;
+  margin-left: 10px;
+}
+
+.userImg img.avatar-img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+}
