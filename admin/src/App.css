@@ -344,3 +344,127 @@ header button.rounded-circle:hover svg{
     margin-right: 10px ;
     font-size: 18px !important;
 }
+.right-content{
+    padding: 90px 30px;
+
+}
+.dashboardBoxWrapper{
+    gap: 20px;
+    width: 100%;
+    flex-wrap: wrap;
+
+}
+.main .content{
+    width: 80%;
+    flex: 0 0 80%;
+
+}
+.dashboardBoxWrapper .dashboardBox{
+    width: 48%;
+    height: 180px;
+    background: #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    position: relative;
+    color: #fff;
+
+}
+.dashboardBoxWrapper .dashboardBox .col1{
+    font-size: 20px;
+    font-weight: 600;
+}
+.dashboardBoxWrapper .dashboardBox .col1 span{
+    font-size: 40px;
+    font-weight: bold;
+    line-height: 45px;
+
+}
+.dashboardBoxWrapper .dashboardBox .icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 5px;
+}
+.dashboardBoxWrapper .dashboardBox .icon svg{
+    font-size: 45px;
+    opacity: 0.3;
+    color: #000;
+}
+.dashboardBoxWrapperRow .box{
+    width: 100%;
+    height: 100%;
+}
+.dashboardBoxWrapper .dashboardBox .toggleIcon{
+    font-size: 22px;
+    color: #000;
+    min-width: 40px !important;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+}
+.dashboardBoxWrapper .dashboardBox .chart{
+    font-size: 60px;
+    color: #fff;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+} 
+.dashboardBoxWrapper .dashboardBox .chart svg{
+    font-size: 100px;
+    color: #000;
+    opacity: 0.1;
+}
+.dashboardBoxWrapperRow .dashboardBox .bottomEle{
+    position: relative;
+    top: 15px;
+}
+.dashboardBoxWrapper .dashboardBox .MuiButtonBase-root svg{
+    color: #000 !important;
+    font-size: 17px !important;
+}
+.dropdown_menu .MuiButtonBase-root svg{
+    margin-right: 10px !important;
+}
+.graphBox{
+    background-image: linear-gradient(#052664,#2767e8);
+    border-radius: 10px;
+    padding: 25px;
+}
+.toggleIcon{
+    font-size: 30px !important;
+    color: #fff !important;
+    cursor: pointer;
+    min-width: 40px !important;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+
+}
+.toggleIcon .svg{
+    color: #fff !important;
+    font-size: 30px !important;
+    opacity: 1;
+}
+.graphBox h2{
+    font-size: 35px;
+    font-weight: bold;
+}
+.graphBox p{
+    font-size: 17px;
+    color: #fff;
+    opacity: 1;
+}
+.card{
+    margin: 20px 0px;
+    border-radius: 10px;
+}
+.card .hd{
+    font-size: 20px;
+    font-weight: bold;
+}
