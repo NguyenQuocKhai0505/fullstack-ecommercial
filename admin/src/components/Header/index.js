@@ -9,7 +9,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
 import { FaBell } from "react-icons/fa";
 import Admin from "../../assets/images/admin.png"
-import React from "react";
+import React, { useContext } from "react";
 import { useState, useRef } from "react";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -18,12 +18,17 @@ import Logout from '@mui/icons-material/Logout';
 import { LuShieldAlert } from "react-icons/lu";
 import { FaUser } from "react-icons/fa";
 import Divider from '@mui/material/Divider';
+import { MyContext } from "../../App";
+import { IoMenu } from "react-icons/io5";
 
 const Header = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [notificationAnchor, setNotificationAnchor] = useState(null);
     const openMyAcc = Boolean(anchorEl);
     const openNotifications = Boolean(notificationAnchor);
+
+    const context = useContext(MyContext)
+
 
     const handleOpenMyAccDrop = (event) => {
         setAnchorEl(event.currentTarget);
@@ -56,8 +61,11 @@ const Header = () => {
                         
                         {/* Tab Menu And Search Box */}
                         <div className="col-sm-3 d-flex align-items-center pl-4 part2">
-                            <Button className="rounded-circle mr-3">
-                                <RiMenuFoldFill/>
+                            <Button className="rounded-circle mr-3"
+                            onClick={()=>context.setisToggleSidebar(!context.isToggleSidebar)}>
+                                {
+                                    context.isToggleSidebar ===false ? <RiMenuFoldFill/> : <IoMenu />
+                                }
                             </Button>
                             <SearchBox/>
                         </div>

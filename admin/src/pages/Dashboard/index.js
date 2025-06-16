@@ -11,6 +11,15 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { IoTimeOutline } from "react-icons/io5";
 import {Chart} from "react-google-charts"
+
+import InputLabel from '@mui/material/InputLabel';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { IoEyeSharp } from "react-icons/io5";
+import { MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
+import Pagination from '@mui/material/Pagination';
 const options = [
   "Last Day",
   "Last Week",
@@ -32,7 +41,10 @@ export const colorOption={
 
 const ITEM_HEIGHT = 48;
 const Dashboard = () =>{
+    
     const [anchorEl, setAnchorEl] = useState(null);
+    const [showBy, setshowBy] = useState('');
+     const [CatBy, setCatBy] = useState('');
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -43,6 +55,7 @@ const Dashboard = () =>{
     return(
         <>
           <div className="right-content w-100">
+            {/* DASHBOARD DESIGN */}
              <div className="row dashboardBoxWrapperRow">
                 <div className="col-md-8">
                     <div className="dashboardBoxWrapper d-flex">
@@ -104,11 +117,290 @@ const Dashboard = () =>{
                     <div className="hd">Best Selling Products</div>
 
 
-                    <div className="row">
-                        <div className="col mt-3">
+                    <div className="row cardFilters">
+                        {/* SHOW BY */}
+                        <div className=" col col-md-3 mt-3">
+                        
                             <h6>SHOW BY</h6>
+                             <FormControl size="small" className="w-100">
+                                <Select
+                                value={showBy}
+                                onChange={(e)=>setshowBy(e.target.value)}
+                                displayEmpty
+                                inputProps={{ 'aria-label': 'Without label' }}
+                                className="w-100"
+                                >
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                <MenuItem value={10}>Ten</MenuItem>
+                                <MenuItem value={20}>Twenty</MenuItem>
+                                <MenuItem value={30}>Thirty</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </div>
+                        {/* CATEGORY BY */}
+                        <div className=" col col-md-3 mt-3">
+                            <h6>CATEGORY BY</h6>
+                             <FormControl size="small" className="w-100">
+                                <Select
+                                value={CatBy}
+                                onChange={(e)=>setCatBy(e.target.value)}
+                                displayEmpty
+                                inputProps={{ 'aria-label': 'Without label' }}
+                                labelId="demo-select-small-label"
+                                className="w-100"
+                                >
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                <MenuItem value={10}>Ten</MenuItem>
+                                <MenuItem value={20}>Twenty</MenuItem>
+                                <MenuItem value={30}>Thirty</MenuItem>
+                                </Select>
+                            </FormControl>
                         </div>
                     </div>
+                    
+                    <div className="table-responsiv mt-3">
+                        <table className="table table-bordered v-align">
+                            {/* HEADER */}
+                                <thead className="thead-dark">
+                                    <tr>
+                                        <th>UID</th>
+                                        <th>PRODUCT</th>
+                                        <th>CATEGORY</th>
+                                        <th>BRAND</th>
+                                        <th>PRICE</th>
+                                        <th>STOCK</th>
+                                        <th>RATING</th>
+                                        <th>ORDER</th>
+                                        <th>SALES</th>
+                                        <th>ACTION</th>
+                                    </tr>
+                                </thead>
+                            {/* BODY */}
+                                <tbody>
+                                    <tr>
+                                        <td>#1</td>
+                                        <td>
+                                           <div className="d-flex align-items-center productBox">
+                                                <div className="imgWrapper">
+                                                    <div className="img">
+                                                        <img src="https://mironcoder-hotash.netlify.app/images/product/01.webp"
+                                                        className="w-100"/>
+                                                    </div>
+                                                </div>
+                                                <div className="info pl-0">
+                                                     <h6>Tops and skirt set for Female</h6>
+                                                    <p>Women's exclusive summer Tops and Skirts set for Female Tops and Skirt set</p>
+                                                </div>
+                                           </div>
+                                        </td>
+                                        <td>womans</td>
+                                        <td>richman</td>
+                                        <td>
+                                            <span className="oldPrice">$32.00</span>
+                                            <span className="newPrice">$21.00</span>
+                                        </td>
+                                        <td>30</td>
+                                        <td>4.9(16)</td>
+                                        <td>380</td>
+                                        <td>$38k</td>
+                                        <td>
+                                            <div className="actions d-flex align-items-center"> 
+                                                    <Button className="secondary" color="secondary"><IoEyeSharp/></Button>
+                                                    <Button className="success" color="success"><MdEdit/></Button>
+                                                    <Button className="error" color="error"><MdDelete/></Button>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                     <tr>
+                                        <td>#1</td>
+                                        <td>
+                                           <div className="d-flex align-items-center productBox">
+                                                <div className="imgWrapper">
+                                                    <div className="img">
+                                                        <img src="https://mironcoder-hotash.netlify.app/images/product/01.webp"
+                                                        className="w-100"/>
+                                                    </div>
+                                                </div>
+                                                <div className="info pl-0">
+                                                     <h6>Tops and skirt set for Female</h6>
+                                                    <p>Women's exclusive summer Tops and Skirts set for Female Tops and Skirt set</p>
+                                                </div>
+                                           </div>
+                                        </td>
+                                        <td>womans</td>
+                                        <td>richman</td>
+                                        <td>
+                                            <span className="oldPrice">$32.00</span>
+                                            <span className="newPrice">$21.00</span>
+                                        </td>
+                                        <td>30</td>
+                                        <td>4.9(16)</td>
+                                        <td>380</td>
+                                        <td>$38k</td>
+                                        <td>
+                                            <div className="actions d-flex align-items-center"> 
+                                                    <Button className="secondary" color="secondary"><IoEyeSharp/></Button>
+                                                    <Button className="success" color="success"><MdEdit/></Button>
+                                                    <Button className="error" color="error"><MdDelete/></Button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                     <tr>
+                                        <td>#1</td>
+                                        <td>
+                                           <div className="d-flex align-items-center productBox">
+                                                <div className="imgWrapper">
+                                                    <div className="img">
+                                                        <img src="https://mironcoder-hotash.netlify.app/images/product/01.webp"
+                                                        className="w-100"/>
+                                                    </div>
+                                                </div>
+                                                <div className="info pl-0">
+                                                     <h6>Tops and skirt set for Female</h6>
+                                                    <p>Women's exclusive summer Tops and Skirts set for Female Tops and Skirt set</p>
+                                                </div>
+                                           </div>
+                                        </td>
+                                        <td>womans</td>
+                                        <td>richman</td>
+                                        <td>
+                                            <span className="oldPrice">$32.00</span>
+                                            <span className="newPrice">$21.00</span>
+                                        </td>
+                                        <td>30</td>
+                                        <td>4.9(16)</td>
+                                        <td>380</td>
+                                        <td>$38k</td>
+                                        <td>
+                                            <div className="actions d-flex align-items-center"> 
+                                                    <Button className="secondary" color="secondary"><IoEyeSharp/></Button>
+                                                    <Button className="success" color="success"><MdEdit/></Button>
+                                                    <Button className="error" color="error"><MdDelete/></Button>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                     <tr>
+                                        <td>#1</td>
+                                        <td>
+                                           <div className="d-flex align-items-center productBox">
+                                                <div className="imgWrapper">
+                                                    <div className="img">
+                                                        <img src="https://mironcoder-hotash.netlify.app/images/product/01.webp"
+                                                        className="w-100"/>
+                                                    </div>
+                                                </div>
+                                                <div className="info pl-0">
+                                                     <h6>Tops and skirt set for Female</h6>
+                                                    <p>Women's exclusive summer Tops and Skirts set for Female Tops and Skirt set</p>
+                                                </div>
+                                           </div>
+                                        </td>
+                                        <td>womans</td>
+                                        <td>richman</td>
+                                        <td>
+                                            <span className="oldPrice">$32.00</span>
+                                            <span className="newPrice">$21.00</span>
+                                        </td>
+                                        <td>30</td>
+                                        <td>4.9(16)</td>
+                                        <td>380</td>
+                                        <td>$38k</td>
+                                        <td>
+                                            <div className="actions d-flex align-items-center"> 
+                                                    <Button className="secondary" color="secondary"><IoEyeSharp/></Button>
+                                                    <Button className="success" color="success"><MdEdit/></Button>
+                                                    <Button className="error" color="error"><MdDelete/></Button>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                        <tr>
+                                        <td>#1</td>
+                                        <td>
+                                           <div className="d-flex align-items-center productBox">
+                                                <div className="imgWrapper">
+                                                    <div className="img">
+                                                        <img src="https://mironcoder-hotash.netlify.app/images/product/01.webp"
+                                                        className="w-100"/>
+                                                    </div>
+                                                </div>
+                                                <div className="info pl-0">
+                                                     <h6>Tops and skirt set for Female</h6>
+                                                    <p>Women's exclusive summer Tops and Skirts set for Female Tops and Skirt set</p>
+                                                </div>
+                                           </div>
+                                        </td>
+                                        <td>womans</td>
+                                        <td>richman</td>
+                                        <td>
+                                            <span className="oldPrice">$32.00</span>
+                                            <span className="newPrice">$21.00</span>
+                                        </td>
+                                        <td>30</td>
+                                        <td>4.9(16)</td>
+                                        <td>380</td>
+                                        <td>$38k</td>
+                                        <td>
+                                            <div className="actions d-flex align-items-center"> 
+                                                    <Button className="secondary" color="secondary"><IoEyeSharp/></Button>
+                                                    <Button className="success" color="success"><MdEdit/></Button>
+                                                    <Button className="error" color="error"><MdDelete/></Button>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                        <tr>
+                                        <td>#1</td>
+                                        <td>
+                                           <div className="d-flex align-items-center productBox">
+                                                <div className="imgWrapper">
+                                                    <div className="img">
+                                                        <img src="https://mironcoder-hotash.netlify.app/images/product/01.webp"
+                                                        className="w-100"/>
+                                                    </div>
+                                                </div>
+                                                <div className="info pl-0">
+                                                     <h6>Tops and skirt set for Female</h6>
+                                                    <p>Women's exclusive summer Tops and Skirts set for Female Tops and Skirt set</p>
+                                                </div>
+                                           </div>
+                                        </td>
+                                        <td>womans</td>
+                                        <td>richman</td>
+                                        <td>
+                                            <span className="oldPrice">$32.00</span>
+                                            <span className="newPrice">$21.00</span>
+                                        </td>
+                                        <td>30</td>
+                                        <td>4.9(16)</td>
+                                        <td>380</td>
+                                        <td>$38k</td>
+                                        <td>
+                                            <div className="actions d-flex align-items-center"> 
+                                                    <Button className="secondary" color="secondary"><IoEyeSharp/></Button>
+                                                    <Button className="success" color="success"><MdEdit/></Button>
+                                                    <Button className="error" color="error"><MdDelete/></Button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                        </table>
+                        {/* PAGNIGATION */}
+                        <div className="d-flex tableFooter">
+                            <p>Showing <b>10</b> of <b>50</b> products</p>
+                             <Pagination count={50} color="primary" className="pagination"
+                             showFirstButton showLastButton />
+                        </div>
+                       
+                    </div>
+
              </div>
           </div>
         </>

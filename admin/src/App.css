@@ -172,12 +172,21 @@ header button.rounded-circle:hover svg{
   border-radius: 50%;
   border: 2px solid #ddd;
 }
-.main .sidebarWrapper{
+/* Sidebar Wrapper - Default state */
+.main .sidebarWrapper {
     width: 20%;
     flex: 0 0 20%;
     transition: all 0.3s ease-in-out;
 }
-.main .sidebarWrapper .sidebar{
+
+/* Sidebar Wrapper - Toggled state (hidden) */
+.main .sidebarWrapper.toggle {
+    width: 0%;
+    flex: 0 0 0%;
+}
+
+/* Sidebar - Default state */
+.main .sidebarWrapper .sidebar {
     width: 20%;
     height: 100vh;
     position: fixed;
@@ -187,114 +196,179 @@ header button.rounded-circle:hover svg{
     max-height: calc(100% - 70px);
     overflow: scroll;
     overflow-x: hidden;
+    transition: all 0.3s ease-in-out;
+    z-index: 1000;
 }
-.main .sidebarWrapper .sidebar ul{
+
+/* Sidebar - Hidden state */
+.main .sidebarWrapper.toggle .sidebar {
+    left: -100% !important;
+}
+
+/* Content area - Default state */
+.main .content {
+    width: 80%;
+    flex: 0 0 80%;
+    transition: all 0.3s ease-in-out;
+    margin-left: 0;
+}
+
+/* Content area - When sidebar is toggled */
+.main .sidebarWrapper.toggle + .content {
+    width: 100%;
+    flex: 0 0 100%;
+    margin-left: 0;
+}
+
+/* Sidebar list styling */
+.main .sidebarWrapper .sidebar ul {
     margin-bottom: 0px;
     padding: 10px 15px !important;
 }
-.main .sidebarWrapper .sidebar ul li{
+
+.main .sidebarWrapper .sidebar ul li {
     list-style: none;
 }
-/* Thay đổi từ display sang width */
-.main .sidebarWrapper .sidebar::-webkit-scrollbar{
+
+/* Scrollbar styling */
+.main .sidebarWrapper .sidebar::-webkit-scrollbar {
     width: 0px;
 }
 
-.main .sidebarWrapper:hover .sidebar::-webkit-scrollbar{
+.main .sidebarWrapper:hover .sidebar::-webkit-scrollbar {
     width: 6px;
     background: #f1f1f1;
 }
 
-.main .sidebarWrapper:hover .sidebar::-webkit-scrollbar-thumb{
+.main .sidebarWrapper:hover .sidebar::-webkit-scrollbar-thumb {
     background: #ccc;
     border-radius: 3px;
 }
-.main .sidebarWrapper .sidebar ul li button{
+
+/* Button styling */
+.main .sidebarWrapper .sidebar ul li button {
     color: #000;
     text-align: left;
     justify-content: left;
-    border-radius:10px !important;
+    border-radius: 10px !important;
     padding: 12px 15px !important;
     align-items: center;
     top: 5px;
     text-transform: capitalize !important;
     font-weight: 500;
     font-size: 15px;
+    width: 100%;
+    border: none;
+    background: transparent;
+    display: flex;
 }
-.main .sidebarWrapper .sidebar ul li button .icon{
+
+.main .sidebarWrapper .sidebar ul li button .icon {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 25px;
-    height: 25px ;
-    margin-right:10px;
-}
-.main .sidebarWrapper .sidebar ul li button .icon{
+    height: 25px;
+    margin-right: 10px;
     color: #000;
-    font-size:22px;
+    font-size: 22px;
 }
-.main .sidebarWrapper .sidebar ul li button *{
-    color: rgba(0,0,0,0.7) !important;
 
+.main .sidebarWrapper .sidebar ul li button * {
+    color: rgba(0, 0, 0, 0.7) !important;
 }
-.main .sidebarWrapper .sidebar ul li button .arrow{
+
+.main .sidebarWrapper .sidebar ul li button .arrow {
     margin-left: auto;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 25px;
-    height: 25px ;
+    height: 25px;
 }
-.main .sidebarWrapper .sidebar ul li button:hover{
+
+.main .sidebarWrapper .sidebar ul li button:hover {
     background: #e6dfdf !important;
 }
-.main .sidebarWrapper .sidebar ul .submenu{
-    width: 100%;
-    list-style: none;
-}
-.main .sidebarWrapper .sidebar ul .submenu{
-    padding-left: 10px;
-}
-.main .sidebarWrapper .sidebar ul li button.active{
+
+.main .sidebarWrapper .sidebar ul li button.active {
     background: #f1f1f1;
 }
-.main .sidebarWrapper .sidebar ul .submenu li{
+
+/* Submenu styling */
+.main .sidebarWrapper .sidebar ul .submenu {
     width: 100%;
     list-style: none;
-    border-left: 1px solid rgba(0,0,0,0.5) !important;
+    padding-left: 10px;
+}
+
+.main .sidebarWrapper .sidebar ul .submenu li {
+    width: 100%;
+    list-style: none;
+    border-left: 1px solid rgba(0, 0, 0, 0.5) !important;
     padding-left: 20px;
 }
-.main .sidebarWrapper .sidebar ul .submenu a{
+
+.main .sidebarWrapper .sidebar ul .submenu a {
     color: #000 !important;
     text-decoration: none;
     display: block;
     padding: 5px 0px;
     font-size: 13px;
     font-weight: 500;
-    transition: all 0.3s ;
+    transition: all 0.3s;
     margin-right: 90px;
 }
-.main .sidebarWrapper .sidebar ul .submenu{
+
+.main .sidebarWrapper .sidebar ul .submenu {
     padding: 0px 45px !important;
-    
 }
-.main .sidebarWrapper .sidebar ul .submenu a:hover{
-     color: #0858f7 !important;
+
+.main .sidebarWrapper .sidebar ul .submenu a:hover {
+    color: #0858f7 !important;
 }
-.main .sidebarWrapper .sidebar ul .submenuWrapper.colapsed{
+
+/* Submenu collapse/expand */
+.main .sidebarWrapper .sidebar ul .submenuWrapper.colapsed {
     height: 0px;
+    overflow: hidden;
 }
-.main .sidebarWrapper .sidebar ul .submenuWrapper.colapsed .submenu{
+
+.main .sidebarWrapper .sidebar ul .submenuWrapper.colapsed .submenu {
     opacity: 0;
 }
-.main .sidebarWrapper .sidebar ul .submenuWrapper.colapse{
+
+.main .sidebarWrapper .sidebar ul .submenuWrapper.colapse {
     height: auto;
 }
-.main .sidebarWrapper .sidebar ul .submenuWrapper.colapse .submenu{
+
+.main .sidebarWrapper .sidebar ul .submenuWrapper.colapse .submenu {
     opacity: 1;
 }
-.main .sidebarWrapper .sidebar ul .submenuWrapper{
-    transition: all 0.3 ease-in-out;
+
+.main .sidebarWrapper .sidebar ul .submenuWrapper {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Right content padding */
+.right-content {
+    padding: 90px 30px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .main .sidebarWrapper .sidebar {
+        width: 250px;
+    }
+    
+    .main .sidebarWrapper.toggle .sidebar {
+        left: -250px !important;
+    }
+    
+    .main .content {
+        width: 100%;
+        flex: 0 0 100%;
+    }
 }
 .logoutWrapper{
     padding: 0px 25px;
@@ -344,21 +418,14 @@ header button.rounded-circle:hover svg{
     margin-right: 10px ;
     font-size: 18px !important;
 }
-.right-content{
-    padding: 90px 30px;
 
-}
 .dashboardBoxWrapper{
     gap: 20px;
     width: 100%;
     flex-wrap: wrap;
 
 }
-.main .content{
-    width: 80%;
-    flex: 0 0 80%;
 
-}
 .dashboardBoxWrapper .dashboardBox{
     width: 48%;
     height: 180px;
@@ -418,7 +485,7 @@ header button.rounded-circle:hover svg{
 .dashboardBoxWrapper .dashboardBox .chart svg{
     font-size: 100px;
     color: #000;
-    opacity: 0.1;
+    opacity: 0.09;
 }
 .dashboardBoxWrapperRow .dashboardBox .bottomEle{
     position: relative;
@@ -467,4 +534,263 @@ header button.rounded-circle:hover svg{
 .card .hd{
     font-size: 20px;
     font-weight: bold;
+}
+.cardFilters .col h6{
+    font-size: 14px;
+    font-weight: 800;
+    text-transform: capitalize;
+    color:#353333 !important;
+}
+/* CSS cải thiện cho bảng */
+.table .thead-dark th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    background-color: #fff;
+    border-color: rgba(0,0,0,0.1);
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: white !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 18px 15px !important;
+    border: none !important;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #2d3748;
+    font-weight: 600;
+}
+
+.table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+}
+
+.table tbody tr {
+    transition: all 0.3s ease;
+    border-bottom: 1px solid #f7fafc !important;
+}
+
+.table tbody tr:hover {
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+}
+
+.table tbody td {
+    font-size: 14px !important;
+    color: #2d3748 !important;
+    font-weight: 500;
+    padding: 18px 15px !important;
+    vertical-align: middle !important;
+    border: none !important;
+    border-bottom: 1px solid #f7fafc !important;
+}
+
+.table tbody .actions {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.table tbody .actions button {
+    min-width: 36px !important;
+    height: 36px !important;
+    width: 36px !important;
+    margin: 0px 4px !important;
+    border: none !important;
+    border-radius: 8px !important;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.table tbody .actions button.secondary {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    color: white !important;
+}
+
+.table tbody .actions button.success {
+    background: linear-gradient(135deg, #4facfe, #00f2fe) !important;
+    color: white !important;
+}
+
+.table tbody .actions button.error {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24) !important;
+    color: white !important;
+}
+
+.table tbody .actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.table tbody .actions button svg {
+    font-size: 18px !important;
+}
+
+table.v-align td {
+    vertical-align: middle !important;
+}
+
+.table td .oldPrice {
+    text-decoration: line-through !important;
+    font-size: 13px !important;
+    color: #a0aec0 !important;
+    margin-bottom: 2px;
+}
+
+.table td .newPrice {
+    font-size: 16px !important;
+    color: #e53e3e !important;
+    font-weight: 700 !important;
+}
+
+.table td .oldPrice, .table td .newPrice {
+    display: block;
+    width: 100%;
+    text-align: right;
+}
+
+table.v-align td .info h6 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 600;
+    margin-bottom: 4px;
+    font-size: 15px !important;
+    color: #2d3748;
+    line-height: 1.4;
+}
+
+table td .imgWrapper {
+    width: 25%;
+    flex: 0 0 25%;
+    margin-right: 15px;
+}
+
+table td .info {
+    width: 75%;
+    flex: 0 0 75%;
+}
+
+table.v-align td .info p {
+    font-size: 12px !important;
+    line-height: 1.4;
+    color: #718096;
+    margin: 0;
+}
+
+table.v-align .productBox {
+    width: 280px !important;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+table.v-align .productBox .info {
+    width: 100%;
+    flex: 1;
+}
+
+/* Thêm styles cho các badge và elements khác */
+.stock-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    background: linear-gradient(135deg, #48bb78, #38a169);
+    color: white;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    min-width: 50px;
+}
+
+.category-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: linear-gradient(135deg, #667eea, #58446c);
+    color: white;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.brand-text {
+    font-weight: 600;
+    color: #4a5568;
+    font-size: 14px;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rating-stars {
+    color: #ffd700;
+    font-size: 16px;
+}
+
+.rating-text {
+    font-size: 13px;
+    color: #718096;
+    font-weight: 500;
+}
+
+.sales-amount {
+    font-size: 16px;
+    font-weight: 700;
+    color: #38a169;
+}
+
+.uid-cell {
+    font-weight: 700;
+    color: #667eea;
+    font-size: 16px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .table {
+        font-size: 12px;
+    }
+    
+    .table .thead-dark th,
+    .table tbody td {
+        padding: 12px 8px !important;
+    }
+    
+    table.v-align .productBox {
+        width: 200px !important;
+        gap: 10px;
+    }
+    
+    .table tbody .actions button {
+        min-width: 32px !important;
+        height: 32px !important;
+        width: 32px !important;
+    }
+}
+.tableFooter{
+    padding-bottom: 20px !important;
+}
+.tableFooter .pagination{
+    margin-left: auto;
+}
+.tableFooter p{
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 0px;
 }

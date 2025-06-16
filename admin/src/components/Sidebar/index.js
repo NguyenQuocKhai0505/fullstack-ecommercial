@@ -8,8 +8,9 @@ import { AiFillMessage } from "react-icons/ai";
 import { IoNotificationsCircle } from "react-icons/io5";
 import { IoSettings } from "react-icons/io5";
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { SlLogout } from "react-icons/sl";
+import { MyContext } from '../../App';
 const Sidebar = () =>{
 
     const [activeTab,setActiveTab] = useState(0)
@@ -18,6 +19,7 @@ const Sidebar = () =>{
         setActiveTab(index)
         setisToggleSubmenu(!isToggleSubmenu)
     }
+    const context = useContext(MyContext)
     return(
         <>
         <div className="sidebar">
