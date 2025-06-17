@@ -9,7 +9,35 @@ body{
     font-size: 15px !important;
     font-weight: 500;
     color: #fff !important;
+    border-radius: 5px;
 
+}
+.btn-lg{
+    padding: 10px 25px !important;
+}
+.btn-round{
+    border-radius: 30px !important;
+}
+.full{
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+    width: 100% !important;
+}
+.btn-big{
+    padding: 8px 25px !important;
+}
+.link{
+    color: #000 !important;
+    font-weight: 600;
+    text-decoration: none !important;
+}
+.link:hover{
+    color: #0858f7 !important;
+}
+.link.color{
+    color: #0858f7 !important;
+    text-decoration: none;
+    cursor: pointer;
 }
 header{
     width: 100%;
@@ -793,4 +821,81 @@ table.v-align .productBox .info {
     font-size: 13px;
     font-weight: 500;
     margin-bottom: 0px;
+}
+.loginSection{
+    width: 100%;
+    height: 100vh;
+    padding: 35px 25px;
+    background: url(./assets/images/background.jpg) ;
+}
+.loginSection .loginBox{
+    width: 400px;
+    height: auto;
+    margin: auto;
+}
+.loginSection .loginBox .wrapper{
+    width: 400px;
+    height: 400px;
+    background: #fff;
+    position: relative;
+    z-index: 100;
+    border-radius: 30px;
+}
+.loginSection .loginBox .wrapper .form-control{
+    background: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+    border-radius: 10px !important;
+    font-size: 15px;
+    font-weight: 600;
+    padding-left: 50px ;
+}
+.loginSection .loginBox .wrapper .form-control:focus{
+    border: 1px solid #0858f7;
+}
+.loginSection .loginBox .wrapper .form-group .icon{
+    position: absolute;
+    left: 15px;
+    bottom: 1.5px;
+    z-index: 100;
+    font-size: 25px;
+}
+
+.loginSection .loginBox .wrapper .form-group .icon svg{
+    opacity: 0.9;
+}
+.toggleShowPassword{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+}
+.toggleShowPassword svg{
+    font-size: 22px;
+}
+.loginSection .loginBox .wrapper .link{
+    font-size: 15px !important;
+}
+.loginSection .loginBox .wrapper .or span.line{
+    display: block;
+    width: 35%;
+    height: 1px;
+    background: rgba(0,0,0,0.3);
+}
+.loginSection .loginBox .wrapper .or span.txt{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 600;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(0,0,0,0.4);
+    border-radius: 100%;
+}
+.loginWithGoogle{
+    text-transform: capitalize !important;
+    font-weight: bold !important;
+    border-radius: 10px !important;
+    font-size: 15px !important;
 }
