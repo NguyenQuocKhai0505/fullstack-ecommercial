@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import Sidebar from './components/Sidebar';
 import { createContext, useEffect, useState } from 'react';
 import LogIn from './pages/LogIn';
+import SignUp from './pages/SignUp';
 
 const MyContext = createContext()
 function App() {
@@ -13,6 +14,8 @@ function App() {
   const [isToggleSidebar,setisToggleSidebar] = useState(false)
   const [isLogin, setIsLogin] = useState(false)
   const [isHiddenSidebarAndHeader, setisHiddenSidebarAndHeader] = useState(false)
+
+  
 
   const values={
     isToggleSidebar,
@@ -44,6 +47,7 @@ function App() {
                 <Route path ="/"exact={true} element={<Dashboard/>}/>
                 <Route path ="/dashboard"exact={true} element={<Dashboard/>}/>
                 <Route exact={true} path="/login" element={<LogIn/>}/>
+                <Route exact={true} path="/signUp" element={<SignUp/>}/>
              </Routes>
             </div>
           </div>

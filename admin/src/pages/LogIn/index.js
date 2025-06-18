@@ -7,7 +7,7 @@ import { RiLockPasswordFill } from "react-icons/ri"
 import { IoEyeSharp } from "react-icons/io5";
 import { FaEyeSlash } from "react-icons/fa";
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
+import { Link } from 'react-router-dom'; // Thay đổi này
 import Google from "../../assets/images/Google.png"
 const Login =()=>{
     const context = useContext(MyContext)
@@ -22,6 +22,7 @@ const Login =()=>{
         setInputIndex(index)
     }
     return(
+        <>
         <section className="loginSection">
             <div className="loginBox">
                 <div className="logo text-center">
@@ -75,13 +76,14 @@ const Login =()=>{
                     </form>
                      <span className="text-center">
                             Don't have an accounts?
-                            <Link to ={"/signUp"} className="link color ml-3">Register</Link>
+                            <Link to ="/signUp" className="link color ml-3">Register</Link>
                     </span>
                </div>
                  
             </div>
             
         </section>
+        </>
     )
 
 }

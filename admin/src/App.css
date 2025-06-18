@@ -899,3 +899,33 @@ table.v-align .productBox .info {
     border-radius: 10px !important;
     font-size: 15px !important;
 }
+.signUpSection .loginBox .wrapper{
+    width: 400px;
+    height: 500px;
+    background: #fff;
+    position: relative;
+    z-index: 100;
+    border-radius: 30px;
+}
+.signUpSection{
+      background: url(./assets/images/background.jpg) ;
+      padding: 35px 0px;
+}
+.signUpSection .Welcome{
+   margin-top: 300px;
+   left: 20px !important;
+}
+.signUpSection .Welcome h2{
+    font-size: 40px !important;
+    font-weight: bold;
+}
+.signUpSection .Welcome p{
+    font-size: 20px !important;
+    font-weight: 500;
+}
+.signUpSection .Welcome ul li{
+    list-style: none;
+    font-size: 20px !important;
+    font-weight: 500;
+    color: #200101;
+}

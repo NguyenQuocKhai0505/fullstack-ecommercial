@@ -4,7 +4,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaShoppingBag } from "react-icons/fa";
 import { FaStar } from "react-icons/fa6";
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
@@ -20,6 +20,7 @@ import { IoEyeSharp } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import Pagination from '@mui/material/Pagination';
+import { MyContext } from "../../App";
 const options = [
   "Last Day",
   "Last Week",
@@ -40,11 +41,16 @@ export const colorOption={
 
 
 const ITEM_HEIGHT = 48;
+
 const Dashboard = () =>{
+    const context = useContext(MyContext)
+    useEffect(()=>{
+    context.setisHiddenSidebarAndHeader(false)
+    },[])
     
     const [anchorEl, setAnchorEl] = useState(null);
     const [showBy, setshowBy] = useState('');
-     const [CatBy, setCatBy] = useState('');
+    const [CatBy, setCatBy] = useState('');
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
