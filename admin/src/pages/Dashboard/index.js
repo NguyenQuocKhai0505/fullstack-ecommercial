@@ -46,6 +46,7 @@ const Dashboard = () =>{
     const context = useContext(MyContext)
     useEffect(()=>{
     context.setisHiddenSidebarAndHeader(false)
+    window.scroll(0,0)
     },[])
     
     const [anchorEl, setAnchorEl] = useState(null);

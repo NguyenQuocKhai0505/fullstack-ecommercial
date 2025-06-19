@@ -4,6 +4,9 @@ body{
     font-family: "Open Sans", sans-serif !important;
     background: #e6dfdf !important;
 }
+body.dark{
+    background: #071739 !important;
+}
 .btn-blue{
     background: #0858f7 !important;
     font-size: 15px !important;
@@ -39,6 +42,7 @@ body{
     text-decoration: none;
     cursor: pointer;
 }
+
 header{
     width: 100%;
     height: 70px;
@@ -47,6 +51,9 @@ header{
     top: 0px;
     left: 0px;
     z-index: 1000;
+}
+body.dark header{
+    background: #1d3360 !important;
 }
 header .logo img{
     width: 70px;
@@ -61,6 +68,9 @@ header .logo span{
     color:black;
     font-size: 30px;
     font-weight: bold;
+}
+body.dark header .logo span{
+    color: #fff !important;
 }
 header button.rounded-circle{
     min-width: 40px !important;
@@ -77,12 +87,25 @@ header button.rounded-circle svg{
 header button.rounded-circle:hover svg{
     color: #0858f7 !important;
 }
+body.dark header button.rounded-circle{
+    background: #12254e !important;
+}
+body.dark header button.rounded-circle svg{
+    color: #fff !important;
+}
 .searchBox{
    width: 300px;
    height: 40px;
    background: #f0f5ff;
    border-radius: 6px !important;
    padding: 3px;
+}
+body.dark .searchBox{
+    background:#12254e !important;
+}
+body.dark .searchBox input, body.dark .searchBox input::-webkit-input-placeholder,
+body.dark .searchBox svg{
+    color: #fff !important;
 }
 .searchBox input{
     background: transparent;
@@ -134,6 +157,15 @@ header button.rounded-circle:hover svg{
     font-weight: 600;
     margin-bottom: 0px;
 }
+body.dark .myAcc .userInfo h4, body.dark .myAcc .userInfo p{
+    color: #fff !important;
+}
+body.dark .MuiPaper-elevation{
+    background: #12254e !important;
+}
+body.dark .MuiPaper-elevation li *,body.dark .MuiPaper-elevation li{
+    color: #fff !important;
+}
 .myAcc .userInfo p{
     margin-top: 0px;
     font-size:14px;
@@ -159,10 +191,17 @@ header button.rounded-circle:hover svg{
     font-size: 20px;
     font-weight: 600;
 }
+body.dark .dropdown_list h4 {
+    color: #fff;
+}
 .dropdown_list li.MuiButtonBase-root{
     background: #ebf6ff;
     color: #000;
     padding: 10px 15px !important;
+}
+body.dark .dropdown_list li.MuiButtonBase-root{
+    background: #12254e !important;
+    background-color: #12254e !important;
 }
 .dropdown_list .scroll{
     max-height: 300px;
@@ -227,7 +266,10 @@ header button.rounded-circle:hover svg{
     transition: all 0.3s ease-in-out;
     z-index: 1000;
 }
-
+body.dark .main .sidebarWrapper .sidebar{
+    background: #12254e !important;
+    
+} 
 /* Sidebar - Hidden state */
 .main .sidebarWrapper.toggle .sidebar {
     left: -100% !important;
@@ -288,9 +330,18 @@ header button.rounded-circle:hover svg{
     width: 100%;
     border: none;
     background: transparent;
-    display: flex;
+    text-decoration: none !important;
 }
-
+body.dark .main .sidebarWrapper .sidebar ul li button {
+    color: #fff !important;
+}
+body.dark .main .sidebarWrapper .sidebar ul li button:hover {
+    background: #0858f7 !important;
+    
+}
+body.dark .main .sidebarWrapper .sidebar ul li button.active {
+    background: #2d3748 !important;
+}
 .main .sidebarWrapper .sidebar ul li button .icon {
     display: flex;
     align-items: center;
@@ -322,6 +373,11 @@ header button.rounded-circle:hover svg{
 .main .sidebarWrapper .sidebar ul li button.active {
     background: #f1f1f1;
 }
+body.dark .sidebar svg,
+body.dark .sidebar .icon {
+  color: white !important;
+  fill: white !important;
+}
 
 /* Submenu styling */
 .main .sidebarWrapper .sidebar ul .submenu {
@@ -336,7 +392,12 @@ header button.rounded-circle:hover svg{
     border-left: 1px solid rgba(0, 0, 0, 0.5) !important;
     padding-left: 20px;
 }
-
+body.dark .main .sidebarWrapper .sidebar ul .submenu a {
+    color: #fff !important;
+}
+body.dark .main .sidebarWrapper .sidebar ul .submenu a:hover{
+    color: #0858f7 !important;
+}
 .main .sidebarWrapper .sidebar ul .submenu a {
     color: #000 !important;
     text-decoration: none;
@@ -569,6 +630,47 @@ header button.rounded-circle:hover svg{
     text-transform: capitalize;
     color:#353333 !important;
 }
+body.dark .card{
+    background: #112143 !important;
+}
+body.dark .card .hd{
+    background: #112143 !important;
+    color: #fff !important;
+}
+body.dark .col-md-3 h6{
+    color: #fff !important;
+}
+body.dark .css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root,
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark h4,
+body.dark h5,
+body.dark p
+{
+    color: #fff !important;
+}
+/* MUI Select component - chữ màu trắng */
+body.dark .MuiSelect-select,
+body.dark .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input,
+body.dark .css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
+    color: #fff !important;
+}
+
+/* MUI Input Base - tất cả input text màu trắng */
+body.dark .MuiInputBase-input {
+    color: #fff !important;
+}
+
+/* MUI Outlined Input */
+body.dark .MuiOutlinedInput-input {
+    color: #fff !important;
+}
+
+/* Placeholder text */
+body.dark .MuiInputBase-input::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
 /* CSS cải thiện cho bảng */
 .table .thead-dark th {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
@@ -590,7 +692,6 @@ h1, h2, h3, h4, h5, h6 {
     color: #2d3748;
     font-weight: 600;
 }
-
 .table {
     border-collapse: collapse;
     border-spacing: 0;
@@ -811,6 +912,7 @@ table.v-align .productBox .info {
         width: 32px !important;
     }
 }
+
 .tableFooter{
     padding-bottom: 20px !important;
 }
@@ -822,6 +924,168 @@ table.v-align .productBox .info {
     font-weight: 500;
     margin-bottom: 0px;
 }
+
+/* ========== DARK MODE STYLES ========== */
+body.dark .table {
+    background: #1a202c;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+body.dark .table tbody tr {
+    border-bottom: 1px solid #2d3748 !important;
+}
+
+body.dark .table tbody tr:hover {
+    background: linear-gradient(135deg, #2d3748 0%, #374151 100%) !important;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+body.dark .table tbody td {
+    color: #e2e8f0 !important;
+    border-bottom: 1px solid #2d3748 !important;
+    background: transparent;
+}
+
+body.dark .table thead th {
+    background: #2d3748 !important;
+    color: #e2e8f0 !important;
+    border-bottom: 1px solid #4a5568 !important;
+}
+
+body.dark .table td .oldPrice {
+    color: #718096 !important;
+}
+
+body.dark .table td .newPrice {
+    color: #fc8181 !important;
+}
+
+body.dark table.v-align td .info h6 {
+    color: #f7fafc !important;
+}
+
+body.dark table.v-align td .info p {
+    color: #a0aec0 !important;
+}
+
+body.dark .brand-text {
+    color: #cbd5e0 !important;
+}
+
+body.dark .rating-text {
+    color: #a0aec0 !important;
+}
+
+body.dark .sales-amount {
+    color: #68d391 !important;
+}
+
+body.dark .uid-cell {
+    color: #90cdf4 !important;
+}
+
+body.dark .stock-badge {
+    background: linear-gradient(135deg, #38a169, #2f855a);
+}
+
+body.dark .category-badge {
+    background: linear-gradient(135deg, #553c9a, #44337a);
+}
+
+/* Dark mode button hover effects */
+body.dark .table tbody .actions button.secondary {
+    background: linear-gradient(135deg, #553c9a, #44337a) !important;
+}
+
+body.dark .table tbody .actions button.success {
+    background: linear-gradient(135deg, #2b6cb0, #2c5282) !important;
+}
+
+body.dark .table tbody .actions button.error {
+    background: linear-gradient(135deg, #e53e3e, #c53030) !important;
+}
+
+body.dark .table tbody .actions button:hover {
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+/* Dark mode table footer */
+body.dark .tableFooter p {
+    color: #e2e8f0 !important;
+}
+
+body.dark .pagination {
+    color: #ffffff !important;
+}
+
+body.dark .pagination .page-link {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    color: #2d3748 !important;
+}
+
+body.dark .pagination .page-link:hover {
+    background-color: #f7fafc !important;
+    border-color: #cbd5e0 !important;
+    color: #1a202c !important;
+}
+
+body.dark .pagination .page-item.active .page-link {
+    background-color: #667eea !important;
+    border-color: #667eea !important;
+    color: #ffffff !important;
+}
+
+/* Dark mode pagination arrows */
+body.dark .pagination .page-link svg,
+body.dark .pagination .page-link i,
+body.dark .pagination .page-link::before,
+body.dark .pagination .page-link::after {
+    color: #2d3748 !important;
+}
+
+body.dark .pagination .page-link:hover svg,
+body.dark .pagination .page-link:hover i,
+body.dark .pagination .page-link:hover::before,
+body.dark .pagination .page-link:hover::after {
+    color: #1a202c !important;
+}
+
+body.dark .pagination .page-item.active .page-link svg,
+body.dark .pagination .page-item.active .page-link i,
+body.dark .pagination .page-item.active .page-link::before,
+body.dark .pagination .page-item.active .page-link::after {
+    color: #ffffff !important;
+}
+
+/* Specific for MUI Pagination arrows */
+body.dark .MuiPaginationItem-root {
+    background-color: #ffffff !important;
+    color: #2d3748 !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+body.dark .MuiPaginationItem-root:hover {
+    background-color: #f7fafc !important;
+    color: #1a202c !important;
+}
+
+body.dark .MuiPaginationItem-root.Mui-selected {
+    background-color: #667eea !important;
+    color: #ffffff !important;
+}
+
+body.dark .MuiPaginationItem-root svg {
+    color: inherit !important;
+}
+
+/* Dark mode responsive adjustments */
+@media (max-width: 768px) {
+    body.dark .table tbody td {
+        color: #e2e8f0 !important;
+    }
+}
+
 .loginSection{
     width: 100%;
     height: 100vh;

@@ -73,7 +73,7 @@ const Header = () => {
                         
                         {/* Other Categories */}
                         <div className="col-sm-7 d-flex align-items-center justify-content-end part3">
-                            <Button className="rounded-circle mr-3">
+                            <Button className="rounded-circle mr-3" onClick={()=>context.setThemeMode(!context.themeMode)}>
                                 <IoMdSunny />
                             </Button>
                             <Button className="rounded-circle mr-3">
