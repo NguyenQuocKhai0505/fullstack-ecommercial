@@ -20,6 +20,7 @@ import { FaUser } from "react-icons/fa";
 import Divider from '@mui/material/Divider';
 import { MyContext } from "../../App";
 import { IoMenu } from "react-icons/io5";
+import UserAvatarImgComponent from "../userAvatarImg";
 
 const Header = () => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -110,11 +111,7 @@ const Header = () => {
                                     <div className="scroll">
                                         <MenuItem onClick={handleCloseNotificationsDrop}  className="mb-1">
                                         <div className="d-flex align-items-start">
-                                            <div className="userImg me-2">
-                                                <span className="rounded-circle overflow-hidden">
-                                                <img src={Admin} alt="User" className="avatar-img" />
-                                                </span>
-                                            </div>
+                                            <UserAvatarImgComponent img={Admin}/>
                                             <div className="dropDownInfo">
                                                 <h4>
                                                 <span>
@@ -128,11 +125,7 @@ const Header = () => {
                                         </MenuItem>
                                         <MenuItem onClick={handleCloseNotificationsDrop} className="mb-1">
                                         <div className="d-flex align-items-start">
-                                            <div className="userImg me-2">
-                                                <span className="rounded-circle overflow-hidden">
-                                                <img src={Admin} alt="User" className="avatar-img" />
-                                                </span>
-                                            </div>
+                                            <UserAvatarImgComponent img={Admin}/>
                                             <div className="dropDownInfo">
                                                 <h4>
                                                 <span>
@@ -146,11 +139,7 @@ const Header = () => {
                                         </MenuItem>
                                         <MenuItem onClick={handleCloseNotificationsDrop} className="mb-1">
                                         <div className="d-flex align-items-start">
-                                            <div className="userImg me-2">
-                                                <span className="rounded-circle overflow-hidden">
-                                                <img src={Admin} alt="User" className="avatar-img" />
-                                                </span>
-                                            </div>
+                                            <UserAvatarImgComponent img={Admin}/>
                                             <div className="dropDownInfo">
                                                 <h4>
                                                 <span>
@@ -164,11 +153,7 @@ const Header = () => {
                                         </MenuItem>
                                         <MenuItem onClick={handleCloseNotificationsDrop} className="mb-1">
                                         <div className="d-flex align-items-start">
-                                            <div className="userImg me-2">
-                                                <span className="rounded-circle overflow-hidden">
-                                                <img src={Admin} alt="User" className="avatar-img" />
-                                                </span>
-                                            </div>
+                                            <UserAvatarImgComponent img={Admin}/>
                                             <div className="dropDownInfo">
                                                 <h4>
                                                 <span>
@@ -182,11 +167,7 @@ const Header = () => {
                                         </MenuItem>
                                         <MenuItem onClick={handleCloseNotificationsDrop} className="mb-1">
                                         <div className="d-flex align-items-start">
-                                            <div className="userImg me-2">
-                                                <span className="rounded-circle overflow-hidden">
-                                                <img src={Admin} alt="User" className="avatar-img" />
-                                                </span>
-                                            </div>
+                                            <UserAvatarImgComponent img={Admin}/>
                                             <div className="dropDownInfo">
                                                 <h4>
                                                 <span>
@@ -200,11 +181,7 @@ const Header = () => {
                                         </MenuItem>
                                         <MenuItem onClick={handleCloseNotificationsDrop} className="mb-1">
                                         <div className="d-flex align-items-start">
-                                            <div className="userImg me-2">
-                                                <span className="rounded-circle overflow-hidden">
-                                                <img src={Admin} alt="User" className="avatar-img" />
-                                                </span>
-                                            </div>
+                                            <UserAvatarImgComponent img={Admin}/>
                                             <div className="dropDownInfo">
                                                 <h4>
                                                 <span>
@@ -218,11 +195,7 @@ const Header = () => {
                                         </MenuItem>
                                         <MenuItem onClick={handleCloseNotificationsDrop} className="mb-1">
                                         <div className="d-flex align-items-start">
-                                            <div className="userImg me-2">
-                                                <span className="rounded-circle overflow-hidden">
-                                                <img src={Admin} alt="User" className="avatar-img" />
-                                                </span>
-                                            </div>
+                                            <UserAvatarImgComponent img={Admin}/>
                                             <div className="dropDownInfo">
                                                 <h4>
                                                 <span>
