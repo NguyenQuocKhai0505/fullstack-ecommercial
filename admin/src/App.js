@@ -9,6 +9,9 @@ import LogIn from './pages/LogIn';
 import SignUp from './pages/SignUp';
 import ProductDetails from './pages/ProductDetails';
 import Products from './pages/Products';
+import ProductUpload from './pages/ProductUpload';
+import CategoryAdd from './pages/CategoryAdd';
+import Category from './pages/Category';
 
 const MyContext = createContext()
 function App() {
@@ -67,6 +70,9 @@ function App() {
                 <Route exact={true} path="/signUp" element={<SignUp/>}/>
                 <Route exact={true} path="/products" element={<Products/>}/>
                 <Route exact={true} path="/products/details" element={<ProductDetails/>}/>
+                <Route exact={true} path="/products/upload" element={<ProductUpload/>}/>
+                  <Route exact={true} path="/category" element={<Category/>}/>
+                <Route exact={true} path="/category/add" element={<CategoryAdd/>}/>
              </Routes>
             </div>
           </div>

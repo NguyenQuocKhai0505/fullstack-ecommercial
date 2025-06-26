@@ -46,54 +46,26 @@ const Sidebar = () =>{
                     <div className={`submenuWrapper ${activeTab===1 && isToggleSubmenu==true ? "colapse":"colapsed"}`}>
                     <ul className='submenu'>
                         <li><Link to="/products">Product List</Link></li>
-                        <li><Link to="#">Product View</Link></li>
-                        <li><Link to="#">Product Upload</Link></li>
+                        <li><Link to="/products/details">Product View</Link></li>
+                        <li><Link to="/products/upload">Product Upload</Link></li>
                     </ul>
                     </div>
                </li> 
             </ul>
-            {/* Orders */}
-            <ul>
+              {/* Category */}
+              <ul>
                <li>
-                <Link to="/">
-                    <Button className={`w-100 ${activeTab===2  ? "active":' '}`} onClick={()=>isOpenSubmenu(2)}>
-                    <span className='icon'><IoIosCart /></span>Orders 
+                    <Button className={`w-100 ${activeTab===2  ? "active":' '}`}onClick={()=>isOpenSubmenu(2)}>
+                    <span className='icon'><FaProductHunt /></span>Category 
                     <span className='arrow'><FaAngleRight /></span>
                     </Button>
-               </Link>
-               </li> 
-            </ul>
-            {/* Messsage */}
-             <ul>
-               <li>
-                 <Link to="/">
-                    <Button className={`w-100 ${activeTab===3  ? "active":' '}`} onClick={()=>isOpenSubmenu(3)}>
-                    <span className='icon'><AiFillMessage /></span>Message 
-                    <span className='arrow'><FaAngleRight /></span>
-                    </Button>
-               </Link>
-               </li> 
-            </ul>
-            {/* Notifications */}
-            <ul>
-               <li>
-                 <Link to="/">
-                    <Button className={`w-100 ${activeTab===4  ? "active":' '}`} onClick={()=>isOpenSubmenu(4)}>
-                    <span className='icon'><IoNotificationsCircle /></span>Notifications 
-                    <span className='arrow'><FaAngleRight /></span>
-                    </Button>
-                </Link>
-               </li> 
-            </ul>
-            {/* Settings */}
-            <ul>
-               <li>
-                <Link to="/">
-                    <Button className={`w-100 ${activeTab===5  ? "active":' '}`} onClick={()=>isOpenSubmenu(5)}>
-                    <span className='icon'><IoSettings /></span>Settings  
-                    <span className='arrow'><FaAngleRight /></span>
-                    </Button>
-               </Link>
+                    {/* Product Menu */}
+                    <div className={`submenuWrapper ${activeTab===2 && isToggleSubmenu==true ? "colapse":"colapsed"}`}>
+                    <ul className='submenu'>
+                        <li><Link to="/category">Category List</Link></li>
+                        <li><Link to="/category/add">Add A Category</Link></li>
+                    </ul>
+                    </div>
                </li> 
             </ul>
             <br/>

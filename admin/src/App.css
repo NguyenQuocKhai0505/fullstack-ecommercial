@@ -1468,12 +1468,325 @@ body.dark .reviewsSection .reviewsRow{
 .reviewForm textarea{
     width: 100% !important;
     height: 200px;
-    background: #8fa9e3 !important;
+    background: #dedfe1 !important;
     border-radius: 10px !important;
     outline:navajowhite ;
     padding: 15px !important;
 }
 body.dark .reviewForm textarea{
     background: #1b2b4d !important;
+    color: #fff !important;
+}
+.form .form-group{
+    margin-bottom: 15px !important;
+    font-weight: bold;
+}
+.form .form-group h6{
+    margin-bottom: 10px !important;
+}
+.form .form-group input{
+    background: #fafafa !important;
+    width: 100%;
+    outline: none !important;
+    border: 1px solid rgba(0,0,0,0.5);
+    height: 58px;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 15px !important;
+}
+body.dark .form .form-group input,body.dark .form .form-group textarea{
+    background: #1b2b4d !important;
+    color: #fff !important;
+    font-size: 13px ;
+}
+.form .form-group textarea{
+    background: #fafafa;
+    width: 100% !important;
+    height: 100px !important;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 15px !important;
+}
+/* Custom Select Styles */
+.custom-select {
+  background: rgba(52, 73, 94, 0.8) !important;
+  color: #fff !important;
+  border-radius: 8px !important;
+}
+
+.custom-select .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.custom-select:hover .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.custom-select.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #3498db !important;
+  border-width: 2px !important;
+}
+
+.custom-select .MuiSelect-select {
+  color: #fff !important;
+  padding: 12px 15px !important;
+}
+
+.custom-select .MuiSelect-icon {
+  color: #bdc3c7 !important;
+}
+
+/* Custom Rating Styles */
+.custom-rating {
+  color: #f39c12 !important;
+}
+
+.custom-rating .MuiRating-iconEmpty {
+  color: rgba(243, 156, 18, 0.3) !important;
+}
+
+/* Upload Section Styles */
+.upload-section {
+  margin-bottom: 30px;
+}
+
+.uploaded-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.uploaded-image-item {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.uploaded-image-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.remove-image-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(231, 76, 60, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.remove-image-btn:hover {
+  background: rgba(231, 76, 60, 1);
+  transform: scale(1.1);
+}
+
+.upload-placeholder {
+  width: 120px;
+  height: 120px;
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: rgba(52, 73, 94, 0.3);
+}
+
+.upload-placeholder:hover {
+  border-color: #3498db;
+  background: rgba(52, 152, 219, 0.1);
+}
+
+.upload-icon {
+  font-size: 32px;
+  color: #7f8c8d;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+}
+
+.upload-placeholder:hover .upload-icon {
+  color: #3498db;
+  transform: scale(1.1);
+}
+
+.upload-placeholder span {
+  color: #7f8c8d;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.upload-placeholder:hover span {
+  color: #3498db;
+}
+
+/* Publish Section */
+.publish-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.publish-btn {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
+  color: #fff !important;
+  padding: 15px 40px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  border-radius: 25px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4) !important;
+  width: 100% !important;
+  max-width: 300px !important;
+}
+
+.publish-btn:hover {
+  background: linear-gradient(135deg, #2980b9 0%, #1f618d 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.6) !important;
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+  .right-content {
+    padding: 15px;
+  }
+  
+  .breadcrumb-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .uploaded-images {
+    justify-content: center;
+  }
+  
+  .uploaded-image-item,
+  .upload-placeholder {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .card {
+    margin-bottom: 15px;
+  }
+}
+
+@media (max-width: 576px) {
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .uploaded-image-item,
+  .upload-placeholder {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .upload-icon {
+    font-size: 24px;
+  }
+  
+  .upload-placeholder span {
+    font-size: 10px;
+  }
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.uploaded-image-item {
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* Custom Scrollbar */
+.form-textarea::-webkit-scrollbar {
+  width: 8px;
+}
+
+.form-textarea::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.form-textarea::-webkit-scrollbar-thumb {
+  background: rgba(52, 152, 219, 0.6);
+  border-radius: 4px;
+}
+
+.form-textarea::-webkit-scrollbar-thumb:hover {
+  background: rgba(52, 152, 219, 0.8);
+}
+.dot{
+    border-radius: 50%;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border: 4px solid #ccc;
+}
+body.dark .category-table {
+    background-color: #1e1e2f;
+    color: #fff;
+}
+
+body.dark .category-table th {
+    background-color: #2c3e50 !important;
+    color: #ffffff !important;
+    border-color: #3c4d61;
+}
+
+body.dark .category-table td {
+    background-color: #1e1e2f;
+    color: #dcdcdc;
+    border-color: #3c4d61;
+}
+
+body.dark .category-table tr:nth-child(even) {
+    background-color: #2a2a3d !important;
+}
+
+body.dark .category-table tr:hover {
+    background-color: #333351;
+}
+
+body.dark .dot {
+    border-radius: 50%;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border: 4px solid #000;
+}
+body.dark .css-113d811-MuiFormLabel-root-MuiInputLabel-root{
     color: #fff !important;
 }

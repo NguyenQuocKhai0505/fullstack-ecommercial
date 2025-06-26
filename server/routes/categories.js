@@ -16,8 +16,19 @@ cloudinary.config({
 // ROUTE GET: Lấy danh sách tất cả categories "/"
 router.get("/", async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1 
+    const perPage = 3
+    const totalPosts = await Category.countDocuments();
+    const totalPages = Math.ceil(totalPosts/perPage)
+    if(page > totalPages){
+      return res.status(404).json({message:"Page not found"})
+    }
+
     // Tìm tất cả category trong database
-    const categoryList = await Category.find();
+    const categoryList = await Category.find()
+      .skip((page-1) * perPage)
+      .limit(perPage)
+      .exec()
     
     // Kiểm tra nếu không tìm thấy dữ liệu
     if (!categoryList) {
@@ -25,7 +36,12 @@ router.get("/", async (req, res) => {
     }
     
     // Trả về danh sách categories
-    res.send(categoryList);
+    return res.status(200).json({
+      "categoryList":categoryList,
+      "totalPages":totalPages,
+      "page":page
+
+    })
   } catch (error) {
     // Xử lý lỗi nếu có
     res.status(500).json({ 
