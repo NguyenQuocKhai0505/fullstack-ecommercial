@@ -16,6 +16,11 @@ cloudinary.config({
 // ROUTE GET: Lấy danh sách tất cả categories "/"
 router.get("/", async (req, res) => {
   try {
+     // Nếu có all=true thì trả về toàn bộ category
+     if (req.query.all === "true") {
+      const categoryList = await Category.find();
+      return res.status(200).json({ categoryList });
+    }
     const page = parseInt(req.query.page) || 1 
     const perPage = 3
     const totalPosts = await Category.countDocuments();

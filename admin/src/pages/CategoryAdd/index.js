@@ -8,15 +8,19 @@ import { FaCloudUploadAlt } from "react-icons/fa";
 import { useState } from "react";
 import { fetchDataFromApi, postData } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
-
+import { MyContext } from "../../App";
+import { useContext } from "react";
 const CategoryAdd = () =>{
   const [isLoading,setIsLoading]=  useState(false)
+  const context = useContext(MyContext)
   const history = useNavigate()
+  const [error_,setError] = useState(false)
   const [formFields,setFormFields] = useState({
     name: "",
     images:[],
     color:""
   })
+ 
   const changeInput = (e)=>{
       setFormFields(()=>(
         {
@@ -37,14 +41,33 @@ const CategoryAdd = () =>{
   }
   const addCategory = (e) =>{
     e.preventDefault()
-    setIsLoading(true)
-    postData("/api/category/create",formFields).then(res =>{
-      setIsLoading(false)
-      history("/category")
-    })
-
-  }
-  
+     // Sửa điều kiện validation
+    if (formFields.name !== "" && formFields.images.length !== 0 && formFields.color !== "") {
+      setIsLoading(true)
+      setError(false) // Reset error state
+      
+      postData("/api/category/create", formFields).then(res => {
+        setIsLoading(false)
+        
+        // Sử dụng showSnackbar từ context
+        context.showSnackbar("Category created successfully!", "success");
+        
+        // Delay navigation để user có thể thấy snackbar
+        setTimeout(() => {
+          history("/category")
+        }, 1000);
+        
+      }).catch(error => {
+        setIsLoading(false)
+        // Show error snackbar
+        context.showSnackbar("Failed to create category. Please try again.", "error");
+      })
+    } else {
+      setError(true)
+      // Show validation error snackbar
+      context.showSnackbar("Please fill all the fields", "warning");
+    }
+  }  
     return(
       
         <>
@@ -73,6 +96,9 @@ const CategoryAdd = () =>{
                 <div className="col-sm-12">
                     {/* Title va Description */}
                     <div className="card p-4">
+                        {
+                          error_ === true && <p className="text-danger">PLEASE FILL ALLL THE FIELDS</p>
+                        }
                         <div className="form-group">
                             <h6>CATEGORY NAME</h6>
                             <input type="text" placeholder="Type here" name="name" onChange={changeInput}/>

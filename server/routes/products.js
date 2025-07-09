@@ -74,8 +74,8 @@ router.post("/create", async(req, res) => {
             });
         }
 
-        // Giới hạn chỉ upload tối đa 2 ảnh cùng lúc để tránh quá tải server
-        const limit = pLimit(2);
+        // Giới hạn chỉ upload tối đa 5 ảnh cùng lúc để tránh quá tải server
+        const limit = pLimit(5);
         
         // Tạo mảng các promise để upload từng ảnh lên Cloudinary
         const imagesToUpload = req.body.images.map((image) => {
@@ -120,9 +120,9 @@ router.post("/create", async(req, res) => {
             category: category,
             countInStock: parseInt(countInStock) || 0,
             rating: parseFloat(req.body.rating) || 0,
-            numReviews: parseInt(req.body.numReviews) || 0,
             isFeatured: Boolean(req.body.isFeatured),
-            price: parseFloat(req.body.price) || 0, // Thêm trường giá bị thiếu
+            price: parseFloat(req.body.price) || 0, 
+            oldPrice: parseFloat(req.body.oldPrice) || 0,// Thêm trường giá bị thiếu
             dateCreated: new Date()
         });
 
@@ -214,17 +214,17 @@ router.put("/:id", async(req, res) => {
             category, 
             countInStock, 
             rating, 
-            numReviews, 
             isFeatured, 
-            price 
+            price,
+            oldPrice,
         } = req.body;
 
         let imgUrls = [];
 
         // Chỉ xử lý upload ảnh nếu có ảnh mới được gửi lên
         if (images && images.length > 0) {
-            // Giới hạn chỉ upload tối đa 2 ảnh cùng lúc để tránh quá tải server
-            const limit = pLimit(2);
+            // Giới hạn chỉ upload tối đa 5 ảnh cùng lúc để tránh quá tải server
+            const limit = pLimit(5);
             
             // Tạo mảng các promise để upload từng ảnh lên Cloudinary
             const imagesToUpload = images.map((image) => {
@@ -271,9 +271,9 @@ router.put("/:id", async(req, res) => {
         if (category) updateData.category = category;
         if (countInStock !== undefined) updateData.countInStock = parseInt(countInStock) || 0;
         if (rating !== undefined) updateData.rating = parseFloat(rating) || 0;
-        if (numReviews !== undefined) updateData.numReviews = parseInt(numReviews) || 0;
         if (isFeatured !== undefined) updateData.isFeatured = Boolean(isFeatured);
         if (price !== undefined) updateData.price = parseFloat(price) || 0;
+        if (oldPrice !== undefined) updateData.oldPrice = parseFloat(oldPrice) || 0;
         
         // Thêm thời gian cập nhật
         updateData.dateUpdated = new Date();

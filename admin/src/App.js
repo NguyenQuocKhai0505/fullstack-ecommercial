@@ -12,14 +12,23 @@ import Products from './pages/Products';
 import ProductUpload from './pages/ProductUpload';
 import CategoryAdd from './pages/CategoryAdd';
 import Category from './pages/Category';
+import { SnackbarProvider, useSnackbar } from 'notistack';
+// Sửa import - dùng Alert từ Material-UI thay vì Bootstrap
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert'; // Sửa import này
 
 const MyContext = createContext()
 function App() {
-
   const [isToggleSidebar,setisToggleSidebar] = useState(false)
   const [isLogin, setIsLogin] = useState(true)
   const [isHiddenSidebarAndHeader, setisHiddenSidebarAndHeader] = useState(false)
   const [themeMode, setThemeMode] = useState(true)
+  const [open, setOpen] = useState(false);
+
+   // Thêm state cho message và severity
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
   // Chế độ light/dark mode
   useEffect(() => {
     if (themeMode === true) {
@@ -34,7 +43,19 @@ function App() {
     
   }, [themeMode])
   
-
+   const handleClose = (event,reason)=>{
+    if(reason ==="clickaway"){
+        return
+    }
+        setOpen(false)
+   }
+   // Thêm function để show snackbar
+  const showSnackbar = (message, severity = 'success') => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity(severity);
+    setOpen(true);
+  }
+   
   const values={
     isToggleSidebar,
     setisToggleSidebar,
@@ -43,12 +64,28 @@ function App() {
     isHiddenSidebarAndHeader,
     setisHiddenSidebarAndHeader,
     themeMode,
-    setThemeMode
+    setThemeMode,
+    showSnackbar,
   }
   return (
       <BrowserRouter>
       <MyContext.Provider value={values}>
-           {/* Hidden Header*/}
+       <Snackbar 
+          open={open} 
+          autoHideDuration={6000} 
+          onClose={handleClose}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={snackbarSeverity}
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
+        {/* Hidden Header*/}
         {
           isHiddenSidebarAndHeader !==true &&
           <Header/>
