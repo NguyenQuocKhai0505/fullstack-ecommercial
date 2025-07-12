@@ -17,6 +17,7 @@ import Button from '@mui/material/Button';
 import { MyContext } from "../../App";
 import { Link } from 'react-router-dom';
 import DeleteConfirmDialog from "../../helpers/DeleteConfirmDialog";
+import EditProductDialog from "../../helpers/EditProductDialog";
 const Products = () => {
     const context = useContext(MyContext)
     const [showBy, setshowBy] = useState('');
@@ -25,6 +26,11 @@ const Products = () => {
     const [productList, setProductList] = useState([])
     const [page,setPage] = useState(1)
     const [totalPages,setTotalPages] = useState(1)
+    //State để lấy Category
+    const [categoryList, setCategoryList] = useState([])
+    const [categories, setCategories] = useState([]);
+
+
     //State cho xác nhận xóa 
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
     const [deleteID, setDeleteID] = useState(null)
@@ -47,8 +53,133 @@ const Products = () => {
         images: []
     });
 
-    //Hàm để edit product
-    
+    //Hàm để mở edit dialog
+    const editProduct =(id)=>{
+        setEditProductID(id)
+        setEditProductDialogOpen(true)
+        fetchDataFromApi(`/api/products/${id}`).then((res)=>{
+            const productData = res.data || res
+          
+            setEditProductFields({
+                name: productData.name||"",
+                description: productData.description||"",
+                brand: productData.brand||"",
+                category: productData.category||"",
+                price: productData.price||"",
+                oldPrice: productData.oldPrice||"",
+                countInStock: productData.countInStock||"",
+                rating: productData.rating||"",
+                isFeatured: productData.isFeatured||false,
+                images: Array.isArray(productData.images) ? productData.images : []
+            })
+        }).catch((error)=>{
+            context.showSnackbar('Failed to fetch product data', 'error');
+        })
+    }
+    //Hàm để đóng Edit Dialog
+    const handleCloseEditDialog = () =>{
+        setEditProductID(null)
+        setEditProductDialogOpen(false)
+        setEditProductFields({
+            name: '',
+            description: '',
+            brand: '',
+            category: '',
+            price: '',
+            oldPrice: '',
+            countInStock: '',
+            rating: '',
+            isFeatured: false,
+            images: []
+        })
+    }
+    //Hàm xử lí thay đổi Input
+    const handleEditProductInputChange = (field) => (event) =>{
+        if(field === 'images'){
+            //Chuyển đổi ảnh sang Array
+            const imageArray = event.target.value.split(",").map(img=>img.trim())
+            setEditProductFields(prev=>({
+                ...prev,
+                [field]: imageArray
+            }))
+        }else if(field==="isFeatured"){
+            setEditProductFields(prev=>({
+                ...prev,
+                [field]: event.target.checked
+            }))
+        }else{
+            setEditProductFields(prev=>({
+                ...prev,
+                [field]: event.target.value
+            }))
+        }
+    }
+    //Hàm submit Edit Product
+    const handleEditProductSubmit = async (e) =>{
+        e.preventDefault()
+        if(!editProductID){
+            context.showSnackbar('No product selected for editing', 'warning')
+            return
+        }
+
+        //Validate required fields
+        if(!editProductFields.name.trim()){
+            context.showSnackbar("Product is required", "warning")
+            return
+        }
+        setEditProductLoading(true)
+        try{
+            const updateData = {
+                name: editProductFields.name.trim(),
+                description: editProductFields.description.trim(),
+                brand: editProductFields.brand.trim(),
+                category: editProductFields.category,
+                price: parseFloat(editProductFields.price) || 0,
+                oldPrice: parseFloat(editProductFields.oldPrice) || 0,
+                countInStock: parseInt(editProductFields.countInStock) || 0,
+                rating: parseFloat(editProductFields.rating) || 0,
+                isFeatured: editProductFields.isFeatured,
+                images: editProductFields.images
+            }
+            console.log('=== PRODUCT UPDATE ===');
+            console.log('Edit ID:', editProductID);
+            console.log('Update data:', updateData);
+            console.log('======================');
+            const response = await editData(`/api/products/${editProductID}`, updateData)
+            console.log('✅ Update successful:', response);
+
+            //Refresh danh sách sản phẩm
+            const updatedProducts = await fetchDataFromApi(`/api/products?page=${page}`);
+            setProductList(updatedProducts.data)
+
+            //Đóng dialog
+            handleCloseEditDialog()
+
+            //Success Snackbar
+            context.showSnackbar("Product updated successfully", "success")
+
+        }catch (error) {
+        console.error('❌ Update failed:', error);
+        
+        let errorMessage = 'Failed to update product. ';
+        
+        if (error.response?.data?.message) {
+            errorMessage += error.response.data.message;
+        } else if (error.response?.status === 404) {
+            errorMessage += 'Product not found.';
+        } else if (error.response?.status === 400) {
+            errorMessage += 'Invalid data provided.';
+        } else if (error.response?.status >= 500) {
+            errorMessage += 'Server error. Please try again later.';
+        } else {
+            errorMessage += 'Please try again.';
+        }
+        
+        context.showSnackbar(errorMessage, 'error');
+    } finally {
+        setEditProductLoading(false);
+    }}
+
     useEffect(() => {
         context.setisHiddenSidebarAndHeader(false)
         window.scroll(0, 0)
@@ -57,14 +188,14 @@ const Products = () => {
             setProductsData(res)
             // console.log(res)
         }).catch((error)=>{
-            console.error('Error fetching products:', error);
+            // console.error('Error fetching products:', error);
             context.showSnackbar('Failed to load products', 'error');
         })
     }, [])
     useEffect(() => {
         fetchDataFromApi(`/api/products?page=${page}`).then((res) => {
           setProductList(res.data || []);
-          console.log(res.data)
+        //   console.log(res.data)
           setTotalPages(res.totalPages || 1);
         }).catch((error) => {
           context.showSnackbar('Failed to load products', 'error');
@@ -124,6 +255,23 @@ const Products = () => {
             setDeleteLoading(false) //tắt loading
         }
     }
+    useEffect(() => {
+        fetchDataFromApi(`/api/category?all=true`).then((res)=>{
+            setCategoryList(res.categoryList || [])
+        }).catch((error)=>{
+            context.showSnackbar('Failed to load categories', 'error');
+        })
+    }, [])
+
+    useEffect(() => {
+      fetchDataFromApi("/api/category?all=true").then(res => {
+        setCategories(res.categoryList || []);
+      }).catch(() => {
+        context.showSnackbar('Failed to load categories', 'error');
+      });
+    }, []);
+    
+    
     return (
         <>
             <div className="right-content w-100">
@@ -302,7 +450,11 @@ const Products = () => {
                                                     <IoEyeSharp />
                                                 </Button>
                                                 </Link>
-                                                <Button className="success mr-1" color="success">
+                                                <Button 
+                                                className="success mr-1" 
+                                                color="success"
+                                                onClick={() => editProduct(product._id)}
+                                                >
                                                     <MdEdit />
                                                 </Button>
                                                 <Button 
@@ -345,14 +497,25 @@ const Products = () => {
             </div>
             
             <DeleteConfirmDialog
-            open={deleteDialogOpen}
-            onClose={closeDeleteDialog}
-            onConfirm={deleteProduct}
-            loading={deleteLoading}
-            title="Confirm Delete"
-            content="Are you sure you want to delete this product? This action cannot be undone."
-            confirmText="Delete"
-            cancelText="Cancel"
+                open={deleteDialogOpen}
+                onClose={closeDeleteDialog}
+                onConfirm={deleteProduct}
+                loading={deleteLoading}
+                title="Confirm Delete"
+                content="Are you sure you want to delete this product? This action cannot be undone."
+                confirmText="Delete"
+                cancelText="Cancel"
+            />
+            <EditProductDialog
+                open={editProductDialogOpen}
+                onClose={handleCloseEditDialog}
+                onSubmit={handleEditProductSubmit}
+                loading={editProductLoading}
+                editFields={editProductFields}
+                onInputChange={handleEditProductInputChange}
+                title="Edit Product"
+                content="Update the product information below and click 'Save' to confirm."
+                categories={categories}
             />
             </>
     )}

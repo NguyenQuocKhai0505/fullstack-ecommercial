@@ -52,7 +52,7 @@ const Category = () => {
        setOpen(true)
        setEditID(id)
        fetchDataFromApi(`/api/category/${id}`).then(res=>{
-            console.log('API Response:', res)
+            // console.log('API Response:', res)
             // Kiểm tra cấu trúc response
             const categoryData = res.data || res;
             
@@ -61,9 +61,9 @@ const Category = () => {
                 images: categoryData.images || [],
                 color: categoryData.color || ''
             })
-            console.log('Category Data:', categoryData)
+            // console.log('Category Data:', categoryData)
         }).catch(error => {
-            console.error('Error fetching category:', error);
+            // console.error('Error fetching category:', error);
             // Show error snackbar
             context.showSnackbar('Failed to fetch category data', 'error');
         })
@@ -103,7 +103,7 @@ const Category = () => {
         window.scroll(0, 0)
         fetchDataFromApi("/api/category").then(res=>{
             setCatData(res)
-            console.log(res)
+            // console.log(res)
         }).catch(error => {
             console.error('Error fetching categories:', error);
             context.showSnackbar('Failed to load categories', 'error');
@@ -136,14 +136,14 @@ const Category = () => {
                 color: editFields.color
             };
             
-            console.log('=== CATEGORY UPDATE ===');
-            console.log('Edit ID:', editID);
-            console.log('Update data:', updateData);
-            console.log('======================');
+            // console.log('=== CATEGORY UPDATE ===');
+            // console.log('Edit ID:', editID);
+            // console.log('Update data:', updateData);
+            // console.log('======================');
             
             const response = await editData(`/api/category/${editID}`, updateData);
             
-            console.log('✅ Update successful:', response);
+            // console.log('✅ Update successful:', response);
             
             // Refresh category list
             const updatedCategories = await fetchDataFromApi("/api/category");
