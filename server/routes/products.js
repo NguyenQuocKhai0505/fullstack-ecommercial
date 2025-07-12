@@ -14,19 +14,43 @@ cloudinary.config({
 //GET "/" - Lấy danh sách sản phẩm
 router.get("/", async (req, res) => {
     try {
-        const productList = await Product.find().populate("category");
-        
+        // Lấy tham số page từ query, mặc định là 1
+        const page = parseInt(req.query.page) || 1
+        const perPage = 5
+
+        // Đếm tổng số sản phẩm
+        const totalPosts = await Product.countDocuments();
+        const totalPages = Math.ceil(totalPosts / perPage)
+
+        // Nếu page vượt quá tổng số trang, trả về lỗi
+        if (page > totalPages) {
+            return res.status(404).json({
+                message: "Page not found"
+            })
+        }
+
+        // Lấy danh sách sản phẩm cho trang hiện tại
+        const productList = await Product.find().populate("category")
+            .skip((page - 1) * perPage)
+            .limit(perPage)
+            .exec()
+
+        // Nếu không có sản phẩm nào
         if (!productList || productList.length === 0) {
             return res.status(404).json({
                 success: false,
                 message: "Không tìm thấy sản phẩm nào"
             });
         }
-        
+
+        // Trả về danh sách sản phẩm và thông tin phân trang
         res.status(200).json({
             success: true,
             count: productList.length,
-            data: productList
+            data: productList,
+            page: page,
+            totalPages: totalPages,
+            totalPosts: totalPosts
         });
     } catch (error) {
         res.status(500).json({

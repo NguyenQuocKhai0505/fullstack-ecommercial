@@ -395,15 +395,13 @@ const ProductUpload = () =>{
                                 </div>
                               </div>
                             </div>
-                    </div>
+                </div>
                   
                 <div className="col-sm-3">
                     <div className="imgGrid d-flex">
                          
                     </div>
                 </div>
-
-
                 </div>
             </form>
         </div>

@@ -4,7 +4,7 @@ import { FaShoppingBag } from "react-icons/fa";
 import { useContext, useEffect, useState } from "react"
 import { IoHomeSharp } from "react-icons/io5";
 import { MdExpandMore } from "react-icons/md";
-
+import { deleteData, editData, fetchDataFromApi } from "../../utils/api";
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -16,73 +16,114 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
 import { MyContext } from "../../App";
 import { Link } from 'react-router-dom';
+import DeleteConfirmDialog from "../../helpers/DeleteConfirmDialog";
 const Products = () => {
     const context = useContext(MyContext)
+    const [showBy, setshowBy] = useState('');
+    const [CatBy, setCatBy] = useState('');
+    const [products, setProductsData] = useState([])
+    const [productList, setProductList] = useState([])
+    const [page,setPage] = useState(1)
+    const [totalPages,setTotalPages] = useState(1)
+    //State cho xác nhận xóa 
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+    const [deleteID, setDeleteID] = useState(null)
+    const [deleteLoading, setDeleteLoading] = useState(false)
+
+    //Thêm State cho Edit Products
+    const [editProductID, setEditProductID] = useState(null);
+    const [editProductLoading, setEditProductLoading] = useState(false);
+    const [editProductDialogOpen, setEditProductDialogOpen] = useState(false);
+    const [editProductFields, setEditProductFields] = useState({
+        name: '',
+        description: '',
+        brand: '',
+        category: '',
+        price: '',
+        oldPrice: '',
+        countInStock: '',
+        rating: '',
+        isFeatured: false,
+        images: []
+    });
+
+    //Hàm để edit product
     
     useEffect(() => {
         context.setisHiddenSidebarAndHeader(false)
         window.scroll(0, 0)
+
+        fetchDataFromApi("/api/products").then((res)=>{
+            setProductsData(res)
+            // console.log(res)
+        }).catch((error)=>{
+            console.error('Error fetching products:', error);
+            context.showSnackbar('Failed to load products', 'error');
+        })
     }, [])
+    useEffect(() => {
+        fetchDataFromApi(`/api/products?page=${page}`).then((res) => {
+          setProductList(res.data || []);
+          console.log(res.data)
+          setTotalPages(res.totalPages || 1);
+        }).catch((error) => {
+          context.showSnackbar('Failed to load products', 'error');
+        });
+      }, [page]);
+      const handleChange = (event, value) => {
+        setPage(value); // chỉ cần đổi page, useEffect sẽ tự động gọi API
+      };
     
-    const [showBy, setshowBy] = useState('');
-    const [CatBy, setCatBy] = useState('');
 
-    // Sample products data
-    const products = [
-        {
-            id: 1,
-            name: "Tops and skirt set for ...",
-            description: "Women's exclusive sum...",
-            category: "womans",
-            brand: "richman",
-            oldPrice: "$21.00",
-            newPrice: "$21.00",
-            stock: 380,
-            rating: "4.9(16)",
-            sales: "$38k",
-            image: "https://mironcoder-hotash.netlify.app/images/product/01.webp"
-        },
-        {
-            id: 2,
-            name: "Tops and skirt set for ...",
-            description: "Women's exclusive sum...",
-            category: "womans", 
-            brand: "richman",
-            oldPrice: "$21.00",
-            newPrice: "$21.00",
-            stock: 380,
-            rating: "4.9(16)",
-            sales: "$38k",
-            image: "https://mironcoder-hotash.netlify.app/images/product/01.webp"
-        },
-        {
-            id: 3,
-            name: "Tops and skirt set for ...",
-            description: "Women's exclusive sum...",
-            category: "womans",
-            brand: "richman", 
-            oldPrice: "$21.00",
-            newPrice: "$21.00",
-            stock: 380,
-            rating: "4.9(16)",
-            sales: "$38k",
-            image: "https://mironcoder-hotash.netlify.app/images/product/01.webp"
-        },
-        {
-            id: 4,
-            name: "Tops and skirt set for ...",
-            description: "Women's exclusive sum...",
-            category: "womans",
-            brand: "richman",
-            oldPrice: "$21.00", 
-            newPrice: "$21.00",
-            stock: 380,
-            rating: "4.9(16)",
-            sales: "$38k",
-            image: "https://mironcoder-hotash.netlify.app/images/product/01.webp"
+    const openDeleteDialog = (id) =>{
+        setDeleteID(id)
+        setDeleteDialogOpen(true)
+    }
+    const closeDeleteDialog = () =>{
+        setDeleteDialogOpen(false)
+        setDeleteID(null)
+    }
+    //Hàm xóa sản phẩm
+    const deleteProduct = async () =>{
+        if(!deleteID){
+            context.showSnackbar("No product selected for deletion", "warning")
+            return
         }
-    ];
-
+        setDeleteLoading(true)
+        try{
+            await deleteData(`/api/products/${deleteID}`) //Gọi API xóa sản phẩm 
+            //Cập nhật lại danh sách sản phẩm
+            const updatedProducts = await fetchDataFromApi(`/api/products?page=${page}`);
+            if (updatedProducts.data.length === 0 && page > 1) {
+              const prevPage = page - 1;
+              const prevProducts = await fetchDataFromApi(`/api/products?page=${prevPage}`);
+              setProductList(prevProducts.data);
+              setPage(prevPage);
+            } else {
+              setProductList(updatedProducts.data);
+            }
+            //Đóng dialog
+            closeDeleteDialog()
+            context.showSnackbar("Product deleted successfully", "success")
+        }catch(error){
+            let errorMessage = 'Failed to delete product. ';
+            //Xử lílet errorMessage = 'Failed to delete product. ';
+            if (error.response?.data?.message) {
+                errorMessage += error.response.data.message;
+            } else if (error.response?.status === 404) {
+                errorMessage += 'Product not found.';
+            } else if (error.response?.status === 400) {
+                errorMessage += 'Cannot delete this product.';
+            } else if (error.response?.status >= 500) {
+                errorMessage += 'Server error. Please try again later.';
+            } else {
+                errorMessage += 'Please try again.';
+            }
+            context.showSnackbar(errorMessage, 'error'); 
+        }finally{
+            setDeleteLoading(false) //tắt loading
+        }
+    }
     return (
         <>
             <div className="right-content w-100">
@@ -204,56 +245,56 @@ const Products = () => {
                                     <th>CATEGORY</th>
                                     <th>BRAND</th>
                                     <th>PRICE</th>
-                                    <th>STOCK</th>
+                                    <th>IS FEATURED</th>
                                     <th>RATING</th>
-                                    <th>ORDER</th>
-                                    <th>SALES</th>
+                                    <th>STOCK</th>
                                     <th>ACTION</th>
+                                    <th>DATE CREATED</th>
+                                  
                                 </tr>
                             </thead>
                             
                             {/* BODY */}
                             <tbody>
-                                {products.map((product, index) => (
-                                    <tr key={product.id}>
+                                {productList?.length!==0 && productList?.map((product, index) => (
+                                    <tr key={product._id}>
                                         <td>
                                             <div className="d-flex align-items-center">
                                                 <input type="checkbox" className="mr-2" />
-                                                #{product.id}
+                                                #{index+1}
                                             </div>
                                         </td>
                                         <td>
                                             <div className="d-flex align-items-center productBox">
                                                 <div className="imgWrapper">
                                                     <div className="img">
-                                                        <img src={product.image} className="w-100" alt={product.name} />
+                                                        <img src={product.images[0]} className="w-100" alt={product.name} />
                                                     </div>
                                                 </div>
-                                                <div className="info pl-3">
+                                                <div className="info pl-3 product-info">
                                                     <h6>{product.name}</h6>
                                                     <p>{product.description}</p>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{product.category}</td>
+                                        <td>{product.category?.name}</td>
                                         <td>{product.brand}</td>
                                         <td>
                                             <span className="oldPrice">{product.oldPrice}</span>
-                                            <span className="newPrice">{product.newPrice}</span>
+                                            <span className="newPrice">{product.price}</span>
                                         </td>
-                                        <td>{product.stock}</td>
+                                        <td className="d-flex align-items-center justify-content-center">{product.isFeatured ? "Yes" : "No"} </td>
                                         <td>
                                             <div className="d-flex align-items-center">
                                                 <div className="rating-stars">
                                                     {[...Array(5)].map((_, i) => (
-                                                        <span key={i} className={i < 4 ? "star filled" : "star"}>★</span>
+                                                        <span key={i} className={i < product.rating ? "star filled" : "star"}>★</span>
                                                     ))}
                                                 </div>
-                                                <span className="ml-2">{product.rating}</span>
                                             </div>
                                         </td>
-                                        <td>{product.stock}</td>
-                                        <td>{product.sales}</td>
+                                        <td className="d-flex align-items-center justify-content-center">{product.countInStock}</td>
+                                        
                                         <td>
                                             <div className="actions d-flex align-items-center">
                                                 <Link to="/products/details">
@@ -264,10 +305,21 @@ const Products = () => {
                                                 <Button className="success mr-1" color="success">
                                                     <MdEdit />
                                                 </Button>
-                                                <Button className="error" color="error">
+                                                <Button 
+                                                className="error" 
+                                                color="error"
+                                                onClick={()=>openDeleteDialog(product._id)}
+
+                                                >
                                                     <MdDelete />
                                                 </Button>
                                             </div>
+                                            
+                                        </td>
+                                        <td>
+                                        {product.dateCreated
+                                            ? new Date(product.dateCreated).toLocaleDateString('vi-VN')
+                                            : ''}
                                         </td>
                                     </tr>
                                 ))}
@@ -276,18 +328,32 @@ const Products = () => {
                         
                         {/* PAGINATION */}
                         <div className="d-flex tableFooter">
-                            <p>Showing <b>4</b> of <b>50</b> products</p>
+
                             <Pagination 
-                                count={50} 
+                                count={totalPages} 
+                                page={page}
+                                onChange={(event,value)=>handleChange(event,value)}
                                 color="primary" 
                                 className="pagination ml-auto"
                                 showFirstButton 
                                 showLastButton 
+
                             />
                         </div>
                     </div>
                 </div>
             </div>
+            
+            <DeleteConfirmDialog
+            open={deleteDialogOpen}
+            onClose={closeDeleteDialog}
+            onConfirm={deleteProduct}
+            loading={deleteLoading}
+            title="Confirm Delete"
+            content="Are you sure you want to delete this product? This action cannot be undone."
+            confirmText="Delete"
+            cancelText="Cancel"
+            />
             </>
     )}
 export default Products
