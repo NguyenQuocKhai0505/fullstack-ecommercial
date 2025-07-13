@@ -16,21 +16,28 @@ router.get("/", async (req, res) => {
     try {
         // Lấy tham số page từ query, mặc định là 1
         const page = parseInt(req.query.page) || 1
-        const perPage = 5
+        const perPage = parseInt(req.query.perPage) || 5
+        const category = req.query.category; // Lấy category từ query
 
-        // Đếm tổng số sản phẩm
-        const totalPosts = await Product.countDocuments();
+        // Tạo filter object
+        let filter = {};
+        if (category) {
+            filter.category = category;
+        }
+
+        // Đếm tổng số sản phẩm theo filter
+        const totalPosts = await Product.countDocuments(filter);
         const totalPages = Math.ceil(totalPosts / perPage)
 
         // Nếu page vượt quá tổng số trang, trả về lỗi
-        if (page > totalPages) {
+        if (page > totalPages && totalPages !== 0) {
             return res.status(404).json({
                 message: "Page not found"
             })
         }
 
-        // Lấy danh sách sản phẩm cho trang hiện tại
-        const productList = await Product.find().populate("category")
+        // Lấy danh sách sản phẩm cho trang hiện tại theo filter
+        const productList = await Product.find(filter).populate("category")
             .skip((page - 1) * perPage)
             .limit(perPage)
             .exec()
@@ -210,7 +217,9 @@ router.delete("/:id",async(req,res)=>{
 //GET "/:id" Lấy sản phẩm theo ID
 router.get("/:id", async(req, res) => {
     try {
-        const product = await Product.findById(req.params.id);
+        const product = await Product.findById(req.params.id).populate("category");
+        //Khi khong dung populate san pham tra ve chi co string cua category
+        //nhung khi su dung populate id se duoc thay the bang toan bo object category
         
         if (!product) {
             return res.status(404).json({

@@ -20,8 +20,8 @@ import DeleteConfirmDialog from "../../helpers/DeleteConfirmDialog";
 import EditProductDialog from "../../helpers/EditProductDialog";
 const Products = () => {
     const context = useContext(MyContext)
-    const [showBy, setshowBy] = useState('');
-    const [CatBy, setCatBy] = useState('');
+    const [showBy, setShowBy] = useState(''); // số sản phẩm/trang
+    const [CatBy, setCatBy] = useState('');   // id category
     const [products, setProductsData] = useState([])
     const [productList, setProductList] = useState([])
     const [page,setPage] = useState(1)
@@ -193,14 +193,17 @@ const Products = () => {
         })
     }, [])
     useEffect(() => {
-        fetchDataFromApi(`/api/products?page=${page}`).then((res) => {
+        let url = `/api/products?page=${page}`;
+        if (showBy) url += `&perPage=${showBy}`;
+        if (CatBy) url += `&category=${CatBy}`;
+        fetchDataFromApi(url).then((res) => {
           setProductList(res.data || []);
         //   console.log(res.data)
           setTotalPages(res.totalPages || 1);
         }).catch((error) => {
           context.showSnackbar('Failed to load products', 'error');
         });
-      }, [page]);
+      }, [page, showBy, CatBy]);
       const handleChange = (event, value) => {
         setPage(value); // chỉ cần đổi page, useEffect sẽ tự động gọi API
       };
@@ -255,6 +258,7 @@ const Products = () => {
             setDeleteLoading(false) //tắt loading
         }
     }
+    //Lấy danh sách Category
     useEffect(() => {
         fetchDataFromApi(`/api/category?all=true`).then((res)=>{
             setCategoryList(res.categoryList || [])
@@ -271,6 +275,22 @@ const Products = () => {
       });
     }, []);
     
+    //Lọc theo Category
+    useEffect(()=>{
+        let url = `/api/products?page=${page}`
+        if(CatBy){
+            url+= `&category=${CatBy}`
+        }
+        if(showBy){
+            url+= `&perPage=${showBy}`
+        }
+        fetchDataFromApi(url).then((res)=>{
+            setProductList(res.data || [])
+            setTotalPages(res.totalPages || 1)
+        }).catch((error)=>{
+            context.showSnackbar('Failed to load products', 'error');
+        })
+    }, [CatBy, page, showBy])
     
     return (
         <>
@@ -346,7 +366,7 @@ const Products = () => {
                             <FormControl size="small" className="w-100">
                                 <Select
                                     value={showBy}
-                                    onChange={(e) => setshowBy(e.target.value)}
+                                    onChange={(e) => setShowBy(e.target.value)}
                                     displayEmpty
                                     inputProps={{ 'aria-label': 'Without label' }}
                                     className="w-100"
@@ -354,9 +374,9 @@ const Products = () => {
                                     <MenuItem value="">
                                         <em>None</em>
                                     </MenuItem>
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
+                                    <MenuItem value={5}>5</MenuItem>
+                                    <MenuItem value={10}>10</MenuItem>
+                                    <MenuItem value={20}>20</MenuItem>
                                 </Select>
                             </FormControl>
                         </div>
@@ -375,10 +395,12 @@ const Products = () => {
                                     <MenuItem value="">
                                         <em>None</em>
                                     </MenuItem>
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
-                                </Select>
+                                    {categories.map(cat => (
+                                        <MenuItem key={cat._id} value={cat._id}>
+                                        {cat.name}
+                                        </MenuItem>
+                                    ))}
+                                    </Select>
                             </FormControl>
                         </div>
                     </div>
@@ -445,11 +467,11 @@ const Products = () => {
                                         
                                         <td>
                                             <div className="actions d-flex align-items-center">
-                                                <Link to="/products/details">
-                                                 <Button className="secondary mr-1" color="secondary">
-                                                    <IoEyeSharp />
-                                                </Button>
-                                                </Link>
+                                            <Link to={`/products/details/${product._id}`}>
+                                            <Button className="secondary mr-1" color="secondary">
+                                                <IoEyeSharp />
+                                            </Button>
+                                            </Link>
                                                 <Button 
                                                 className="success mr-1" 
                                                 color="success"
