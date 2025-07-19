@@ -279,6 +279,7 @@ const Category = () => {
                                 <tr style={{backgroundColor: '#4285f4', color: 'white'}}>
                                     <th style={{backgroundColor: '#4285f4', color: 'white', fontWeight: 'bold', padding: '15px'}}>UID</th>
                                     <th style={{backgroundColor: '#4285f4', color: 'white', fontWeight: 'bold', padding: '15px'}}>CATEGORY</th>
+                                    <th style={{backgroundColor: '#4285f4', color: 'white', fontWeight: 'bold', padding: '15px'}}>SUB CATEGORY</th>
                                     <th style={{backgroundColor: '#4285f4', color: 'white', fontWeight: 'bold', padding: '15px'}}>IMAGE</th>
                                     <th style={{backgroundColor: '#4285f4', color: 'white', fontWeight: 'bold', padding: '15px'}}>COLOR</th>
                                     <th style={{backgroundColor: '#4285f4', color: 'white', fontWeight: 'bold', padding: '15px'}}>ACTION</th>
@@ -305,6 +306,27 @@ const Category = () => {
                                         <td style={{padding: '15px', verticalAlign: 'middle'}}>
                                             <span style={{color: '#666', fontSize: '14px'}}>{item.name}</span>
                                         </td>
+                                        {/* SUBCATEGORY COLUMN */}
+                                        <td style={{padding: '15px', verticalAlign: 'middle'}}>
+                                            {Array.isArray(item.subCat) ? (
+                                              item.subCat.length > 0 ? (
+                                                item.subCat.map((sub, idx) => (
+                                                  <span key={idx} style={{
+                                                    display: 'inline-block',
+                                                    background: '#e3f2fd',
+                                                    color: '#1976d2',
+                                                    borderRadius: '12px',
+                                                    padding: '2px 10px',
+                                                    fontSize: '13px',
+                                                    marginRight: 4,
+                                                    marginBottom: 2
+                                                  }}>{sub}</span>
+                                                ))
+                                              ) : <span style={{color: '#aaa'}}>No sub category</span>
+                                            ) : (
+                                              <span style={{color: '#666', fontSize: '14px'}}>{item.subCat}</span>
+                                            )}
+                                        </td>
                                         
                                         {/* IMAGE COLUMN */}
                                         <td style={{padding: '15px', verticalAlign: 'middle'}}>
@@ -317,7 +339,7 @@ const Category = () => {
                                                             alt={item.name}
                                                             style={{objectFit: 'cover'}}
                                                         />
-                                                    </div>
+                                                    </div>F
                                                 </div>
                                             </div>
                                         </td>
@@ -330,15 +352,17 @@ const Category = () => {
                                         {/* ACTION COLUMN */}
                                         <td style={{padding: '15px', verticalAlign: 'middle'}}>
                                             <div className="actions d-flex align-items-center">
-                                                <Button 
-                                                    className="success mr-1" 
-                                                    color="success"
-                                                    size="small"
-                                                    style={{minWidth: '35px', padding: '6px', marginRight: '5px'}}
-                                                    onClick={()=>editCategory(item.id)}
-                                                >
-                                                    <MdEdit size={16} />
-                                                </Button>
+                                                <Link to={`/category/edit/${item.id}`}>
+                                                    <Button 
+                                                        className="success mr-1" 
+                                                        color="success"
+                                                        size="small"
+                                                        style={{minWidth: '35px', padding: '6px', marginRight: '5px'}}
+                                                        onClick={()=>editCategory(item.id)}
+                                                    >
+                                                        <MdEdit size={16} />
+                                                    </Button>
+                                                </Link>
                                                 <Button 
                                                     className="error" 
                                                     color="error"

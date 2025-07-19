@@ -7,16 +7,17 @@ import Sidebar from './components/Sidebar';
 import { createContext, useEffect, useState } from 'react';
 import LogIn from './pages/LogIn';
 import SignUp from './pages/SignUp';
-import ProductDetails from './pages/ProductDetails';
+import ProductDetails from './pages/Products/ProductDetails';
 import Products from './pages/Products';
-import ProductUpload from './pages/ProductUpload';
-import CategoryAdd from './pages/CategoryAdd';
 import Category from './pages/Category';
 import { SnackbarProvider, useSnackbar } from 'notistack';
 // Sửa import - dùng Alert từ Material-UI thay vì Bootstrap
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert'; // Sửa import này
-
+import AddCategory from './pages/Category/AddCategory';
+import EditCategory from './pages/Category/EditCategory';
+import AddProducts from './pages/Products/AddProducts';
+import EditProducts from './pages/Products/EditProducts';
 const MyContext = createContext()
 function App() {
   const [isToggleSidebar,setisToggleSidebar] = useState(false)
@@ -107,9 +108,11 @@ function App() {
                 <Route exact={true} path="/signUp" element={<SignUp/>}/>
                 <Route exact={true} path="/products" element={<Products/>}/>
                 <Route exact={true} path="/products/details/:id" element={<ProductDetails/>}/>
-                <Route exact={true} path="/products/upload" element={<ProductUpload/>}/>
-                  <Route exact={true} path="/category" element={<Category/>}/>
-                <Route exact={true} path="/category/add" element={<CategoryAdd/>}/>
+                <Route exact={true} path="/products/upload" element={<AddProducts/>}/>
+                <Route exact={true} path="/products/edit/:id" element={<EditProducts/>}/>
+                <Route exact={true} path="/category" element={<Category/>}/>
+                <Route exact={true} path="/category/add" element={<AddCategory/>}/>
+                <Route exact={true} path="/category/edit/:id" element={<EditCategory/>}/>
              </Routes>
             </div>
           </div>

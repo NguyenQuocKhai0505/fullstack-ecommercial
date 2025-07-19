@@ -17,7 +17,6 @@ import Button from '@mui/material/Button';
 import { MyContext } from "../../App";
 import { Link } from 'react-router-dom';
 import DeleteConfirmDialog from "../../helpers/DeleteConfirmDialog";
-import EditProductDialog from "../../helpers/EditProductDialog";
 const Products = () => {
     const context = useContext(MyContext)
     const [showBy, setShowBy] = useState(''); // số sản phẩm/trang
@@ -36,149 +35,6 @@ const Products = () => {
     const [deleteID, setDeleteID] = useState(null)
     const [deleteLoading, setDeleteLoading] = useState(false)
 
-    //Thêm State cho Edit Products
-    const [editProductID, setEditProductID] = useState(null);
-    const [editProductLoading, setEditProductLoading] = useState(false);
-    const [editProductDialogOpen, setEditProductDialogOpen] = useState(false);
-    const [editProductFields, setEditProductFields] = useState({
-        name: '',
-        description: '',
-        brand: '',
-        category: '',
-        price: '',
-        oldPrice: '',
-        countInStock: '',
-        rating: '',
-        isFeatured: false,
-        images: []
-    });
-
-    //Hàm để mở edit dialog
-    const editProduct =(id)=>{
-        setEditProductID(id)
-        setEditProductDialogOpen(true)
-        fetchDataFromApi(`/api/products/${id}`).then((res)=>{
-            const productData = res.data || res
-          
-            setEditProductFields({
-                name: productData.name||"",
-                description: productData.description||"",
-                brand: productData.brand||"",
-                category: productData.category||"",
-                price: productData.price||"",
-                oldPrice: productData.oldPrice||"",
-                countInStock: productData.countInStock||"",
-                rating: productData.rating||"",
-                isFeatured: productData.isFeatured||false,
-                images: Array.isArray(productData.images) ? productData.images : []
-            })
-        }).catch((error)=>{
-            context.showSnackbar('Failed to fetch product data', 'error');
-        })
-    }
-    //Hàm để đóng Edit Dialog
-    const handleCloseEditDialog = () =>{
-        setEditProductID(null)
-        setEditProductDialogOpen(false)
-        setEditProductFields({
-            name: '',
-            description: '',
-            brand: '',
-            category: '',
-            price: '',
-            oldPrice: '',
-            countInStock: '',
-            rating: '',
-            isFeatured: false,
-            images: []
-        })
-    }
-    //Hàm xử lí thay đổi Input
-    const handleEditProductInputChange = (field) => (event) =>{
-        if(field === 'images'){
-            //Chuyển đổi ảnh sang Array
-            const imageArray = event.target.value.split(",").map(img=>img.trim())
-            setEditProductFields(prev=>({
-                ...prev,
-                [field]: imageArray
-            }))
-        }else if(field==="isFeatured"){
-            setEditProductFields(prev=>({
-                ...prev,
-                [field]: event.target.checked
-            }))
-        }else{
-            setEditProductFields(prev=>({
-                ...prev,
-                [field]: event.target.value
-            }))
-        }
-    }
-    //Hàm submit Edit Product
-    const handleEditProductSubmit = async (e) =>{
-        e.preventDefault()
-        if(!editProductID){
-            context.showSnackbar('No product selected for editing', 'warning')
-            return
-        }
-
-        //Validate required fields
-        if(!editProductFields.name.trim()){
-            context.showSnackbar("Product is required", "warning")
-            return
-        }
-        setEditProductLoading(true)
-        try{
-            const updateData = {
-                name: editProductFields.name.trim(),
-                description: editProductFields.description.trim(),
-                brand: editProductFields.brand.trim(),
-                category: editProductFields.category,
-                price: parseFloat(editProductFields.price) || 0,
-                oldPrice: parseFloat(editProductFields.oldPrice) || 0,
-                countInStock: parseInt(editProductFields.countInStock) || 0,
-                rating: parseFloat(editProductFields.rating) || 0,
-                isFeatured: editProductFields.isFeatured,
-                images: editProductFields.images
-            }
-            console.log('=== PRODUCT UPDATE ===');
-            console.log('Edit ID:', editProductID);
-            console.log('Update data:', updateData);
-            console.log('======================');
-            const response = await editData(`/api/products/${editProductID}`, updateData)
-            console.log('✅ Update successful:', response);
-
-            //Refresh danh sách sản phẩm
-            const updatedProducts = await fetchDataFromApi(`/api/products?page=${page}`);
-            setProductList(updatedProducts.data)
-
-            //Đóng dialog
-            handleCloseEditDialog()
-
-            //Success Snackbar
-            context.showSnackbar("Product updated successfully", "success")
-
-        }catch (error) {
-        console.error('❌ Update failed:', error);
-        
-        let errorMessage = 'Failed to update product. ';
-        
-        if (error.response?.data?.message) {
-            errorMessage += error.response.data.message;
-        } else if (error.response?.status === 404) {
-            errorMessage += 'Product not found.';
-        } else if (error.response?.status === 400) {
-            errorMessage += 'Invalid data provided.';
-        } else if (error.response?.status >= 500) {
-            errorMessage += 'Server error. Please try again later.';
-        } else {
-            errorMessage += 'Please try again.';
-        }
-        
-        context.showSnackbar(errorMessage, 'error');
-    } finally {
-        setEditProductLoading(false);
-    }}
 
     useEffect(() => {
         context.setisHiddenSidebarAndHeader(false)
@@ -225,18 +81,19 @@ const Products = () => {
         }
         setDeleteLoading(true)
         try{
+            console.log('Deleting product with ID:', deleteID);
             await deleteData(`/api/products/${deleteID}`) //Gọi API xóa sản phẩm 
             //Cập nhật lại danh sách sản phẩm
             const updatedProducts = await fetchDataFromApi(`/api/products?page=${page}`);
-            if (updatedProducts.data.length === 0 && page > 1) {
-              const prevPage = page - 1;
-              const prevProducts = await fetchDataFromApi(`/api/products?page=${prevPage}`);
-              setProductList(prevProducts.data);
-              setPage(prevPage);
+            if (updatedProducts.data.length === 0) {
+              setProductList([]);
+              setPage(1);
+              context.showSnackbar("All products have been deleted.", "info");
             } else {
               setProductList(updatedProducts.data);
             }
             //Đóng dialog
+            
             closeDeleteDialog()
             context.showSnackbar("Product deleted successfully", "success")
         }catch(error){
@@ -274,6 +131,7 @@ const Products = () => {
         context.showSnackbar('Failed to load categories', 'error');
       });
     }, []);
+    
     
     //Lọc theo Category
     useEffect(()=>{
@@ -413,6 +271,7 @@ const Products = () => {
                                     <th>UID</th>
                                     <th>PRODUCT</th>
                                     <th>CATEGORY</th>
+                                    <th>SUBCATEGORY</th>
                                     <th>BRAND</th>
                                     <th>PRICE</th>
                                     <th>IS FEATURED</th>
@@ -448,6 +307,37 @@ const Products = () => {
                                             </div>
                                         </td>
                                         <td>{product.category?.name}</td>
+                                        <td>
+                                            {Array.isArray(product.subCat) && product.subCat.length > 0 ? (
+                                              product.subCat.map((sub, idx) => (
+                                                <span key={idx} style={{
+                                                  display: 'inline-block',
+                                                  background: '#e3f2fd',
+                                                  color: '#1976d2',
+                                                  borderRadius: '16px',
+                                                  padding: '4px 16px',
+                                                  fontSize: '15px',
+                                                  marginRight: 8,
+                                                  marginBottom: 2,
+                                                  fontWeight: 500
+                                                }}>{sub}</span>
+                                              ))
+                                            ) : product.subCat ? (
+                                              <span style={{
+                                                display: 'inline-block',
+                                                background: '#e3f2fd',
+                                                color: '#1976d2',
+                                                borderRadius: '16px',
+                                                padding: '4px 16px',
+                                                fontSize: '15px',
+                                                marginRight: 8,
+                                                marginBottom: 2,
+                                                fontWeight: 500
+                                              }}>{product.subCat}</span>
+                                            ) : (
+                                              <span>—</span>
+                                            )}
+                                        </td>
                                         <td>{product.brand}</td>
                                         <td>
                                             <span className="oldPrice">{product.oldPrice}</span>
@@ -472,13 +362,14 @@ const Products = () => {
                                                 <IoEyeSharp />
                                             </Button>
                                             </Link>
-                                                <Button 
+                                               <Link to = {`/products/edit/${product._id}`}>
+                                               <Button 
                                                 className="success mr-1" 
                                                 color="success"
-                                                onClick={() => editProduct(product._id)}
                                                 >
                                                     <MdEdit />
                                                 </Button>
+                                                </Link>
                                                 <Button 
                                                 className="error" 
                                                 color="error"
@@ -527,17 +418,6 @@ const Products = () => {
                 content="Are you sure you want to delete this product? This action cannot be undone."
                 confirmText="Delete"
                 cancelText="Cancel"
-            />
-            <EditProductDialog
-                open={editProductDialogOpen}
-                onClose={handleCloseEditDialog}
-                onSubmit={handleEditProductSubmit}
-                loading={editProductLoading}
-                editFields={editProductFields}
-                onInputChange={handleEditProductInputChange}
-                title="Edit Product"
-                content="Update the product information below and click 'Save' to confirm."
-                categories={categories}
             />
             </>
     )}

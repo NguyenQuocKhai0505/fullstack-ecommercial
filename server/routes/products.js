@@ -149,6 +149,7 @@ router.post("/create", async(req, res) => {
             images: imgUrls,
             brand: brand.trim(),
             category: category,
+            subCat: req.body.subCat,
             countInStock: parseInt(countInStock) || 0,
             rating: parseFloat(req.body.rating) || 0,
             isFeatured: Boolean(req.body.isFeatured),
@@ -250,6 +251,7 @@ router.put("/:id", async(req, res) => {
             isFeatured, 
             price,
             oldPrice,
+            subCat,
         } = req.body;
 
         let imgUrls = [];
@@ -307,6 +309,7 @@ router.put("/:id", async(req, res) => {
         if (isFeatured !== undefined) updateData.isFeatured = Boolean(isFeatured);
         if (price !== undefined) updateData.price = parseFloat(price) || 0;
         if (oldPrice !== undefined) updateData.oldPrice = parseFloat(oldPrice) || 0;
+        if (subCat !== undefined) updateData.subCat = subCat;
         
         // Thêm thời gian cập nhật
         updateData.dateUpdated = new Date();
