@@ -9,15 +9,20 @@ app.use(cors())
 app.options("*",cors())
 
 //Middleware 
-app.use(bodyParser.json())
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+
+// Serve static files
+app.use(express.static(__dirname));
 
 //Route
 const categoryRoutes = require("./routes/categories")
 const productRoutes = require("./routes/products")
+const subcatRoutes = require("./routes/subcat")
 
 app.use("/api/category",categoryRoutes)
 app.use("/api/products",productRoutes)
-
+app.use("/api/subCategory",subcatRoutes)
 //Database
 mongoose.connect(process.env.CONNECTION_STRING, {
     useNewUrlParser: true,

@@ -14,19 +14,50 @@ cloudinary.config({
 //GET "/" - Lấy danh sách sản phẩm
 router.get("/", async (req, res) => {
     try {
-        const productList = await Product.find().populate("category");
-        
+        // Lấy tham số page từ query, mặc định là 1
+        const page = parseInt(req.query.page) || 1
+        const perPage = parseInt(req.query.perPage) || 5
+        const category = req.query.category; // Lấy category từ query
+
+        // Tạo filter object
+        let filter = {};
+        if (category) {
+            filter.category = category;
+        }
+
+        // Đếm tổng số sản phẩm theo filter
+        const totalPosts = await Product.countDocuments(filter);
+        const totalPages = Math.ceil(totalPosts / perPage)
+
+        // Nếu page vượt quá tổng số trang, trả về lỗi
+        if (page > totalPages && totalPages !== 0) {
+            return res.status(404).json({
+                message: "Page not found"
+            })
+        }
+
+        // Lấy danh sách sản phẩm cho trang hiện tại theo filter
+        const productList = await Product.find(filter).populate("category")
+            .skip((page - 1) * perPage)
+            .limit(perPage)
+            .exec()
+
+        // Nếu không có sản phẩm nào
         if (!productList || productList.length === 0) {
             return res.status(404).json({
                 success: false,
                 message: "Không tìm thấy sản phẩm nào"
             });
         }
-        
+
+        // Trả về danh sách sản phẩm và thông tin phân trang
         res.status(200).json({
             success: true,
             count: productList.length,
-            data: productList
+            data: productList,
+            page: page,
+            totalPages: totalPages,
+            totalPosts: totalPosts
         });
     } catch (error) {
         res.status(500).json({
@@ -74,8 +105,8 @@ router.post("/create", async(req, res) => {
             });
         }
 
-        // Giới hạn chỉ upload tối đa 2 ảnh cùng lúc để tránh quá tải server
-        const limit = pLimit(2);
+        // Giới hạn chỉ upload tối đa 5 ảnh cùng lúc để tránh quá tải server
+        const limit = pLimit(5);
         
         // Tạo mảng các promise để upload từng ảnh lên Cloudinary
         const imagesToUpload = req.body.images.map((image) => {
@@ -118,11 +149,12 @@ router.post("/create", async(req, res) => {
             images: imgUrls,
             brand: brand.trim(),
             category: category,
+            subCat: req.body.subCat,
             countInStock: parseInt(countInStock) || 0,
             rating: parseFloat(req.body.rating) || 0,
-            numReviews: parseInt(req.body.numReviews) || 0,
             isFeatured: Boolean(req.body.isFeatured),
-            price: parseFloat(req.body.price) || 0, // Thêm trường giá bị thiếu
+            price: parseFloat(req.body.price) || 0, 
+            oldPrice: parseFloat(req.body.oldPrice) || 0,// Thêm trường giá bị thiếu
             dateCreated: new Date()
         });
 
@@ -186,7 +218,9 @@ router.delete("/:id",async(req,res)=>{
 //GET "/:id" Lấy sản phẩm theo ID
 router.get("/:id", async(req, res) => {
     try {
-        const product = await Product.findById(req.params.id);
+        const product = await Product.findById(req.params.id).populate("category");
+        //Khi khong dung populate san pham tra ve chi co string cua category
+        //nhung khi su dung populate id se duoc thay the bang toan bo object category
         
         if (!product) {
             return res.status(404).json({
@@ -214,17 +248,18 @@ router.put("/:id", async(req, res) => {
             category, 
             countInStock, 
             rating, 
-            numReviews, 
             isFeatured, 
-            price 
+            price,
+            oldPrice,
+            subCat,
         } = req.body;
 
         let imgUrls = [];
 
         // Chỉ xử lý upload ảnh nếu có ảnh mới được gửi lên
         if (images && images.length > 0) {
-            // Giới hạn chỉ upload tối đa 2 ảnh cùng lúc để tránh quá tải server
-            const limit = pLimit(2);
+            // Giới hạn chỉ upload tối đa 5 ảnh cùng lúc để tránh quá tải server
+            const limit = pLimit(5);
             
             // Tạo mảng các promise để upload từng ảnh lên Cloudinary
             const imagesToUpload = images.map((image) => {
@@ -271,9 +306,10 @@ router.put("/:id", async(req, res) => {
         if (category) updateData.category = category;
         if (countInStock !== undefined) updateData.countInStock = parseInt(countInStock) || 0;
         if (rating !== undefined) updateData.rating = parseFloat(rating) || 0;
-        if (numReviews !== undefined) updateData.numReviews = parseInt(numReviews) || 0;
         if (isFeatured !== undefined) updateData.isFeatured = Boolean(isFeatured);
         if (price !== undefined) updateData.price = parseFloat(price) || 0;
+        if (oldPrice !== undefined) updateData.oldPrice = parseFloat(oldPrice) || 0;
+        if (subCat !== undefined) updateData.subCat = subCat;
         
         // Thêm thời gian cập nhật
         updateData.dateUpdated = new Date();

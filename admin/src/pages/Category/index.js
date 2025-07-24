@@ -19,7 +19,17 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
+// Thêm Dialog xác nhận delete
+import { 
+    Dialog as ConfirmDialog, 
+    DialogTitle as ConfirmDialogTitle, 
+    DialogContent as ConfirmDialogContent, 
+    DialogActions as ConfirmDialogActions,
+    DialogContentText as ConfirmDialogContentText 
+} from '@mui/material';
+
 const Category = () => {
+    const[openSnackbar, setOpenSnackbar] = useState(false);
     const [catData,setCatData] = useState([])
     const context = useContext(MyContext)
     const [open, setOpen] = React.useState(false);
@@ -29,14 +39,20 @@ const Category = () => {
         images: [],
         color: ''
     })
+
     const [editID, setEditID] = useState(null)
-    const [loading, setLoading] = useState(false) // Thêm loading state
+    const [loading, setLoading] = useState(false)
+    
+    // Thêm state cho delete confirmation dialog
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [deleteID, setDeleteID] = useState(null);
+    const [deleteLoading, setDeleteLoading] = useState(false);
 
     const editCategory = (id) =>{
        setOpen(true)
        setEditID(id)
        fetchDataFromApi(`/api/category/${id}`).then(res=>{
-            console.log('API Response:', res)
+            // console.log('API Response:', res)
             // Kiểm tra cấu trúc response
             const categoryData = res.data || res;
             
@@ -45,9 +61,11 @@ const Category = () => {
                 images: categoryData.images || [],
                 color: categoryData.color || ''
             })
-            console.log('Category Data:', categoryData)
+            // console.log('Category Data:', categoryData)
         }).catch(error => {
-            console.error('Error fetching category:', error);
+            // console.error('Error fetching category:', error);
+            // Show error snackbar
+            context.showSnackbar('Failed to fetch category data', 'error');
         })
     }
 
@@ -85,25 +103,27 @@ const Category = () => {
         window.scroll(0, 0)
         fetchDataFromApi("/api/category").then(res=>{
             setCatData(res)
-            console.log(res)
+            // console.log(res)
         }).catch(error => {
             console.error('Error fetching categories:', error);
+            context.showSnackbar('Failed to load categories', 'error');
         })
     }, [])
     
 
-    // FIX: Sửa lại hàm submit
+    // Sửa lại hàm submit với snackbar
     const categoryEditFun = async (e) => {
         e.preventDefault()
         
         if (!editID) {
             console.error('No category ID to edit');
+            context.showSnackbar('No category selected for editing', 'error');
             return;
         }
 
         // Validate required fields
         if (!editFields.name.trim()) {
-            alert('Category name is required');
+            context.showSnackbar('Category name is required', 'warning');
             return;
         }
 
@@ -116,14 +136,14 @@ const Category = () => {
                 color: editFields.color
             };
             
-            console.log('=== CATEGORY UPDATE ===');
-            console.log('Edit ID:', editID);
-            console.log('Update data:', updateData);
-            console.log('======================');
+            // console.log('=== CATEGORY UPDATE ===');
+            // console.log('Edit ID:', editID);
+            // console.log('Update data:', updateData);
+            // console.log('======================');
             
             const response = await editData(`/api/category/${editID}`, updateData);
             
-            console.log('✅ Update successful:', response);
+            // console.log('✅ Update successful:', response);
             
             // Refresh category list
             const updatedCategories = await fetchDataFromApi("/api/category");
@@ -132,13 +152,13 @@ const Category = () => {
             // Close dialog
             handleClose();
             
-            // Success message
-            alert('Category updated successfully!');
+            // Success snackbar
+            context.showSnackbar('Category updated successfully!', 'success');
             
         } catch (error) {
             console.error('❌ Update failed:', error);
             
-            // Show user-friendly error message
+            // Show user-friendly error message với snackbar
             let errorMessage = 'Failed to update category. ';
             
             if (error.response?.data?.message) {
@@ -153,26 +173,80 @@ const Category = () => {
                 errorMessage += 'Please try again.';
             }
             
-            alert(errorMessage);
+            context.showSnackbar(errorMessage, 'error');
         } finally {
             setLoading(false);
         }
     }
-    const deleteCat = (id)=>{
-        deleteData(`/api/category/${id}`).then(res=>{
-            fetchDataFromApi(`/api/category`).then(res=>{
-                setCatData(res)
-                setOpen(false)
-            })
-        })
+
+    // Hàm mở dialog xác nhận delete
+    const openDeleteDialog = (id) => {
+        setDeleteID(id);
+        setDeleteDialogOpen(true);
+    }
+
+    // Hàm đóng dialog xác nhận delete
+    const closeDeleteDialog = () => {
+        setDeleteDialogOpen(false);
+        setDeleteID(null);
+    }
+
+    // Sửa lại hàm delete với snackbar và confirmation
+    const deleteCat = async () => {
+        if (!deleteID) {
+            context.showSnackbar('No category selected for deletion', 'error');
+            return;
+        }
+
+        setDeleteLoading(true);
+        
+        try {
+            await deleteData(`/api/category/${deleteID}`);
+            
+            // Refresh category list
+            const updatedCategories = await fetchDataFromApi(`/api/category`);
+            setCatData(updatedCategories);
+            
+            // Close dialog
+            closeDeleteDialog();
+            
+            // Success snackbar
+            context.showSnackbar('Category deleted successfully!', 'success');
+            
+        } catch (error) {
+            console.error('❌ Delete failed:', error);
+            
+            // Error snackbar
+            let errorMessage = 'Failed to delete category. ';
+            
+            if (error.response?.data?.message) {
+                errorMessage += error.response.data.message;
+            } else if (error.response?.status === 404) {
+                errorMessage += 'Category not found.';
+            } else if (error.response?.status === 400) {
+                errorMessage += 'Cannot delete this category.';
+            } else if (error.response?.status >= 500) {
+                errorMessage += 'Server error. Please try again later.';
+            } else {
+                errorMessage += 'Please try again.';
+            }
+            
+            context.showSnackbar(errorMessage, 'error');
+        } finally {
+            setDeleteLoading(false);
+        }
     }
 
     // Pagnination
     const handleChange = (event,value) =>{
         fetchDataFromApi(`/api/category?page=${value}`).then((res)=>{
             setCatData(res)
+        }).catch(error => {
+            console.error('Error fetching page:', error);
+            context.showSnackbar('Failed to load page', 'error');
         })
     }
+
     return (
        
         <>
@@ -231,6 +305,7 @@ const Category = () => {
                                         <td style={{padding: '15px', verticalAlign: 'middle'}}>
                                             <span style={{color: '#666', fontSize: '14px'}}>{item.name}</span>
                                         </td>
+                                 
                                         
                                         {/* IMAGE COLUMN */}
                                         <td style={{padding: '15px', verticalAlign: 'middle'}}>
@@ -243,7 +318,7 @@ const Category = () => {
                                                             alt={item.name}
                                                             style={{objectFit: 'cover'}}
                                                         />
-                                                    </div>
+                                                    </div>F
                                                 </div>
                                             </div>
                                         </td>
@@ -256,22 +331,23 @@ const Category = () => {
                                         {/* ACTION COLUMN */}
                                         <td style={{padding: '15px', verticalAlign: 'middle'}}>
                                             <div className="actions d-flex align-items-center">
-                                                <Button 
-                                                    className="success mr-1" 
-                                                    color="success"
-                                                    size="small"
-                                                    style={{minWidth: '35px', padding: '6px', marginRight: '5px'}}
-                                                    onClick={()=>editCategory(item.id)}
-                                                >
-                                                    <MdEdit size={16} />
-                                                </Button>
+                                                <Link to={`/category/edit/${item.id}`}>
+                                                    <Button 
+                                                        className="success mr-1" 
+                                                        color="success"
+                                                        size="small"
+                                                        style={{minWidth: '35px', padding: '6px', marginRight: '5px'}}
+                                                        onClick={()=>editCategory(item.id)}
+                                                    >
+                                                        <MdEdit size={16} />
+                                                    </Button>
+                                                </Link>
                                                 <Button 
                                                     className="error" 
                                                     color="error"
                                                     size="small"
                                                     style={{minWidth: '35px', padding: '6px'}}
-                                                    onClick={()=>deleteCat(item.id)}
-
+                                                    onClick={()=>openDeleteDialog(item.id)}
                                                 >
                                                     <MdDelete size={16} />
                                                 </Button>
@@ -302,7 +378,7 @@ const Category = () => {
                 </div>
             </div>
    
-            {/* FIX: Sửa lại Dialog structure */}
+            {/* EDIT DIALOG */}
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -374,9 +450,42 @@ const Category = () => {
                         </Button>
                     </DialogActions>
                 </form>
-
-                <br/>
             </Dialog>
+
+            {/* DELETE CONFIRMATION DIALOG */}
+            <ConfirmDialog
+                open={deleteDialogOpen}
+                onClose={closeDeleteDialog}
+                maxWidth="xs"
+                fullWidth
+            >
+                <ConfirmDialogTitle>
+                    Confirm Delete
+                </ConfirmDialogTitle>
+                <ConfirmDialogContent>
+                    <ConfirmDialogContentText>
+                        Are you sure you want to delete this category? This action cannot be undone.
+                    </ConfirmDialogContentText>
+                </ConfirmDialogContent>
+                <ConfirmDialogActions>
+                    <Button 
+                        onClick={closeDeleteDialog} 
+                        variant="outlined"
+                        disabled={deleteLoading}
+                    >
+                        Cancel
+                    </Button>
+                    <Button 
+                        onClick={deleteCat} 
+                        color="error" 
+                        variant="contained"
+                        disabled={deleteLoading}
+                        autoFocus
+                    >
+                        {deleteLoading ? 'Deleting...' : 'Delete'}
+                    </Button>
+                </ConfirmDialogActions>
+            </ConfirmDialog>
         </>
     )
 }

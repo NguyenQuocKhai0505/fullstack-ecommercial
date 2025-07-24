@@ -1790,3 +1790,28 @@ body.dark .dot {
 body.dark .css-113d811-MuiFormLabel-root-MuiInputLabel-root{
     color: #fff !important;
 }
+
+.product-info {
+    max-width: 220px;
+    white-space: normal;
+    overflow: hidden;
+  }
+  .product-info h6 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .product-info p {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 0;
+    max-height: 2.8em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }

@@ -4,7 +4,7 @@ import { FaShoppingBag } from "react-icons/fa";
 import { useContext, useEffect, useState } from "react"
 import { IoHomeSharp } from "react-icons/io5";
 import { MdExpandMore } from "react-icons/md";
-
+import { deleteData, editData, fetchDataFromApi } from "../../utils/api";
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -16,73 +16,140 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
 import { MyContext } from "../../App";
 import { Link } from 'react-router-dom';
+import DeleteConfirmDialog from "../../helpers/DeleteConfirmDialog";
 const Products = () => {
     const context = useContext(MyContext)
-    
+    const [showBy, setShowBy] = useState(''); // số sản phẩm/trang
+    const [CatBy, setCatBy] = useState('');   // id category
+    const [products, setProductsData] = useState([])
+    const [productList, setProductList] = useState([])
+    const [page,setPage] = useState(1)
+    const [totalPages,setTotalPages] = useState(1)
+    //State để lấy Category
+    const [categoryList, setCategoryList] = useState([])
+    const [categories, setCategories] = useState([]);
+
+
+    //State cho xác nhận xóa 
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+    const [deleteID, setDeleteID] = useState(null)
+    const [deleteLoading, setDeleteLoading] = useState(false)
+
+
     useEffect(() => {
         context.setisHiddenSidebarAndHeader(false)
         window.scroll(0, 0)
+
+        fetchDataFromApi("/api/products").then((res)=>{
+            setProductsData(res)
+            // console.log(res)
+        }).catch((error)=>{
+            // console.error('Error fetching products:', error);
+            context.showSnackbar('Failed to load products', 'error');
+        })
     }, [])
+    useEffect(() => {
+        let url = `/api/products?page=${page}`;
+        if (showBy) url += `&perPage=${showBy}`;
+        if (CatBy) url += `&category=${CatBy}`;
+        fetchDataFromApi(url).then((res) => {
+          setProductList(res.data || []);
+        //   console.log(res.data)
+          setTotalPages(res.totalPages || 1);
+        }).catch((error) => {
+          context.showSnackbar('Failed to load products', 'error');
+        });
+      }, [page, showBy, CatBy]);
+      const handleChange = (event, value) => {
+        setPage(value); // chỉ cần đổi page, useEffect sẽ tự động gọi API
+      };
     
-    const [showBy, setshowBy] = useState('');
-    const [CatBy, setCatBy] = useState('');
 
-    // Sample products data
-    const products = [
-        {
-            id: 1,
-            name: "Tops and skirt set for ...",
-            description: "Women's exclusive sum...",
-            category: "womans",
-            brand: "richman",
-            oldPrice: "$21.00",
-            newPrice: "$21.00",
-            stock: 380,
-            rating: "4.9(16)",
-            sales: "$38k",
-            image: "https://mironcoder-hotash.netlify.app/images/product/01.webp"
-        },
-        {
-            id: 2,
-            name: "Tops and skirt set for ...",
-            description: "Women's exclusive sum...",
-            category: "womans", 
-            brand: "richman",
-            oldPrice: "$21.00",
-            newPrice: "$21.00",
-            stock: 380,
-            rating: "4.9(16)",
-            sales: "$38k",
-            image: "https://mironcoder-hotash.netlify.app/images/product/01.webp"
-        },
-        {
-            id: 3,
-            name: "Tops and skirt set for ...",
-            description: "Women's exclusive sum...",
-            category: "womans",
-            brand: "richman", 
-            oldPrice: "$21.00",
-            newPrice: "$21.00",
-            stock: 380,
-            rating: "4.9(16)",
-            sales: "$38k",
-            image: "https://mironcoder-hotash.netlify.app/images/product/01.webp"
-        },
-        {
-            id: 4,
-            name: "Tops and skirt set for ...",
-            description: "Women's exclusive sum...",
-            category: "womans",
-            brand: "richman",
-            oldPrice: "$21.00", 
-            newPrice: "$21.00",
-            stock: 380,
-            rating: "4.9(16)",
-            sales: "$38k",
-            image: "https://mironcoder-hotash.netlify.app/images/product/01.webp"
+    const openDeleteDialog = (id) =>{
+        setDeleteID(id)
+        setDeleteDialogOpen(true)
+    }
+    const closeDeleteDialog = () =>{
+        setDeleteDialogOpen(false)
+        setDeleteID(null)
+    }
+    //Hàm xóa sản phẩm
+    const deleteProduct = async () =>{
+        if(!deleteID){
+            context.showSnackbar("No product selected for deletion", "warning")
+            return
         }
-    ];
+        setDeleteLoading(true)
+        try{
+            console.log('Deleting product with ID:', deleteID);
+            await deleteData(`/api/products/${deleteID}`) //Gọi API xóa sản phẩm 
+            //Cập nhật lại danh sách sản phẩm
+            const updatedProducts = await fetchDataFromApi(`/api/products?page=${page}`);
+            if (updatedProducts.data.length === 0) {
+              setProductList([]);
+              setPage(1);
+              context.showSnackbar("All products have been deleted.", "info");
+            } else {
+              setProductList(updatedProducts.data);
+            }
+            //Đóng dialog
+            
+            closeDeleteDialog()
+            context.showSnackbar("Product deleted successfully", "success")
+        }catch(error){
+            let errorMessage = 'Failed to delete product. ';
+            //Xử lílet errorMessage = 'Failed to delete product. ';
+            if (error.response?.data?.message) {
+                errorMessage += error.response.data.message;
+            } else if (error.response?.status === 404) {
+                errorMessage += 'Product not found.';
+            } else if (error.response?.status === 400) {
+                errorMessage += 'Cannot delete this product.';
+            } else if (error.response?.status >= 500) {
+                errorMessage += 'Server error. Please try again later.';
+            } else {
+                errorMessage += 'Please try again.';
+            }
+            context.showSnackbar(errorMessage, 'error'); 
+        }finally{
+            setDeleteLoading(false) //tắt loading
+        }
+    }
+    //Lấy danh sách Category
+    useEffect(() => {
+        fetchDataFromApi(`/api/category?all=true`).then((res)=>{
+            setCategoryList(res.categoryList || [])
+        }).catch((error)=>{
+            context.showSnackbar('Failed to load categories', 'error');
+        })
+    }, [])
 
+    useEffect(() => {
+      fetchDataFromApi("/api/category?all=true").then(res => {
+        setCategories(res.categoryList || []);
+      }).catch(() => {
+        context.showSnackbar('Failed to load categories', 'error');
+      });
+    }, []);
+    
+    
+    //Lọc theo Category
+    useEffect(()=>{
+        let url = `/api/products?page=${page}`
+        if(CatBy){
+            url+= `&category=${CatBy}`
+        }
+        if(showBy){
+            url+= `&perPage=${showBy}`
+        }
+        fetchDataFromApi(url).then((res)=>{
+            setProductList(res.data || [])
+            setTotalPages(res.totalPages || 1)
+        }).catch((error)=>{
+            context.showSnackbar('Failed to load products', 'error');
+        })
+    }, [CatBy, page, showBy])
+    
     return (
         <>
             <div className="right-content w-100">
@@ -157,7 +224,7 @@ const Products = () => {
                             <FormControl size="small" className="w-100">
                                 <Select
                                     value={showBy}
-                                    onChange={(e) => setshowBy(e.target.value)}
+                                    onChange={(e) => setShowBy(e.target.value)}
                                     displayEmpty
                                     inputProps={{ 'aria-label': 'Without label' }}
                                     className="w-100"
@@ -165,9 +232,9 @@ const Products = () => {
                                     <MenuItem value="">
                                         <em>None</em>
                                     </MenuItem>
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
+                                    <MenuItem value={5}>5</MenuItem>
+                                    <MenuItem value={10}>10</MenuItem>
+                                    <MenuItem value={20}>20</MenuItem>
                                 </Select>
                             </FormControl>
                         </div>
@@ -186,10 +253,12 @@ const Products = () => {
                                     <MenuItem value="">
                                         <em>None</em>
                                     </MenuItem>
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
-                                </Select>
+                                    {categories.map(cat => (
+                                        <MenuItem key={cat._id} value={cat._id}>
+                                        {cat.name}
+                                        </MenuItem>
+                                    ))}
+                                    </Select>
                             </FormControl>
                         </div>
                     </div>
@@ -202,72 +271,120 @@ const Products = () => {
                                     <th>UID</th>
                                     <th>PRODUCT</th>
                                     <th>CATEGORY</th>
+                                    <th>SUBCATEGORY</th>
                                     <th>BRAND</th>
                                     <th>PRICE</th>
-                                    <th>STOCK</th>
+                                    <th>IS FEATURED</th>
                                     <th>RATING</th>
-                                    <th>ORDER</th>
-                                    <th>SALES</th>
+                                    <th>STOCK</th>
                                     <th>ACTION</th>
+                                    <th>DATE CREATED</th>
+                                  
                                 </tr>
                             </thead>
                             
                             {/* BODY */}
                             <tbody>
-                                {products.map((product, index) => (
-                                    <tr key={product.id}>
+                                {productList?.length!==0 && productList?.map((product, index) => (
+                                    <tr key={product._id}>
                                         <td>
                                             <div className="d-flex align-items-center">
                                                 <input type="checkbox" className="mr-2" />
-                                                #{product.id}
+                                                #{index+1}
                                             </div>
                                         </td>
                                         <td>
                                             <div className="d-flex align-items-center productBox">
                                                 <div className="imgWrapper">
                                                     <div className="img">
-                                                        <img src={product.image} className="w-100" alt={product.name} />
+                                                        <img src={product.images[0]} className="w-100" alt={product.name} />
                                                     </div>
                                                 </div>
-                                                <div className="info pl-3">
+                                                <div className="info pl-3 product-info">
                                                     <h6>{product.name}</h6>
                                                     <p>{product.description}</p>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{product.category}</td>
+                                        <td>{product.category?.name}</td>
+                                        <td>
+                                            {Array.isArray(product.subCat) && product.subCat.length > 0 ? (
+                                              product.subCat.map((sub, idx) => (
+                                                <span key={idx} style={{
+                                                  display: 'inline-block',
+                                                  background: '#e3f2fd',
+                                                  color: '#1976d2',
+                                                  borderRadius: '16px',
+                                                  padding: '4px 16px',
+                                                  fontSize: '15px',
+                                                  marginRight: 8,
+                                                  marginBottom: 2,
+                                                  fontWeight: 500
+                                                }}>{sub}</span>
+                                              ))
+                                            ) : product.subCat ? (
+                                              <span style={{
+                                                display: 'inline-block',
+                                                background: '#e3f2fd',
+                                                color: '#1976d2',
+                                                borderRadius: '16px',
+                                                padding: '4px 16px',
+                                                fontSize: '15px',
+                                                marginRight: 8,
+                                                marginBottom: 2,
+                                                fontWeight: 500
+                                              }}>{product.subCat}</span>
+                                            ) : (
+                                              <span>—</span>
+                                            )}
+                                        </td>
                                         <td>{product.brand}</td>
                                         <td>
                                             <span className="oldPrice">{product.oldPrice}</span>
-                                            <span className="newPrice">{product.newPrice}</span>
+                                            <span className="newPrice">{product.price}</span>
                                         </td>
-                                        <td>{product.stock}</td>
+                                        <td className="d-flex align-items-center justify-content-center">{product.isFeatured ? "Yes" : "No"} </td>
                                         <td>
                                             <div className="d-flex align-items-center">
                                                 <div className="rating-stars">
                                                     {[...Array(5)].map((_, i) => (
-                                                        <span key={i} className={i < 4 ? "star filled" : "star"}>★</span>
+                                                        <span key={i} className={i < product.rating ? "star filled" : "star"}>★</span>
                                                     ))}
                                                 </div>
-                                                <span className="ml-2">{product.rating}</span>
                                             </div>
                                         </td>
-                                        <td>{product.stock}</td>
-                                        <td>{product.sales}</td>
+                                        <td className="d-flex align-items-center justify-content-center">{product.countInStock}</td>
+                                        
                                         <td>
                                             <div className="actions d-flex align-items-center">
-                                                <Link to="/products/details">
-                                                 <Button className="secondary mr-1" color="secondary">
-                                                    <IoEyeSharp />
-                                                </Button>
-                                                </Link>
-                                                <Button className="success mr-1" color="success">
+                                            <Link to={`/products/details/${product._id}`}>
+                                            <Button className="secondary mr-1" color="secondary">
+                                                <IoEyeSharp />
+                                            </Button>
+                                            </Link>
+                                               <Link to = {`/products/edit/${product._id}`}>
+                                               <Button 
+                                                className="success mr-1" 
+                                                color="success"
+                                                >
                                                     <MdEdit />
                                                 </Button>
-                                                <Button className="error" color="error">
+                                                </Link>
+                                                <Button 
+                                                className="error" 
+                                                color="error"
+                                                onClick={()=>openDeleteDialog(product._id)}
+
+                                                >
                                                     <MdDelete />
                                                 </Button>
                                             </div>
+                                            
+                                        </td>
+                                        <td>
+                                        {product.dateCreated
+                                            ? new Date(product.dateCreated).toLocaleDateString('vi-VN')
+                                            : ''}
                                         </td>
                                     </tr>
                                 ))}
@@ -276,18 +393,32 @@ const Products = () => {
                         
                         {/* PAGINATION */}
                         <div className="d-flex tableFooter">
-                            <p>Showing <b>4</b> of <b>50</b> products</p>
+
                             <Pagination 
-                                count={50} 
+                                count={totalPages} 
+                                page={page}
+                                onChange={(event,value)=>handleChange(event,value)}
                                 color="primary" 
                                 className="pagination ml-auto"
                                 showFirstButton 
                                 showLastButton 
+
                             />
                         </div>
                     </div>
                 </div>
             </div>
+            
+            <DeleteConfirmDialog
+                open={deleteDialogOpen}
+                onClose={closeDeleteDialog}
+                onConfirm={deleteProduct}
+                loading={deleteLoading}
+                title="Confirm Delete"
+                content="Are you sure you want to delete this product? This action cannot be undone."
+                confirmText="Delete"
+                cancelText="Cancel"
+            />
             </>
     )}
 export default Products

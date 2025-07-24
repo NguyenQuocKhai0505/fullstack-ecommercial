@@ -5,7 +5,6 @@ import { emphasize, styled } from "@mui/material/styles";
 import { IoHomeSharp } from "react-icons/io5";
 import { MdExpandMore } from "react-icons/md";
 import Slider from "react-slick";
-
 // Import CSS cho slick carousel
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -24,7 +23,9 @@ import Admin from "../../assets/images/admin.png"
 import Rating from '@mui/material/Rating';
 import Button from '@mui/material/Button';
 import { FaReplyAll } from "react-icons/fa";
-
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { fetchDataFromApi } from "../../utils/api"; 
 // Breadcrumb styled component
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
   const backgroundColor = 
@@ -51,29 +52,18 @@ const ProductDetails = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const mainSliderRef = useRef(null);
     const thumbSliderRef = useRef(null);
+    const {id} = useParams();
+    const [productInformation, setProductInformation] = useState(null);
 
-    // Dữ liệu sản phẩm mẫu
-    const productData = {
-        name: "Formal suit for men wedding slim fit 3 piece dress business party jacket",
-        brand: "Premium Suits",
-        category: ["SUITE", "PARTY", "DRESS", "SMART", "MAN"],
-        tags: "Formal, Wedding, Business",
-        colors: "Black, Navy, Gray",
-        size: "S, M, L, XL, XXL",
-        price: "$299.99",
-        stock: "In Stock (25 items)",
-        reviews: "4.5/5 (128 reviews)",
-        published: "2024-01-15"
-    };
-
-    const productImages = [
-        "https://mironcoder-hotash.netlify.app/images/product/single/01.webp",
-        "https://mironcoder-hotash.netlify.app/images/product/single/02.webp",
-        "https://mironcoder-hotash.netlify.app/images/product/single/03.webp",
-        "https://mironcoder-hotash.netlify.app/images/product/single/04.webp",
-        "https://mironcoder-hotash.netlify.app/images/product/single/05.webp"
-    ];
-
+    useEffect(() => {
+        fetchDataFromApi(`/api/products/${id}`).then((res)=>{
+            setProductInformation(res.data || res)
+            // console.log(res.data)
+            // console.log(res)
+        }).catch((error)=>{
+            console.error('Error fetching product details:', error);
+        })
+    }, [id])
     // Slider chính
     const productSliderOptions = {
         dots: true,
@@ -151,6 +141,15 @@ const ProductDetails = () => {
             </div>
         </div>
     );
+    // function getDiscountPercent(oldPrice, price){
+    //     if(!oldPrice || !price || oldPrice <= price) return 0;
+    //     return Math.round(((oldPrice - price) / oldPrice) * 100);
+    // }
+    // const discountPercent = getDiscountPercent(productInformation.oldPrice, productInformation.price);
+
+    if (!productInformation) return <div>Loading...</div>;
+
+    const productImages = productInformation.images || [];
 
     return (
         <>
@@ -238,62 +237,56 @@ const ProductDetails = () => {
                         <div className="col-md-7">
                             <div className="pt-3 pb-3 pl-4 pr-4">
                                 <h5 className="mb-3">Product Details</h5>
-                                <h4 className="mb-4">{productData.name}</h4>
+                                <h4 className="mb-4">{productInformation.name}</h4>
                                 
                                 <div className="productInfo">
                                     <ProductInfoRow 
                                         icon={<TbBrandCodesandbox />}
                                         label="Brand"
-                                        value={productData.brand}
+                                        value={productInformation.brand}
                                     />
                                     
                                     <ProductInfoRow 
                                         icon={<BiCategory />}
                                         label="Category"
-                                        value={productData.category}
+                                        value={
+                                            productInformation.category && productInformation.category.name
+                                                ? [productInformation.category.name]
+                                                : ["No Category"]
+                                        }
                                         isCategory={true}
                                     />
-                                    
-                                    <ProductInfoRow 
-                                        icon={<IoPricetagsOutline />}
-                                        label="Tags"
-                                        value={productData.tags}
-                                    />
-                                    
-                                    <ProductInfoRow 
-                                        icon={<IoColorPaletteOutline />}
-                                        label="Colors"
-                                        value={productData.colors}
-                                    />
-                                    
+
                                     <ProductInfoRow 
                                         icon={<PiResizeDuotone />}
-                                        label="Size"
-                                        value={productData.size}
+                                        label="Price"
+                                        value={productInformation.price}
                                     />
                                     
                                     <ProductInfoRow 
                                         icon={<MdOutlinePriceChange />}
-                                        label="Price"
-                                        value={productData.price}
+                                        label="Old Price"
+                                        value={productInformation.oldPrice}
                                     />
+
+                                     {/* <ProductInfoRow 
+                                        icon={<IoPricetagsOutline />}
+                                        label="Discount Percentage"
+                                        value={`${discountPercent}%`}
+                                    /> */}
                                     
                                     <ProductInfoRow 
                                         icon={<AiOutlineStock />}
                                         label="Stock"
-                                        value={productData.stock}
-                                    />
-                                    
-                                    <ProductInfoRow 
-                                        icon={<MdOutlineReviews />}
-                                        label="Reviews"
-                                        value={productData.reviews}
+                                        value={productInformation.countInStock}
                                     />
                                     
                                     <ProductInfoRow 
                                         icon={<MdPublishedWithChanges />}
                                         label="Published"
-                                        value={productData.published}
+                                        value={productInformation.dateCreated
+                                            ? new Date(productInformation.dateCreated).toLocaleDateString('vi-VN')
+                                            : ''}
                                     />
                                 </div>
                             </div>
@@ -302,10 +295,7 @@ const ProductDetails = () => {
                         {/* Product Description */}
                         <div className='p-4 pb-2'>
                             <h5 className='mr-4 mt-4 mb-3'>Product Description</h5>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                                when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap
-                                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
-                                and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                            <p>{productInformation.description}</p>
 
                                 <br/>
                                 {/* Rating */}

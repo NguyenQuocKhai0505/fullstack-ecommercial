@@ -7,19 +7,30 @@ import Sidebar from './components/Sidebar';
 import { createContext, useEffect, useState } from 'react';
 import LogIn from './pages/LogIn';
 import SignUp from './pages/SignUp';
-import ProductDetails from './pages/ProductDetails';
+import ProductDetails from './pages/Products/ProductDetails';
 import Products from './pages/Products';
-import ProductUpload from './pages/ProductUpload';
-import CategoryAdd from './pages/CategoryAdd';
 import Category from './pages/Category';
-
+import { SnackbarProvider, useSnackbar } from 'notistack';
+// Sửa import - dùng Alert từ Material-UI thay vì Bootstrap
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert'; // Sửa import này
+import AddCategory from './pages/Category/AddCategory';
+import EditCategory from './pages/Category/EditCategory';
+import AddProducts from './pages/Products/AddProducts';
+import EditProducts from './pages/Products/EditProducts';
+import AddSubCategory from "./pages/SubCategory/addSubCategory"
 const MyContext = createContext()
 function App() {
-
   const [isToggleSidebar,setisToggleSidebar] = useState(false)
   const [isLogin, setIsLogin] = useState(true)
   const [isHiddenSidebarAndHeader, setisHiddenSidebarAndHeader] = useState(false)
   const [themeMode, setThemeMode] = useState(true)
+  const [open, setOpen] = useState(false);
+
+   // Thêm state cho message và severity
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
   // Chế độ light/dark mode
   useEffect(() => {
     if (themeMode === true) {
@@ -34,7 +45,19 @@ function App() {
     
   }, [themeMode])
   
-
+   const handleClose = (event,reason)=>{
+    if(reason ==="clickaway"){
+        return
+    }
+        setOpen(false)
+   }
+   // Thêm function để show snackbar
+  const showSnackbar = (message, severity = 'success') => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity(severity);
+    setOpen(true);
+  }
+   
   const values={
     isToggleSidebar,
     setisToggleSidebar,
@@ -43,12 +66,28 @@ function App() {
     isHiddenSidebarAndHeader,
     setisHiddenSidebarAndHeader,
     themeMode,
-    setThemeMode
+    setThemeMode,
+    showSnackbar,
   }
   return (
       <BrowserRouter>
       <MyContext.Provider value={values}>
-           {/* Hidden Header*/}
+       <Snackbar 
+          open={open} 
+          autoHideDuration={6000} 
+          onClose={handleClose}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={snackbarSeverity}
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
+        {/* Hidden Header*/}
         {
           isHiddenSidebarAndHeader !==true &&
           <Header/>
@@ -69,10 +108,13 @@ function App() {
                 <Route exact={true} path="/login" element={<LogIn/>}/>
                 <Route exact={true} path="/signUp" element={<SignUp/>}/>
                 <Route exact={true} path="/products" element={<Products/>}/>
-                <Route exact={true} path="/products/details" element={<ProductDetails/>}/>
-                <Route exact={true} path="/products/upload" element={<ProductUpload/>}/>
-                  <Route exact={true} path="/category" element={<Category/>}/>
-                <Route exact={true} path="/category/add" element={<CategoryAdd/>}/>
+                <Route exact={true} path="/products/details/:id" element={<ProductDetails/>}/>
+                <Route exact={true} path="/products/upload" element={<AddProducts/>}/>
+                <Route exact={true} path="/products/edit/:id" element={<EditProducts/>}/>
+                <Route exact={true} path="/category" element={<Category/>}/>
+                <Route exact={true} path="/category/add" element={<AddCategory/>}/>
+                <Route exact={true} path="/category/edit/:id" element={<EditCategory/>}/>
+                <Route exact={true} path="/subCategory/create" element={<AddSubCategory/>}/>
              </Routes>
             </div>
           </div>
