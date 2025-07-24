@@ -15,7 +15,6 @@ const AddCategory = () => {
     const [formFields, setFormFields] = useState({
         name: "",
         images: [],
-        subCat:"",
         color: ""
     });
     const [uploadedImages, setUploadedImages] = useState([]);
@@ -89,7 +88,7 @@ const AddCategory = () => {
    // Submit
    const addCategory = async (e) => {
     e.preventDefault();
-    if (!formFields.name || uploadedImages.length === 0 || !formFields.color || !formFields.subCat) {
+    if (!formFields.name || uploadedImages.length === 0 || !formFields.color) {
       setError(true);
       context.showSnackbar("Please fill all the fields", "warning");
       return;
@@ -98,16 +97,9 @@ const AddCategory = () => {
     setError(false);
     
     try {
-      // Tách subCat thành mảng
-      const subCatArr = formFields.subCat
-        .split(',')
-        .map(s => s.trim())
-        .filter(Boolean);
-
       const categoryData = {
         name: formFields.name,
         color: formFields.color,
-        subCat: subCatArr, // Gửi lên là mảng
         images: uploadedImages.map(img => img.url)
       };
         
@@ -134,10 +126,6 @@ const AddCategory = () => {
         <div className="form-group">
           <h6>CATEGORY NAME</h6>
           <input type="text" placeholder="Type here" name="name" onChange={changeInput} />
-        </div>
-        <div className="form-group">
-          <h6>SUB CATEGORY</h6>
-          <input type="text" placeholder="Type here" name="subCat" onChange={changeInput} />
         </div>
         <div className="form-group pb-3">
           <h6>IMAGES</h6>

@@ -16,6 +16,7 @@ import { MdImage } from "react-icons/md";
 import { MdClose } from "react-icons/md";
 import { useEffect } from "react";
 import { MyContext } from "../../App";
+import { useNavigate} from "react-router-dom";
 import { fetchDataFromApi, postData } from "../../utils/api";
 
 // Breadcrumb styled component
@@ -48,6 +49,7 @@ const ProductUpload = () =>{
   const [uploadedImages, setUploadedImages] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
   const fileInputRef = useRef(null);
+  const history = useNavigate();
   const [catData, setCatData] = useState([]);
   const [isLoading,setIsLoading]=  useState(false)
   const [formFields,setFormFields] = useState({
@@ -173,11 +175,11 @@ const ProductUpload = () =>{
        return;
      }
      setIsLoading(true)
-     console.log(formFields)
      postData("/api/products/create",formFields).then((res)=>{
       setIsLoading(false);
       if(res.success){
         context.showSnackbar("Product added successfully", "success")
+        setTimeout(()=>history("/products"),1000)
       }else{
         context.showSnackbar("Product added failed", "error")
       }

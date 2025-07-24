@@ -16,7 +16,6 @@ const EditCategory = () => {
     const [formFields,setFormFields] = useState({
         name:"",
         images:[],
-        subCat:"",
         color:""
     })
     const [uploadedImages,setUploadedImages] = useState([])
@@ -35,7 +34,6 @@ const EditCategory = () => {
                     setFormFields({
                         name: category.name || "",
                         images: category.images || [],
-                        subCat:category.subCat || "",
                         color: category.color || ""
                     });
                     // Convert existing images to uploadedImages format
@@ -124,7 +122,7 @@ const EditCategory = () => {
     //Submit Update 
     const updateCategory = async(e)=>{
         e.preventDefault();
-        if(!formFields.name || !formFields.color ||uploadedImages.length===0 || !formFields.subCat) {
+        if(!formFields.name || !formFields.color ||uploadedImages.length===0 ) {
             setError(true)
             context.showSnackbar("Please fill all the fields", "warning");
             return;
@@ -133,10 +131,10 @@ const EditCategory = () => {
           setError(false)
 
           try{
+           
             const categoryData ={
                 name:formFields.name,
                 color:formFields.color,
-                subCat: formFields.subCat,
                 images: uploadedImages.map(img=>img.url)  //Gửi tất cả các images dưới dạng base64 hoặc url
             }
             const response = await editData(`/api/category/${id}`,categoryData)
@@ -166,18 +164,7 @@ const EditCategory = () => {
                         value={formFields.name}
                         onChange={changeInput} 
                     />
-                </div>
-                <div className="form-group">
-                    <h6>SUB CATEGORY</h6>
-                    <input 
-                        type="text" 
-                        placeholder="Type here" 
-                        name="subCat" 
-                        value={formFields.subCat}
-                        onChange={changeInput} 
-                    />
-                </div>
-                
+                </div>         
                 <div className="form-group pb-3">
                     <h6>IMAGES</h6>
                     <div style={{ display: 'flex', gap: 8 }}>

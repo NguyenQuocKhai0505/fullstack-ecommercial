@@ -124,7 +124,6 @@ router.post("/create", async (req, res) => {
     let category = new Category({
       name: req.body.name,    // Tên category
       images: imgurl,         // Mảng URL các ảnh đã upload
-      subCat: req.body.subCat,
       color: req.body.color   // Màu sắc của category
     });
 
@@ -216,10 +215,6 @@ router.put("/:id", async (req, res) => {
     // Chỉ thêm các field cần thiết
     if (req.body.name) {
       updateData.name = req.body.name;
-    }
-    
-    if (req.body.subCat) {
-      updateData.subCat = req.body.subCat;
     }
     
     if (req.body.color) {

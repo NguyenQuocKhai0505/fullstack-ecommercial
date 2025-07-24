@@ -4,10 +4,6 @@ const categorySchema = mongoose.Schema({
         type:String,
         require: true
     },
-    subCat: [{
-        type: String,
-        required: true
-      }],
     images:[
         {
             type:String,

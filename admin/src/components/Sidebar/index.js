@@ -11,6 +11,8 @@ import { Link } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { SlLogout } from "react-icons/sl";
 import { MyContext } from '../../App';
+import { MdCategory } from "react-icons/md";
+import { DiSublime } from "react-icons/di";
 const Sidebar = () =>{
 
     const [activeTab,setActiveTab] = useState(0)
@@ -55,7 +57,7 @@ const Sidebar = () =>{
               <ul>
                <li>
                     <Button className={`w-100 ${activeTab===2  ? "active":' '}`}onClick={()=>isOpenSubmenu(2)}>
-                    <span className='icon'><FaProductHunt /></span>Category 
+                    <span className='icon'><MdCategory /></span>Category 
                     <span className='arrow'><FaAngleRight /></span>
                     </Button>
                     {/* Product Menu */}
@@ -63,6 +65,22 @@ const Sidebar = () =>{
                     <ul className='submenu'>
                         <li><Link to="/category">Category List</Link></li>
                         <li><Link to="/category/add">Add A Category</Link></li>
+                    </ul>
+                    </div>
+               </li> 
+            </ul>
+            {/* Sub category */}
+            <ul>
+               <li>
+                    <Button className={`w-100 ${activeTab===3  ? "active":' '}`}onClick={()=>isOpenSubmenu(3)}>
+                    <span className='icon'><DiSublime /></span>Sub Category 
+                    <span className='arrow'><FaAngleRight /></span>
+                    </Button>
+                    {/* Product Menu */}
+                    <div className={`submenuWrapper ${activeTab===3 && isToggleSubmenu==true ? "colapse":"colapsed"}`}>
+                    <ul className='submenu'>
+                        <li><Link to="/subCategory">Sub Category</Link></li>
+                        <li><Link to="/subCategory/create">Add A Category</Link></li>
                     </ul>
                     </div>
                </li> 

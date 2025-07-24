@@ -18,10 +18,11 @@ app.use(express.static(__dirname));
 //Route
 const categoryRoutes = require("./routes/categories")
 const productRoutes = require("./routes/products")
+const subcatRoutes = require("./routes/subcat")
 
 app.use("/api/category",categoryRoutes)
 app.use("/api/products",productRoutes)
-
+app.use("/api/subCategory",subcatRoutes)
 //Database
 mongoose.connect(process.env.CONNECTION_STRING, {
     useNewUrlParser: true,
