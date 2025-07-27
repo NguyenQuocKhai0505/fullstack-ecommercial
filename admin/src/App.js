@@ -19,6 +19,8 @@ import EditCategory from './pages/Category/EditCategory';
 import AddProducts from './pages/Products/AddProducts';
 import EditProducts from './pages/Products/EditProducts';
 import AddSubCategory from "./pages/SubCategory/addSubCategory"
+import SubCategory from './pages/SubCategory/index';
+import EditSubCategory from '../src/pages/SubCategory/EditSubCategory';
 const MyContext = createContext()
 function App() {
   const [isToggleSidebar,setisToggleSidebar] = useState(false)
@@ -114,7 +116,9 @@ function App() {
                 <Route exact={true} path="/category" element={<Category/>}/>
                 <Route exact={true} path="/category/add" element={<AddCategory/>}/>
                 <Route exact={true} path="/category/edit/:id" element={<EditCategory/>}/>
-                <Route exact={true} path="/subCategory/create" element={<AddSubCategory/>}/>
+                <Route exact={true} path="/subcat" element={<SubCategory/>}/>
+                <Route exact={true} path="/subcat/create" element={<AddSubCategory/>}/>
+                <Route exact={true} path="/subcat/edit/:id" element={<EditSubCategory/>}/>
              </Routes>
             </div>
           </div>

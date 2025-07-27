@@ -16,11 +16,36 @@ router.post("/create", async (req, res) => {
     }
 });
 
-// GET "/"
+// GET "/" - Lấy tất cả subcategories hoặc filter theo category
 router.get("/", async (req, res) => {
     try {
-        const subcats = await SubCategory.find().populate("category"); // KHÔNG có new
+        let filter = {};
+        
+        // Nếu có query category, filter theo category
+        if (req.query.category) {
+            filter.category = req.query.category;
+        }
+        
+        const subcats = await SubCategory.find(filter).populate("category");
         res.json({ success: true, subcats });
+    } catch (err) {
+        res.status(400).json({ success: false, message: err.message });
+    }
+});
+
+// GET "/:id" - Lấy subcategory theo ID
+router.get("/:id", async (req, res) => {
+    try {
+        const subCat = await SubCategory.findById(req.params.id).populate("category");
+        
+        if (!subCat) {
+            return res.status(404).json({
+                success: false,
+                message: "Subcategory not found"
+            });
+        }
+        
+        res.json({ success: true, subCat });
     } catch (err) {
         res.status(400).json({ success: false, message: err.message });
     }

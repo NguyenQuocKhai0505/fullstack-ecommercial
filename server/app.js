@@ -22,7 +22,7 @@ const subcatRoutes = require("./routes/subcat")
 
 app.use("/api/category",categoryRoutes)
 app.use("/api/products",productRoutes)
-app.use("/api/subCategory",subcatRoutes)
+app.use("/api/subcat",subcatRoutes)
 //Database
 mongoose.connect(process.env.CONNECTION_STRING, {
     useNewUrlParser: true,

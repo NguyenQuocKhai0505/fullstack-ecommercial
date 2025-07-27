@@ -169,10 +169,37 @@ const ProductUpload = () =>{
   const addProduct = (e) => {
      e.preventDefault()
      // Validate các trường bắt buộc
-     if (!formFields.name || !formFields.description || !formFields.price || !formFields.category ||!formFields.subCat|| !formFields.brand ||
-       !formFields.countInStock || !formFields.rating || !formFields.isFeatured || !formFields.images || !formFields.oldPrice) {
-       context.showSnackbar("Please fill in all required fields ", "error");
-       return;
+     if (!formFields.name.trim()) {
+        context.showSnackbar("Product name is required", "warning");
+        return;
+     }
+     if (!formFields.description.trim()) {
+        context.showSnackbar("Product description is required", "warning");
+        return;
+     }
+     if (!formFields.category) {
+        context.showSnackbar("Please select a category", "warning");
+        return;
+     }
+     if (!formFields.subCat) {
+        context.showSnackbar("Please select a subcategory", "warning");
+        return;
+     }
+     if (!formFields.price || formFields.price <= 0) {
+        context.showSnackbar("Please enter a valid price", "warning");
+        return;
+     }
+     if (!formFields.brand.trim()) {
+        context.showSnackbar("Brand is required", "warning");
+        return;
+     }
+     if (!formFields.countInStock || formFields.countInStock < 0) {
+        context.showSnackbar("Please enter valid stock quantity", "warning");
+        return;
+     }
+     if (formFields.images.length === 0) {
+        context.showSnackbar("Please upload at least one image", "warning");
+        return;
      }
      setIsLoading(true)
      postData("/api/products/create",formFields).then((res)=>{
@@ -189,10 +216,25 @@ const ProductUpload = () =>{
   })
 }
 
-  // Lấy subCats của category đã chọn
-  const selectedCategory = catData.find(cat => cat._id === categoryVal);
-  const subCats = selectedCategory?.subCat || [];
-
+  // Lấy subCats của category đã chọn từ database
+  const [subCategories, setSubCategories] = useState([]);
+  // useEffect để fetch subcategories khi category thay đổi
+  useEffect(() => {
+    if (categoryVal) {
+        fetchDataFromApi(`/api/subcat?category=${categoryVal}`).then(res => {
+            if (res && res.subcats) {
+                setSubCategories(res.subcats); // ✅ Lưu toàn bộ object
+            } else {
+                setSubCategories([]);
+            }
+        }).catch(error => {
+            console.error('Error fetching subcategories:', error);
+            setSubCategories([]);
+        });
+    } else {
+        setSubCategories([]);
+    }
+}, [categoryVal]);
   
     return(
       
@@ -339,15 +381,16 @@ const ProductUpload = () =>{
                                   }));
                                 }}
                                 displayEmpty
-                                inputProps={{ 'aria-label': 'Without label', name: 'subCat' }}
                                 className="w-100"
-                                disabled={!categoryVal || subCats.length === 0}
+                                disabled={!categoryVal || subCategories.length === 0}
                               >
                                 <MenuItem value="">
-                                  <em>None</em>
+                                  <em>Select subcategory</em>
                                 </MenuItem>
-                                {subCats.map((sub, idx) => (
-                                  <MenuItem value={sub} key={idx}>{sub}</MenuItem>
+                                {subCategories.map((subCat) => (
+                                    <MenuItem value={subCat._id} key={subCat._id}>
+                                        {subCat.subCategory}
+                                    </MenuItem>
                                 ))}
                               </Select>
                             </div>

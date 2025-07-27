@@ -28,8 +28,8 @@ const Products = () => {
     //State để lấy Category
     const [categoryList, setCategoryList] = useState([])
     const [categories, setCategories] = useState([]);
-
-
+    // State để lấy subCategory
+    const [allSubCategories, setAllSubCategories] = useState([]);
     //State cho xác nhận xóa 
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
     const [deleteID, setDeleteID] = useState(null)
@@ -63,7 +63,12 @@ const Products = () => {
       const handleChange = (event, value) => {
         setPage(value); // chỉ cần đổi page, useEffect sẽ tự động gọi API
       };
-    
+    useEffect(()=>{
+        fetchDataFromApi(`/api/subcat`).then(res=>{
+            setAllSubCategories(res.subcats ||[])
+            // console.log('All subcategories:', res.subcats); // kiểm tra dữ liệu
+        })
+    })
 
     const openDeleteDialog = (id) =>{
         setDeleteID(id)
@@ -308,35 +313,32 @@ const Products = () => {
                                         </td>
                                         <td>{product.category?.name}</td>
                                         <td>
-                                            {Array.isArray(product.subCat) && product.subCat.length > 0 ? (
-                                              product.subCat.map((sub, idx) => (
-                                                <span key={idx} style={{
-                                                  display: 'inline-block',
-                                                  background: '#e3f2fd',
-                                                  color: '#1976d2',
-                                                  borderRadius: '16px',
-                                                  padding: '4px 16px',
-                                                  fontSize: '15px',
-                                                  marginRight: 8,
-                                                  marginBottom: 2,
-                                                  fontWeight: 500
-                                                }}>{sub}</span>
-                                              ))
-                                            ) : product.subCat ? (
-                                              <span style={{
-                                                display: 'inline-block',
-                                                background: '#e3f2fd',
-                                                color: '#1976d2',
-                                                borderRadius: '16px',
-                                                padding: '4px 16px',
-                                                fontSize: '15px',
-                                                marginRight: 8,
-                                                marginBottom: 2,
-                                                fontWeight: 500
-                                              }}>{product.subCat}</span>
-                                            ) : (
-                                              <span>—</span>
-                                            )}
+                                            {(() => {
+                                                if (Array.isArray(product.subCat)) {
+                                                  return product.subCat.map((subId, idx) => {
+                                                    const sub = allSubCategories.find(s => s._id === subId);
+                                                    
+                                                    return (
+                                                      <span key={idx} style={{
+                                                        display: 'inline-block',
+                                                        background: '#e3f2fd',
+                                                        color: '#1976d2',
+                                                        borderRadius: '16px',
+                                                        padding: '4px 16px',
+                                                        fontSize: '15px',
+                                                        marginRight: 8,
+                                                        marginBottom: 2,
+                                                        fontWeight: 500
+                                                      }}>
+                                                        {sub ? sub.subCategory : product.subCat}
+                                                      </span>
+                                                    );
+                                                  });
+                                                } else {
+                                                  const sub = allSubCategories.find(s => s._id === product.subCat);
+                                                  return sub ? sub.subCategory : <span>—</span>;
+                                                }
+                                              })()}
                                         </td>
                                         <td>{product.brand}</td>
                                         <td>
