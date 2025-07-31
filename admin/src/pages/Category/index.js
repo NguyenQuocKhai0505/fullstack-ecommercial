@@ -201,7 +201,7 @@ const Category = () => {
         setDeleteLoading(true);
         
         try {
-            await deleteData(`/api/category/${deleteID}`);
+            const response = await deleteData(`/api/category/${deleteID}`);
             
             // Refresh category list
             const updatedCategories = await fetchDataFromApi(`/api/category`);
@@ -210,8 +210,12 @@ const Category = () => {
             // Close dialog
             closeDeleteDialog();
             
-            // Success snackbar
-            context.showSnackbar('Category deleted successfully!', 'success');
+            // Success snackbar với thông tin cascade delete
+            let successMessage = 'Category deleted successfully!';
+            if (response.data && response.data.deletedSubCategoriesCount > 0) {
+                successMessage += ` ${response.data.deletedSubCategoriesCount} subcategories were also deleted.`;
+            }
+            context.showSnackbar(successMessage, 'success');
             
         } catch (error) {
             console.error('❌ Delete failed:', error);
@@ -464,7 +468,9 @@ const Category = () => {
                 </ConfirmDialogTitle>
                 <ConfirmDialogContent>
                     <ConfirmDialogContentText>
-                        Are you sure you want to delete this category? This action cannot be undone.
+                        Are you sure you want to delete this category? 
+                        <br/><br/>
+                        <strong>⚠️ Warning:</strong> All subcategories belonging to this category will also be deleted. This action cannot be undone.
                     </ConfirmDialogContentText>
                 </ConfirmDialogContent>
                 <ConfirmDialogActions>

@@ -49,13 +49,13 @@ const SubCategory = () => {
         } catch (error) {
             context.showSnackbar('Failed to load subcategories', 'error');
         }
-    }   
+   }   
     
     // Hàm lấy danh sách Categories từ API
     const fetchCategories = async() => {
         try {
             const res = await fetchDataFromApi(`/api/category?all=true`)
-            setCategories(res.categoryList || [])
+        setCategories(res.categoryList || [])
         } catch (error) {
             context.showSnackbar('Failed to load categories', 'error');
         }
@@ -180,7 +180,7 @@ const SubCategory = () => {
                 {/* BREADCRUMB */}
                 <div className="card shadow border-0 w-100 flex-row p-4 mb-3 breadcrumb-container">
                     <h5 className="mb-0">Sub Category List</h5>
-                    <Link to="/subcategory/add">
+                    <Link to="/subcat/add">
                         <Button className="ml-3 btn-big btn-blue btn-round">
                             Add New Sub Category
                         </Button>

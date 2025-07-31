@@ -40,6 +40,7 @@ const StyledBreadcrumb = styled(Chip)(({ theme }) => {
     },
   };
 });
+
 const ProductUpload = () =>{
   const [categoryVal, setCategoryVal] = useState('');
   const [subCategoryVal, setSubCategoryVal] = useState('');
@@ -160,10 +161,19 @@ const ProductUpload = () =>{
   };
 
   const inputChange = (e) => {
-    setFormFields(()=>({
-      ...formFields,
-      [e.target.name]:e.target.value
-    }))
+    const { name, value } = e.target;
+    console.log('Input change:', { name, value, type: typeof value });
+    
+    setFormFields(prev => {
+      const newFields = {
+        ...prev,
+        [name]: name === 'price' || name === 'oldPrice' || name === 'countInStock' 
+          ? parseFloat(value) || 0 
+          : value
+      };
+      console.log('Updated formFields:', newFields);
+      return newFields;
+    });
   }
 
   const addProduct = (e) => {
@@ -307,7 +317,14 @@ const ProductUpload = () =>{
                           <div className="col">
                             <div className="form-group">
                                 <h6>PRICE</h6>
-                                <input type="text" placeholder="Type here" name="price" onChange={inputChange}/>
+                                <input 
+                                  type="number" 
+                                  placeholder="Enter price" 
+                                  name="price" 
+                                  onChange={inputChange}
+                                  min="0"
+                                  step="0.01"
+                                />
                               </div>
                         </div>
 
@@ -317,7 +334,14 @@ const ProductUpload = () =>{
                             <div className="col">
                               <div className="form-group">
                               <h6>OLD PRICE</h6>
-                              <input type="text" placeholder="Type here" name="oldPrice" onChange={inputChange}/>
+                              <input 
+                                type="number" 
+                                placeholder="Enter old price" 
+                                name="oldPrice" 
+                                onChange={inputChange}
+                                min="0"
+                                step="0.01"
+                              />
                              </div>
                         </div>
                         {/* IS FEATURED */}
@@ -343,7 +367,13 @@ const ProductUpload = () =>{
                           <div className="col">
                             <div className="form-group">
                                 <h6>PRODUCT STOCK</h6>
-                                <input type="text" placeholder="Type here" name="countInStock" onChange={inputChange}/>
+                                <input 
+                                  type="number" 
+                                  placeholder="Enter stock quantity" 
+                                  name="countInStock" 
+                                  onChange={inputChange}
+                                  min="0"
+                                />
                               </div>
                         </div>
                         </div>

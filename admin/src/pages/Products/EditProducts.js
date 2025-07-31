@@ -65,8 +65,6 @@ const EditProducts =() =>{
         fetchDataFromApi("/api/category?all=true").then(res =>{
             if(res && Array.isArray(res.categoryList)){
                 setCatData(res.categoryList)
-                
-
             }else{
                 setCatData([])
             }
@@ -179,10 +177,19 @@ const EditProducts =() =>{
         };
       
         const inputChange = (e) => {
-          setFormFields(fields => ({
-            ...fields,
-            [e.target.name]: e.target.value
-          }));
+          const { name, value } = e.target;
+          console.log('Input change:', { name, value, type: typeof value });
+          
+          setFormFields(prev => {
+            const newFields = {
+              ...prev,
+              [name]: name === 'price' || name === 'oldPrice' || name === 'countInStock' 
+                ? parseFloat(value) || 0 
+                : value
+            };
+            console.log('Updated formFields:', newFields);
+            return newFields;
+          });
         };
 
         const editProduct = (e) =>{
@@ -276,7 +283,15 @@ const EditProducts =() =>{
                         <div className="col">
                           <div className="form-group">
                             <h6>PRICE</h6>
-                            <input type="text" placeholder="Type here" name="price" value={formFields.price} onChange={inputChange} />
+                            <input 
+                              type="number" 
+                              placeholder="Enter price" 
+                              name="price" 
+                              value={formFields.price} 
+                              onChange={inputChange}
+                              min="0"
+                              step="0.01"
+                            />
                           </div>
                         </div>
                       </div>
@@ -285,7 +300,15 @@ const EditProducts =() =>{
                         <div className="col">
                           <div className="form-group">
                             <h6>OLD PRICE</h6>
-                            <input type="text" placeholder="Type here" name="oldPrice" value={formFields.oldPrice} onChange={inputChange} />
+                            <input 
+                              type="number" 
+                              placeholder="Enter old price" 
+                              name="oldPrice" 
+                              value={formFields.oldPrice} 
+                              onChange={inputChange}
+                              min="0"
+                              step="0.01"
+                            />
                           </div>
                         </div>
                         {/* IS FEATURED */}
@@ -311,7 +334,14 @@ const EditProducts =() =>{
                         <div className="col">
                           <div className="form-group">
                             <h6>PRODUCT STOCK</h6>
-                            <input type="text" placeholder="Type here" name="countInStock" value={formFields.countInStock} onChange={inputChange} />
+                            <input 
+                              type="number" 
+                              placeholder="Enter stock quantity" 
+                              name="countInStock" 
+                              value={formFields.countInStock} 
+                              onChange={inputChange}
+                              min="0"
+                            />
                           </div>
                         </div>
                       </div>

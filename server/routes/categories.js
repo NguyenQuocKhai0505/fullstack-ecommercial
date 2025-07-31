@@ -148,19 +148,32 @@ router.post("/create", async (req, res) => {
 //ROUTER DELETE "/:id"
 router.delete("/:id", async (req, res) => {
   try {
-    const deleteUser = await Category.findByIdAndDelete(req.params.id);
+    // Import SubCategory model
+    const SubCategory = require('../models/subcategory');
     
-    if (!deleteUser) {
+    // Kiểm tra xem category có tồn tại không
+    const category = await Category.findById(req.params.id);
+    
+    if (!category) {
       return res.status(404).json({
         message: "Không tìm thấy danh mục!",
         success: false
       });
     }
     
+    // Xóa tất cả subcategories thuộc category này
+    const deletedSubCategories = await SubCategory.deleteMany({ category: req.params.id });
+    
+    // Xóa category
+    const deletedCategory = await Category.findByIdAndDelete(req.params.id);
+    
     res.status(200).json({
       success: true,
-      message: "Xóa danh mục thành công!",
-      data: deleteUser // Tùy chọn: trả về category đã xóa
+      message: `Xóa danh mục thành công! Đã xóa ${deletedSubCategories.deletedCount} subcategories.`,
+      data: {
+        category: deletedCategory,
+        deletedSubCategoriesCount: deletedSubCategories.deletedCount
+      }
     });
   } catch (error) {
     res.status(500).json({

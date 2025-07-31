@@ -342,8 +342,8 @@ const Products = () => {
                                         </td>
                                         <td>{product.brand}</td>
                                         <td>
-                                            <span className="oldPrice">{product.oldPrice}</span>
-                                            <span className="newPrice">{product.price}</span>
+                                            <span className="oldPrice">${product.oldPrice}</span>
+                                            <span className="newPrice">${product.price}</span>
                                         </td>
                                         <td className="d-flex align-items-center justify-content-center">{product.isFeatured ? "Yes" : "No"} </td>
                                         <td>
