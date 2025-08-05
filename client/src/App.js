@@ -12,6 +12,7 @@ import ProductModal from "./Components/Product Modal";
 import Cart from "./Pages/Cart";
 import SignIn from "./Pages/SignIn";
 import SignUp from "./Pages/SignUp";
+import ScrollToTop from "./Components/ScrollToTop";
 const MyContext = createContext();
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
     <>
       <BrowserRouter>
       <MyContext.Provider value ={values}>
+        <ScrollToTop />
         {
           isHeaderFooterShow === true && <Header />
         }

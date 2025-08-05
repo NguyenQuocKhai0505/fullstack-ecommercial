@@ -5,6 +5,7 @@ import { CiHeart } from "react-icons/ci";
 import { useContext, useState } from 'react';
 import { MyContext } from '../../App';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const ProductItem = (props) => {
     const context = useContext(MyContext)
@@ -28,13 +29,15 @@ const ProductItem = (props) => {
         <>
             <div className={`productItem ${props.itemView}`}>
                 <div className="imgWrapper">
+                <Link to={`/product/${product._id}`}>
                     <img 
                         src={product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/300x300?text=No+Image'} 
                         className="w-100"
                         alt={product.name || 'Product'}
                         loading="lazy"
                     />
-                    <h4>{product.name || 'Product Name'}</h4>
+                </Link>
+                    <Link to={`/product/${product._id}`}><h4>{product.name || 'Product Name'}</h4></Link>
                     {discount > 0 && <span className="badge badge-primary">{discount}%</span>}
                     <div className="actions">
                         <Button onClick={() => viewProductDetails(product._id)}>

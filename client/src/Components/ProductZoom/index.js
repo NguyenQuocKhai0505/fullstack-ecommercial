@@ -12,21 +12,32 @@ import item4 from "../../assets/images/itemDetails4.webp";
 import item5 from "../../assets/images/itemDetails5.webp";
 import item6 from "../../assets/images/itemDetails6.webp";
 import { useContext, useState } from "react";
-const ProductZoom =()=>{
+const ProductZoom =(props)=>{
     const [slideIndex, setSlideIndex] = useState(0);
     const [zoomSlider, setZoomSlider] = useState(null);
     const [zoomSliderBig, setZoomSliderBig] = useState(null);
+    const productData = props.product || {}
+    const images = productData.images || []
+    
     const goto = (index) => {
-    setSlideIndex(index);
-    zoomSlider?.slideTo(index);
-    zoomSliderBig?.slideTo(index);
-  };
+        setSlideIndex(index);
+        zoomSlider?.slideTo(index);
+        zoomSliderBig?.slideTo(index);
+    };
+    
+    // Calculate discount percentage
+    const calculateDiscount = () => {
+        if (productData.oldPrice && productData.price && productData.oldPrice > productData.price) {
+            return Math.round(((productData.oldPrice - productData.price) / productData.oldPrice) * 100)
+        }
+        return 0
+    }
 
-    const images = [item1, item2, item3, item4, item5, item6];
+    const discount = calculateDiscount()
     return(
             <div className="productZoom">
              <div className="productZoom position-relative">
-            <div className="badge badge-primary">23%</div>
+            <div className="badge badge-primary">{discount}%</div>
             <Swiper
               slidesPerView={1}
               spaceBetween={0}
@@ -36,13 +47,19 @@ const ProductZoom =()=>{
               className="zoomSliderBig"
               onSwiper={setZoomSliderBig}
             >
-              {images.map((img, i) => (
+              {images.length > 0 ? images.map((img, i) => (
                 <SwiperSlide key={i}>
                   <div className="item">
-                    <InnerImageZoom zoomType="hover" zoomScale={2} src={img} />
+                    <InnerImageZoom zoomType="hover" zoomScale={1.5} src={img} />
                   </div>
                 </SwiperSlide>
-              ))}
+              )) : (
+                <SwiperSlide>
+                  <div className="item">
+                    <InnerImageZoom zoomType="hover" zoomScale={1.5} src="https://via.placeholder.com/400x400?text=No+Image" />
+                  </div>
+                </SwiperSlide>
+              )}
             </Swiper>
           </div>
           <Swiper              
@@ -55,7 +72,7 @@ const ProductZoom =()=>{
           className="zoomSlider"               
           onSwiper={setZoomSlider}           
       >             
-          {images.map((img, i) => (               
+          {images.length > 0 ? images.map((img, i) => (               
               <SwiperSlide key={i}>                 
                   <div className={`item ${slideIndex === i ? "item_active" : ""}`}>                   
                       <img 
@@ -66,7 +83,17 @@ const ProductZoom =()=>{
                       />                 
                   </div>               
               </SwiperSlide>             
-          ))}           
+          )) : (
+              <SwiperSlide>                 
+                  <div className="item item_active">                   
+                      <img 
+                          src="https://via.placeholder.com/100x100?text=No+Image" 
+                          className="w-100" 
+                          alt="No image" 
+                      />                 
+                  </div>               
+              </SwiperSlide>
+          )}           
 </Swiper>
             </div>
     )

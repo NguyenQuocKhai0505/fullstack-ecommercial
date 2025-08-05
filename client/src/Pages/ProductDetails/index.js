@@ -3,15 +3,27 @@ import Rating from '@mui/material/Rating';
 import QuantityBox from "../../Components/QuantityBox"
 import Button from '@mui/material/Button';
 import { FaShoppingCart } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { IoMdGitCompare } from "react-icons/io";
 import Tooltip from '@mui/material/Tooltip';
 import CustomerReview from "../../Components/Customer Review/index"
 import RelatedProducts from "./RelatedProducts/index"
+import { useParams } from "react-router-dom";
+import { fetchDataFromApi } from "../../utils/api";
 const ProductDetails =()=>{
     const [activeTabs, setActiveTabs] = useState(null)
     const [activeSize, setActiveSize]= useState(null)
+    const {id} = useParams()
+    const [productData, setProductData] = useState([])
+
+    useEffect(()=>{
+        fetchDataFromApi(`/api/products/${id}`).then(res=>{
+            setProductData(res)
+        })
+    })
+ 
+
 
 
     const isActive =(index)=>{
@@ -25,37 +37,34 @@ const ProductDetails =()=>{
                 
                 {/* Cột bên trái: ảnh sản phẩm */}
                 <div className="col-md-4 pl-5">
-                    <ProductZoom />
+                    <ProductZoom product={productData} />
                 </div>
 
                 {/* Cột bên phải: thông tin sản phẩm */}
                 <div className="col-md-7 pl-5 pr-5">
-                    <h2 className="hd text-capitalize">iPhone 16 Pro Max | Chính hãng VN/A</h2>
+                    <h2 className="hd text-capitalize">{productData.name}</h2>
                     <ul className="list list-inline d-flex align-items-center">
                     <li className="list-inline-item">
                         <div className="d-flex align-items-center ml-3">
                         <span className="text-light mr-2">Brands:</span>
-                        <span>Apple</span>
+                        <span>{productData.brand}</span>
                         </div>
                     </li>
 
                     <li className="list-inline-item d-flex align-items-center">
-                      <Rating  name="read-only" value={4.5} precision={0.5} size="small" readOnly />
-                      <span className="ml-2 text-light">1 Review</span>
+                      <Rating  name="read-only" value={productData.rating} precision={0.5} size="small" readOnly />
                      </li>
                     </ul>
 
                     <div className="d-flex info ml-3 mb-4">
-                        <span className="oldPrice">$1000</span>
-                        <span className="newPrice text-danger ml-2">$949</span>
+                        <span className="oldPrice">${productData.oldPrice}</span>
+                        <span className="newPrice text-danger ml-2">${productData.price}</span>
                     </div>
 
-                    <span className="badge btn-success ml-3 mb-3">IN STOCK</span>
-                    <p className="mt-2 ml-3" style={{fontWeight:"600"}}>The iPhone 16 Pro Max features a 6.9-inch Super Retina XDR OLED display with ProMotion technology, delivering a smooth and sharp display experience, 
-                        ideal for entertainment and work. With the powerful A18 Pro chipset, this new iPhone model offers outstanding performance, helping to smoothly handle 
-                        heavy tasks such as gaming or video editing.</p>
+                    <span className="badge btn-success ml-3 mb-3">{productData.countInStock > 0 ? "IN STOCK" : "OUT STOCK"}</span>
+                    <p className="mt-2 ml-3" style={{fontWeight:"600"}}>{productData.description}</p>
 
-                    <div className="productSize d-flex align-items-center">
+                    {/* <div className="productSize d-flex align-items-center">
                         <span>RAM: </span>
                         <ul className="list list-inline mb-0 pl-4">
                             <li className="list-inline-item">
@@ -71,7 +80,7 @@ const ProductDetails =()=>{
                                  onClick={()=>isActive(2)}>1TB</a>
                             </li>
                         </ul>
-                    </div>
+                    </div> */}
                     <div className="d-flex align-items-center ml-3 mt-3">
                         <QuantityBox/>
                         <Button className="btn-blue btn-lg btn-big btn-round mr-3 ml-2"><FaShoppingCart/>&nbsp; Add to cart</Button>
@@ -79,7 +88,7 @@ const ProductDetails =()=>{
                         <Button className="btn-circle"><FaHeart /></Button>
                         </Tooltip>
 
-                        <Tooltip title="Compare Prodcut" placement="top">
+                        <Tooltip title="Compare Product" placement="top">
                          <Button className="btn-circle ml-3"><IoMdGitCompare /></Button>
                         </Tooltip>
                     </div>
@@ -116,7 +125,7 @@ const ProductDetails =()=>{
                     {
                         activeTabs ==0 &&
                         <div className="tabContent">
-                            <p>iPhone 16 Pro Max 1TB mang đến khả năng quay chụp chuyên nghiệp với hệ thống camera hiện đại hàng đầu thế giới smartphone hiện nay. Với camera chính độ phân giải 48MP, đi kèm công nghệ chống rung quang học dịch chuyển thế hệ mới, iPhone 16 PRM 1TB giúp đảm bảo hình ảnh sắc nét, ổn định ngay cả trong điều kiện ánh sáng yếu. Bên cạnh đó, hệ thống camera trên máy còn bao gồm cảm biến LiDAR Scanner, hỗ trợ tối ưu hoá khả năng đo độ sâu và lấy nét tự động, nâng cao chất lượng ảnh chụp một cách vượt trội. </p>
+                            <p>{productData.description} </p>
                          </div>   
                     }
                     {
