@@ -19,7 +19,7 @@ const Navigation =()=>
                         onClick={()=>setisopenSidebarVal(!isopenSidebarVal)}
                             >
                         <span className="icon1 mr-2"><IoMenu/></span>
-                        <span class="text">ALL CATEGORIES</span>
+                        <span className="text">ALL CATEGORIES</span>
                         <span className="icon2 ml-2"><FaAnglesDown/></span>
                         </Button>
                         <div className={`sidebarNav ${isopenSidebarVal===true ? 'open':''}`}>

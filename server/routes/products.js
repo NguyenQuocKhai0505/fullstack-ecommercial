@@ -18,11 +18,15 @@ router.get("/", async (req, res) => {
         const page = parseInt(req.query.page) || 1
         const perPage = parseInt(req.query.perPage) || 5
         const category = req.query.category; // Lấy category từ query
+        const isFeatured = req.query.isFeatured; // Lấy isFeatured từ query
 
         // Tạo filter object
         let filter = {};
         if (category) {
             filter.category = category;
+        }
+        if (isFeatured !== undefined) {
+            filter.isFeatured = isFeatured === 'true';
         }
 
         // Đếm tổng số sản phẩm theo filter

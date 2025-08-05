@@ -3,42 +3,70 @@ import { TfiFullscreen } from "react-icons/tfi";
 import Button from "@mui/material/Button"
 import { CiHeart } from "react-icons/ci";
 import { useContext, useState } from 'react';
-import product from "../../assets/images/iphone16.jpg"
 import { MyContext } from '../../App';
-const ProductItem =(props)=>{
-    
-  const context = useContext(MyContext)
+import { useEffect } from 'react';
 
+const ProductItem = (props) => {
+    const context = useContext(MyContext)
+    const product = props.product || {}
 
-    const viewProductDetails =(id)=>{
+    const viewProductDetails = (id) => {
         context.setisOpenProductModal(true)
     }
-   
-    return(
-         <>
-         <div className={`productItem ${props.itemView}`}>
-            <div className="imgWrapper">
-                <img src={product}
-                className="w-100"></img>
-                    <h4>iPhone 16 Pro Max 256GB | Chính hãng VN/A</h4>
-                        <span className="badge badge-primary">28%</span>
-                            <div className="actions">
-                                <Button onClick={()=>viewProductDetails()}><TfiFullscreen /></Button>
-                                <Button><CiHeart /></Button>
-                            </div>
-                                    <span className="text-success d-block">In Stock</span>
-                                    <Rating className="mt-2 mb-2" name="read-only" value={5} readOnly  size="small" precision={0.5}/>
-                            <div className="d-flex">
-                                    <span className="oldPrice">$20.000</span>
-                                        <span className="newPrice text-danger ml-3">$16.000</span>
-                            </div>
+
+    // Calculate discount percentage
+    const calculateDiscount = () => {
+        if (product.oldPrice && product.price && product.oldPrice > product.price) {
+            return Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)
+        }
+        return 0
+    }
+
+    const discount = calculateDiscount()
+
+    return (
+        <>
+            <div className={`productItem ${props.itemView}`}>
+                <div className="imgWrapper">
+                    <img 
+                        src={product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/300x300?text=No+Image'} 
+                        className="w-100"
+                        alt={product.name || 'Product'}
+                        loading="lazy"
+                    />
+                    <h4>{product.name || 'Product Name'}</h4>
+                    {discount > 0 && <span className="badge badge-primary">{discount}%</span>}
+                    <div className="actions">
+                        <Button onClick={() => viewProductDetails(product._id)}>
+                            <TfiFullscreen />
+                        </Button>
+                        <Button>
+                            <CiHeart />
+                        </Button>
+                    </div>
+                    <span className={`d-block ${product.countInStock > 0 ? 'text-success' : 'text-danger'}`}>
+                        {product.countInStock > 0 ? 'In Stock' : 'Out of Stock'}
+                    </span>
+                    <Rating 
+                        className="mt-2 mb-2" 
+                        name="read-only" 
+                        value={product.rating || 0} 
+                        readOnly 
+                        size="small" 
+                        precision={0.5}
+                    />
+                    <div className="d-flex">
+                        {product.oldPrice && product.oldPrice > product.price && (
+                            <span className="oldPrice">${product.oldPrice}</span>
+                        )}
+                        <span className={`${product.oldPrice && product.oldPrice > product.price ? 'newPrice text-danger ml-3' : 'newPrice'}`}>
+                            ${product.price || 0}
+                        </span>
+                    </div>
                 </div>
-         </div>
-        
-       
-         </>
+            </div>
+        </>
     )
-
-
 }
+
 export default ProductItem

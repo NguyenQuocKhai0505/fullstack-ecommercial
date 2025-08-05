@@ -9,8 +9,12 @@ import banner2 from "../../assets/images/Banner2.png"
 import coupon from "../../assets/images/banner3.png"
 import { IoMdMail } from "react-icons/io";
 import Footer from "../../Components/Footer/index"
+import { useState, useMemo } from "react";
+import { useEffect } from "react";
+import { fetchDataFromApi } from "../../utils/api";
+
 const Home = () => {
-    const productSliderOptions = {
+    const productSliderOptions = useMemo(() => ({
         dots: true,
         infinite: false,
         speed: 500,
@@ -18,14 +22,87 @@ const Home = () => {
         slidesToScroll: 2,
         arrows: true,
         autoplay: true,
-    };
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                }
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                }
+            }
+        ]
+    }), [])
+    
+    const [catData, setCatData] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+    const [isFeaturedProduct, setIsFeaturedProduct] =useState([])
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                setLoading(true)
+                setError(null)
+                const res = await fetchDataFromApi("/api/category?all=true")
+                if (res && Array.isArray(res.categoryList)) {
+                    setCatData(res.categoryList)
+                    console.log('Fetched categories:', res.categoryList)
+                } else {
+                    setCatData([])
+                    console.log('No categories found or invalid response')
+                }
+            } catch (err) {
+                console.error('Error fetching categories:', err)
+                setError('Failed to load categories')
+                setCatData([])
+            } finally {
+                setLoading(false)
+            }
+        }
 
+        fetchCategories()
+    }, [])
+
+    // Fetch featured products
+    useEffect(() => {
+        const fetchFeaturedProducts = async () => {
+            try {
+                const res = await fetchDataFromApi("/api/products?isFeatured=true")
+                if (res && res.success && Array.isArray(res.data)) {
+                    setIsFeaturedProduct(res.data)
+                    console.log('Fetched featured products:', res.data)
+                } else {
+                    setIsFeaturedProduct([])
+                    console.log('No featured products found or invalid response')
+                }
+            } catch (err) {
+                console.error('Error fetching featured products:', err)
+                setIsFeaturedProduct([])
+            }
+        }
+
+        fetchFeaturedProducts()
+    }, []) 
+   
     return (
         <>
             <HomeBanner />
-            <HomeCat/>
-
-
+            {
+                catData.length !== 0 &&  <HomeCat category={catData}/>
+            }
             <section className="homeProducts">
                 <div className="container">
                     <div className="row">
@@ -36,13 +113,15 @@ const Home = () => {
                                 <img
                                     src="https://cf.shopee.vn/file/vn-11134258-7ra0g-m7uqe24brygj5f"
                                     className="cursor"
-                                    alt="banner"/>
+                                    alt="Promotional banner"
+                                    loading="lazy"/>
                             </div>
                             <div className="banner mt-4">
                                 <img
                                     src="https://cdnv2.tgdd.vn/mwg-static/tgdd/Banner/a8/9f/a89f043284f6f9bd6791afb78bf5f154.png"
                                     className="cursor"
-                                    alt="banner"/>
+                                    alt="Special offer banner"
+                                    loading="lazy"/>
                             </div>
                            </div>
                         </div>
@@ -53,25 +132,33 @@ const Home = () => {
                             <div className="productRow">
                                 <div className="d-flex align-items-center shift-content-right">
                                     <div className="info w-75">
-                                        <h3 className="mb-0 hd">BEST SELLERS</h3>
+                                        <h3 className="mb-0 hd">FEATURED PRODUCTS</h3>
                                     </div>
-
                                     <Button className="viewAllBtn ml-auto">
                                         View All<IoIosArrowRoundForward />
                                     </Button>
                                 </div>
 
                                 <div className="product-row w-100 mt-2">
-                                    <Slider {...productSliderOptions} className="bestSellerSlider">
-                                        <ProductItem />
-                                        <ProductItem />
-                                        <ProductItem />
-                                        <ProductItem />
-                                        <ProductItem />
-                                        <ProductItem />
-                                        <ProductItem />
-                                        <ProductItem />
-                                    </Slider>
+                                    {loading ? (
+                                        <div className="text-center">
+                                            <p>Loading featured products...</p>
+                                        </div>
+                                    ) : error ? (
+                                        <div className="text-center text-danger">
+                                            <p>{error}</p>
+                                        </div>
+                                    ) : isFeaturedProduct.length > 0 ? (
+                                        <Slider {...productSliderOptions} className="bestSellerSlider">
+                                            {isFeaturedProduct.map((product) => (
+                                                <ProductItem key={product._id} product={product} />
+                                            ))}
+                                        </Slider>
+                                    ) : (
+                                        <div className="text-center">
+                                            <p>No featured products available</p>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 

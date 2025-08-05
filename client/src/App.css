@@ -1159,7 +1159,7 @@ nav .navPart2 ul li:hover .submenu{
     margin:0;
 }
 .homeCat .swiper-wrapper {
-  gap: 0 !important;           /* nếu swiper version mới có sử dụng gap */
+  gap: 0 !important;           
   margin: 0 !important;
   padding: 0 !important;
 }
@@ -1191,6 +1191,39 @@ nav .navPart2 ul li:hover .submenu{
     font-size: 16px;
     margin: 0;
     color: #333;
+    text-decoration: none !important;
+    border-bottom: none !important;
+    text-decoration-line: none !important;
+    text-decoration-style: none !important;
+    text-decoration-color: transparent !important;
+    border: none !important;
+    outline: none !important;
+    text-decoration-skip-ink: none !important;
+    text-underline-offset: 0 !important;
+    text-underline-position: auto !important;
+}
+
+/* Additional rules to ensure no underline */
+.homeCat .item h6,
+.homeCat .item h6:hover,
+.homeCat .item h6:focus,
+.homeCat .item h6:active {
+    text-decoration: none !important;
+    border-bottom: none !important;
+    text-decoration-line: none !important;
+    text-decoration-style: none !important;
+    text-decoration-color: transparent !important;
+    border: none !important;
+    outline: none !important;
+    /* Override global h6 pseudo-elements */
+    position: static !important;
+}
+
+/* Remove pseudo-elements from homeCat h6 */
+.homeCat .item h6::before,
+.homeCat .item h6::after {
+    content: none !important;
+    display: none !important;
 }
 .hd{
     font-size: 20px;
@@ -2811,4 +2844,76 @@ h6::after {
   justify-content: center;
   position: relative;
   overflow: hidden;
+}
+
+/* Remove pseudo-elements from homeCat h6 */
+.homeCat .item h6::before,
+.homeCat .item h6::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* Hover effects for HomeCat items */
+.homeCat .item {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+.homeCat .item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    z-index: 2;
+}
+
+.homeCat .item:hover img {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+.homeCat .item img {
+    transition: transform 0.3s ease;
+    max-width: 100%;
+    height: auto;
+}
+
+.homeCat .item:hover h6 {
+    color: #fff !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+.homeCat .item h6 {
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+/* Additional hover effects for better visual feedback */
+.homeCat .item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.homeCat .item:hover::before {
+    opacity: 1;
+}
+
+/* Smooth transition for Swiper slides */
+.homeCat .swiper-slide {
+    transition: all 0.3s ease;
+}
+
+.homeCat .swiper-slide:hover {
+    transform: scale(1.02);
 }
