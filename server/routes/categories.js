@@ -29,6 +29,7 @@ router.get("/", async (req, res) => {
       return res.status(404).json({message:"Page not found"})
     }
 
+    
     // Tìm tất cả category trong database
     const categoryList = await Category.find()
       .skip((page-1) * perPage)

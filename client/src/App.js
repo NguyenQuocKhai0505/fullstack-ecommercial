@@ -13,6 +13,8 @@ import Cart from "./Pages/Cart";
 import SignIn from "./Pages/SignIn";
 import SignUp from "./Pages/SignUp";
 import ScrollToTop from "./Components/ScrollToTop";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 const MyContext = createContext();
 
 function App() {

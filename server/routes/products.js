@@ -40,6 +40,7 @@ router.get("/", async (req, res) => {
             })
         }
 
+
         // Lấy danh sách sản phẩm cho trang hiện tại theo filter
         const productList = await Product.find(filter).populate("category")
             .skip((page - 1) * perPage)

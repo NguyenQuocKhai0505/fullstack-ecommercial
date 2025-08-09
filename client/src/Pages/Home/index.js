@@ -9,9 +9,10 @@ import banner2 from "../../assets/images/Banner2.png"
 import coupon from "../../assets/images/banner3.png"
 import { IoMdMail } from "react-icons/io";
 import Footer from "../../Components/Footer/index"
-import { useState, useMemo } from "react";
+import { useState, useMemo, use } from "react";
 import { useEffect } from "react";
 import { fetchDataFromApi } from "../../utils/api";
+import Pagination from '@mui/material/Pagination';
 
 const Home = () => {
     const productSliderOptions = useMemo(() => ({
@@ -51,6 +52,16 @@ const Home = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [isFeaturedProduct, setIsFeaturedProduct] =useState([])
+    //Phân trang
+    const [currentPage, setCurrentPage]= useState(1)
+    const [totalPages, setTotalPages] = useState(1);
+    const productPerPage = 12
+    const [allProducts,setAllProducts] = useState([])
+    //Tính toán số lượng phân bổ
+    const indexOfLastProduct = currentPage * productPerPage
+    const indexOfFirstProduct = indexOfLastProduct - productPerPage
+    const currentProducts = allProducts;
+
     useEffect(() => {
         const fetchCategories = async () => {
             try {
@@ -96,6 +107,27 @@ const Home = () => {
 
         fetchFeaturedProducts()
     }, []) 
+    // Fetch all products
+
+    useEffect(()=>{
+        const fetchAllProducts = async ()=>{
+            try{
+                const res = await fetchDataFromApi(`/api/products?page=${currentPage}&perPage=${productPerPage}`)
+                if(res && res.success && Array.isArray(res.data)){
+                    setAllProducts(res.data)
+                    setTotalPages(res.totalPages || 1);
+                    console.log('Fetched all products:', res.data)
+                }else{
+                    setAllProducts([])
+                    console.log('No all products found or invalid response')
+                }
+            }catch(err){
+                console.error('Error fetching all products:', err)
+                setAllProducts([])
+            }
+        }
+        fetchAllProducts()
+    },[currentPage,productPerPage])
    
     return (
         <>
@@ -162,11 +194,11 @@ const Home = () => {
                                 </div>
                             </div>
 
-                            {/* NEW PRODUCTS */}
+                            {/* ALL PRODUCTS */}
                             <div className="productRow shift-content-right mt-5 ">
                                 <div className="d-flex align-items-center">
                                     <div className="info w-75">
-                                        <h3 className="mb-0 hd">NEW PRODUCTS</h3>
+                                        <h3 className="mb-0 hd">ALL PRODUCTS</h3>
                                     </div>
 
                                     <Button className="viewAllBtn ml-auto">
@@ -175,20 +207,25 @@ const Home = () => {
                                 </div>
 
                                 <div className="product-row productRow2 w-100 mt-4 d-flex ml-2">
-                                      <ProductItem />
-                                      <ProductItem />
-                                      <ProductItem />
-                                      <ProductItem />
-                                      <ProductItem />
-                                      <ProductItem />
-                                      <ProductItem />
-                                      <ProductItem />
-                                      <ProductItem />
-                                      <ProductItem />
-                                      <ProductItem />
-                                      <ProductItem />
+                                   <div className="row">
+                                    {currentProducts.map(product => (
+                                        <div className="col-md-3 col-sm-6 mb-3" key={product._id}>
+                                            <ProductItem product={product}/>
+                                        </div>
+                                    ))}
+                                   </div>
+                                   {/* Phân trang */}
+                                   <Pagination
+                                    count={totalPages}
+                                    page={currentPage}
+                                    onChange={(event, value) => setCurrentPage(value)}
+                                    color="primary"
+                                    shape="rounded"
+                                    showFirstButton
+                                    showLastButton
+                                    className="mt-4 d-flex justify-content-center"
+                                    />  
                                 </div>
-                              
                             </div>
                         </div>
                     </div>

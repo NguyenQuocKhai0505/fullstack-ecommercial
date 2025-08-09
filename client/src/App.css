@@ -3189,6 +3189,73 @@ html {
   box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
 }
 
+/* Fix underline issue in Sidebar categories - Enhanced specificity */
+.product_Listing_Page .sidebar .scroll ul li,
+.product_Listing_Page .sidebar .scroll ul li .MuiFormControlLabel-root,
+.product_Listing_Page .sidebar .scroll ul li .MuiFormControlLabel-label,
+.product_Listing_Page .sidebar .filterBox ul li,
+.product_Listing_Page .sidebar .filterBox ul li .MuiFormControlLabel-root,
+.product_Listing_Page .sidebar .filterBox ul li .MuiFormControlLabel-label,
+.sidebar .scroll ul li,
+.sidebar .scroll ul li .MuiFormControlLabel-root,
+.sidebar .scroll ul li .MuiFormControlLabel-label,
+.sidebar .filterBox ul li,
+.sidebar .filterBox ul li .MuiFormControlLabel-root,
+.sidebar .filterBox ul li .MuiFormControlLabel-label,
+.sidebar span,
+.sidebar label {
+    text-decoration: none !important;
+    border-bottom: none !important;
+    text-decoration-line: none !important;
+    text-decoration-style: none !important;
+    text-decoration-color: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.product_Listing_Page .sidebar .scroll ul li::before,
+.product_Listing_Page .sidebar .scroll ul li::after,
+.product_Listing_Page .sidebar .filterBox ul li::before,
+.product_Listing_Page .sidebar .filterBox ul li::after,
+.product_Listing_Page .sidebar .scroll ul li .MuiFormControlLabel-label::before,
+.product_Listing_Page .sidebar .scroll ul li .MuiFormControlLabel-label::after,
+.product_Listing_Page .sidebar .filterBox ul li .MuiFormControlLabel-label::before,
+.product_Listing_Page .sidebar .filterBox ul li .MuiFormControlLabel-label::after,
+.sidebar .scroll ul li::before,
+.sidebar .scroll ul li::after,
+.sidebar .filterBox ul li::before,
+.sidebar .filterBox ul li::after,
+.sidebar .scroll ul li .MuiFormControlLabel-label::before,
+.sidebar .scroll ul li .MuiFormControlLabel-label::after,
+.sidebar .filterBox ul li .MuiFormControlLabel-label::before,
+.sidebar .filterBox ul li .MuiFormControlLabel-label::after,
+.sidebar span::before,
+.sidebar span::after,
+.sidebar label::before,
+.sidebar label::after {
+    content: none !important;
+    display: none !important;
+    border: none !important;
+    background: none !important;
+}
+
+/* Ultra-strong fix for any remaining underlines in sidebar */
+.sidebar *, 
+.sidebar *::before, 
+.sidebar *::after,
+.product_Listing_Page .sidebar *,
+.product_Listing_Page .sidebar *::before,
+.product_Listing_Page .sidebar *::after {
+    text-decoration: none !important;
+    border-bottom: none !important;
+    text-decoration-line: none !important;
+    text-decoration-style: none !important;
+    text-decoration-color: transparent !important;
+    text-underline-offset: 0 !important;
+    text-decoration-thickness: 0 !important;
+}
+
 /* Global image fitting styles */
 img {
     max-width: 100%;
@@ -3308,4 +3375,48 @@ footer img {
         width: 50px !important;
         height: 50px !important;
     }
+}
+
+/* All Products Slider Styles */
+.allProductsSlider .productItem {
+    margin: 0 10px;
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    display: block !important;
+}
+
+.allProductsSlider .slick-slide {
+    display: flex !important;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.allProductsSlider .slick-slide > div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+}
+
+.allProductsSlider .productItem:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border-color: rgba(102, 126, 234, 0.3);
+}
+
+.allProductsSlider .productItem img {
+    transition: all 0.4s ease;
+    border-radius: 12px;
+}
+
+.allProductsSlider .productItem:hover img {
+    transform: scale(1.05);
+    filter: brightness(1.1);
 }

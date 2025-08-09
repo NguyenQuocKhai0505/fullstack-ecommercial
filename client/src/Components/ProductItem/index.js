@@ -4,15 +4,49 @@ import Button from "@mui/material/Button"
 import { CiHeart } from "react-icons/ci";
 import { useContext, useState } from 'react';
 import { MyContext } from '../../App';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { autocompleteClasses } from '@mui/material';
+import Slider from 'react-slick';
 
 const ProductItem = (props) => {
     const context = useContext(MyContext)
     const product = props.product || {}
-
+    const [isHover, setIsHover] = useState(false)
+    const sliderRef = useRef()
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        autoplay: true,
+        autoplaySpeed: 1500,
+        appendDots: dots => (
+            <div style={{ position: 'absolute', bottom: 10, width: '100%' }}>
+                <ul style={{ margin: 0, padding: 0, display: 'flex', justifyContent: 'center' }}>{dots}</ul>
+            </div>
+        ),
+    };
     const viewProductDetails = (id) => {
         context.setisOpenProductModal(true)
+    }
+    const handleMouseEnter = () =>{
+        setIsHover(true)
+        setTimeout(()=>{
+            if(sliderRef.current){
+                sliderRef.current.slickPlay()
+            }
+        },20)
+    }
+    const handleMouseLeave = () =>{
+        setIsHover(false)
+        setTimeout(()=>{
+            if(sliderRef.current){
+                sliderRef.current.slickPause()
+            }
+        },20)
     }
 
     // Calculate discount percentage
@@ -27,16 +61,36 @@ const ProductItem = (props) => {
 
     return (
         <>
-            <div className={`productItem ${props.itemView}`}>
+            <div className={`productItem ${props.itemView}`}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+            >
                 <div className="imgWrapper">
-                <Link to={`/product/${product._id}`}>
-                    <img 
-                        src={product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/300x300?text=No+Image'} 
-                        className="w-100"
-                        alt={product.name || 'Product'}
-                        loading="lazy"
-                    />
-                </Link>
+                    <Link to={`/product/${product._id}`}>
+                        {isHover && product.images && product.images.length > 1 ? (
+                            <Slider {...settings} ref={sliderRef}>
+                                {product.images.map((img, idx) => (
+                                    <div key={idx}>
+                                        <img
+                                            src={img}
+                                            className="w-100"
+                                            alt={product.name || 'Product'}
+                                            loading="lazy"
+                                            style={{ height: 250, objectFit: 'cover', borderRadius: 8 }}
+                                        />
+                                    </div>
+                                ))}
+                            </Slider>
+                        ) : (
+                            <img
+                                src={product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/300x300?text=No+Image'}
+                                className="w-100"
+                                alt={product.name || 'Product'}
+                                loading="lazy"
+                                style={{ height: 250, objectFit: 'cover', borderRadius: 8 }}
+                            />
+                        )}
+                    </Link>
                     <Link to={`/product/${product._id}`}><h4>{product.name || 'Product Name'}</h4></Link>
                     {discount > 0 && <span className="badge badge-primary">{discount}%</span>}
                     <div className="actions">
