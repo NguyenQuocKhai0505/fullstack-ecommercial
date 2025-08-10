@@ -65,6 +65,9 @@ const ProductUpload = () =>{
     isFeatured:"",
     countInStock:"",
     rating:0,
+    productRam:"",
+    productSize:"",
+    productWeight:"",
   })
   const context = useContext(MyContext)
 
@@ -212,18 +215,31 @@ const ProductUpload = () =>{
         return;
      }
      setIsLoading(true)
-     postData("/api/products/create",formFields).then((res)=>{
-      setIsLoading(false);
-      if(res.success){
-        context.showSnackbar("Product added successfully", "success")
-        setTimeout(()=>history("/products"),1000)
-      }else{
-        context.showSnackbar("Product added failed", "error")
-      }
-     }).catch((err)=>{
-      setIsLoading(false);
-      context.showSnackbar("Product added failed", "error")
+  const payload = { ...formFields }
+  const normalizeMulti = (v) => Array.isArray(v)
+    ? v.map(x => String(x).trim()).filter(Boolean)
+    : String(v || '').split(',').map(s => s.trim()).filter(Boolean)
+  ;["productRam","productSize","productWeight"].forEach(k => {
+    if (payload[k] !== undefined && payload[k] !== null) {
+      payload[k] = normalizeMulti(payload[k])
+      if (payload[k].length === 0) delete payload[k]
+    }
   })
+
+  postData("/api/products/create", payload)
+      .then((res) => {
+        setIsLoading(false);
+        if (res.success) {
+          context.showSnackbar("Product added successfully", "success")
+          setTimeout(() => history("/products"), 1000)
+        } else {
+          context.showSnackbar("Product added failed", "error")
+        }
+      })
+      .catch(() => {
+        setIsLoading(false);
+        context.showSnackbar("Product added failed", "error")
+      })
 }
 
   // Lấy subCats của category đã chọn từ database
@@ -376,6 +392,43 @@ const ProductUpload = () =>{
                                 />
                               </div>
                         </div>
+                        </div>
+
+                        {/* PRODUCT SPECS */}
+                        <div className="row">
+                          <div className="col">
+                            <div className="form-group">
+                              <h6>PRODUCT RAM</h6>
+                              <input 
+                                type="text" 
+                                placeholder="e.g. 8GB" 
+                                name="productRam" 
+                                onChange={inputChange}
+                              />
+                            </div>
+                          </div>
+                          <div className="col">
+                            <div className="form-group">
+                              <h6>PRODUCT SIZE</h6>
+                              <input 
+                                type="text" 
+                                placeholder="e.g. 147 x 71 x 7.8 mm" 
+                                name="productSize" 
+                                onChange={inputChange}
+                              />
+                            </div>
+                          </div>
+                          <div className="col">
+                            <div className="form-group">
+                              <h6>PRODUCT WEIGHT</h6>
+                              <input 
+                                type="text" 
+                                placeholder="e.g. 172g" 
+                                name="productWeight" 
+                                onChange={inputChange}
+                              />
+                            </div>
+                          </div>
                         </div>
 
                        <div className="row">

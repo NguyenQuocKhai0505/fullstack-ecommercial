@@ -43,6 +43,63 @@ body.dark{
     cursor: pointer;
 }
 
+/* Capacity specs styling */
+.capacity-specs {
+    max-width: 200px;
+}
+
+.spec-item {
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.spec-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+}
+
+.spec-values {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.spec-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.ram-tag {
+    background: #e8f5e8;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+}
+
+.size-tag {
+    background: #e3f2fd;
+    color: #1976d2;
+    border: 1px solid #bbdefb;
+}
+
+.weight-tag {
+    background: #fff3e0;
+    color: #f57c00;
+    border: 1px solid #ffcc02;
+}
+
+.no-data {
+    color: #999;
+    font-style: italic;
+}
+
 header{
     width: 100%;
     height: 70px;

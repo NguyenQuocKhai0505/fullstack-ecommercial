@@ -4,12 +4,12 @@ import { IoIosArrowRoundForward } from "react-icons/io";
 import Slider from "react-slick";
 import ProductItem from "../../Components/ProductItem";
 import HomeCat from "../../Components/HomeCat";
-import banner1 from "../../assets/images/banner1.png"
-import banner2 from "../../assets/images/Banner2.png"
+// import banner1 from "../../assets/images/banner1.png"
+// import banner2 from "../../assets/images/Banner2.png"
 import coupon from "../../assets/images/banner3.png"
 import { IoMdMail } from "react-icons/io";
-import Footer from "../../Components/Footer/index"
-import { useState, useMemo, use } from "react";
+// import Footer from "../../Components/Footer/index"
+import { useState, useMemo } from "react";
 import { useEffect } from "react";
 import { fetchDataFromApi } from "../../utils/api";
 import Pagination from '@mui/material/Pagination';
@@ -50,6 +50,7 @@ const Home = () => {
     
     const [catData, setCatData] = useState([])
     const [loading, setLoading] = useState(true)
+    const [productsLoading, setProductsLoading] = useState(true)
     const [error, setError] = useState(null)
     const [isFeaturedProduct, setIsFeaturedProduct] =useState([])
     //Phân trang
@@ -60,7 +61,8 @@ const Home = () => {
     //Tính toán số lượng phân bổ
     const indexOfLastProduct = currentPage * productPerPage
     const indexOfFirstProduct = indexOfLastProduct - productPerPage
-    const currentProducts = allProducts;
+    const currentProducts = allProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+    // const currentProducts = allProducts;
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -112,18 +114,27 @@ const Home = () => {
     useEffect(()=>{
         const fetchAllProducts = async ()=>{
             try{
+                setProductsLoading(true)
+                setError(null)
+                console.log(`Fetching products: page=${currentPage}, perPage=${productPerPage}`)
                 const res = await fetchDataFromApi(`/api/products?page=${currentPage}&perPage=${productPerPage}`)
+                console.log('API Response:', res)
+                
                 if(res && res.success && Array.isArray(res.data)){
                     setAllProducts(res.data)
                     setTotalPages(res.totalPages || 1);
                     console.log('Fetched all products:', res.data)
                 }else{
                     setAllProducts([])
-                    console.log('No all products found or invalid response')
+                    setError('No products found or invalid API response')
+                    console.log('No all products found or invalid response:', res)
                 }
             }catch(err){
                 console.error('Error fetching all products:', err)
+                setError('Failed to load products: ' + (err.message || 'Unknown error'))
                 setAllProducts([])
+            } finally {
+                setProductsLoading(false)
             }
         }
         fetchAllProducts()
@@ -206,25 +217,41 @@ const Home = () => {
                                     </Button>
                                 </div>
 
-                                <div className="product-row productRow2 w-100 mt-4 d-flex ml-2">
-                                   <div className="row">
-                                    {currentProducts.map(product => (
-                                        <div className="col-md-3 col-sm-6 mb-3" key={product._id}>
-                                            <ProductItem product={product}/>
+                                <div className="product-row w-100 mt-2 allProductsGrid">
+                                    {productsLoading ? (
+                                        <div className="text-center">
+                                            <p>Loading all products...</p>
                                         </div>
-                                    ))}
-                                   </div>
-                                   {/* Phân trang */}
-                                   <Pagination
-                                    count={totalPages}
-                                    page={currentPage}
-                                    onChange={(event, value) => setCurrentPage(value)}
-                                    color="primary"
-                                    shape="rounded"
-                                    showFirstButton
-                                    showLastButton
-                                    className="mt-4 d-flex justify-content-center"
-                                    />  
+                                    ) : error ? (
+                                        <div className="text-center text-danger">
+                                            <p>{error}</p>
+                                        </div>
+                                    ) : currentProducts.length > 0 ? (
+                                        <div className="row">
+                                            {currentProducts.map((product) => (
+                                                <div className="col-md-3 col-sm-6 mb-3" key={product._id}>
+                                                    <ProductItem product={product} />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="text-center">
+                                            <p>No products available</p>
+                                        </div>
+                                    )}
+                                </div>
+                                
+                                {/* Phân trang */}
+                                <div className="d-flex justify-content-center mt-4 pagination-container">
+                                    <Pagination
+                                        count={totalPages}
+                                        page={currentPage}
+                                        onChange={(event, value) => setCurrentPage(value)}
+                                        color="primary"
+                                        shape="rounded"
+                                        showFirstButton
+                                        showLastButton
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -248,7 +275,7 @@ const Home = () => {
                        </div>
                         
                         <div className="col-md-6">
-                            <img src={coupon}></img>
+                            <img src={coupon} alt="Coupon banner"></img>
                         </div>
 
 

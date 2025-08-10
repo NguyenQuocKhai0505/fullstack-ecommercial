@@ -1,5 +1,5 @@
 import Checkbox from '@mui/material/Checkbox';
-import FormGroup from '@mui/material/FormGroup';
+// import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import RangeSlider from "react-range-slider-input"
 import "react-range-slider-input/dist/style.css"
@@ -10,7 +10,7 @@ import banner from "../../assets/images/banner4.png"
 
 const Sidebar = () => {
      const [value,setValue] = useState([100,60000])
-     const [value2,setValue2] = useState(0)
+     // const [value2,setValue2] = useState(0)
      const categories = ["Men", "Women", "Beauty", "Kids", "Gifts","Men", "Women", "Beauty", "Kids", "Gifts"];
      const statusProduct = ["In Stock", "On Sale"]
      const brandProduct =["iPhone", "SamSung","Huawei","Xiaomi", "Nokia", "Oppo"]
@@ -117,7 +117,7 @@ const Sidebar = () => {
       </ul>
     </div>
       {/*Banner*/}
-      <Link><img src={banner} className='w-100'/></Link>
+      <Link><img src={banner} className='w-100' alt='Sidebar banner'/></Link>
       
       </div>
   );

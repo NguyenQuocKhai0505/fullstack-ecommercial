@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom"
 import cartItem1 from "../../assets/images/cartItem1.webp"
-import cartItem2 from "../../assets/images/cartItem2.webp"
-import cartItem3 from "../../assets/images/cartItem3.webp"
+// import cartItem2 from "../../assets/images/cartItem2.webp"
+// import cartItem3 from "../../assets/images/cartItem3.webp"
 import Rating from '@mui/material/Rating';
 import QuantityBox from "../../Components/QuantityBox"
 import { IoClose } from "react-icons/io5";
 import Button from '@mui/material/Button';
-import { FaShoppingCart } from "react-icons/fa"
+// import { FaShoppingCart } from "react-icons/fa"
 import { IoBagCheckOutline } from "react-icons/io5";
 const Cart = () => {
     return (
@@ -34,7 +34,7 @@ const Cart = () => {
                                                 <Link to="/product/1">
                                                     <div className="d-flex align-items-center cartItemimgWrapper">
                                                         <div className="imgWrapper">
-                                                            <img src={cartItem1} className="w-100"/>
+                                                            <img src={cartItem1} className="w-100" alt="Cart item"/>
                                                         </div>
                                                         <div className="info px-30 ml-3">
                                                             <h6>Xiaomi 14T Pro 12GB 512GB</h6>
@@ -55,7 +55,7 @@ const Cart = () => {
                                                 <Link to="/product/1">
                                                     <div className="d-flex align-items-center cartItemimgWrapper">
                                                         <div className="imgWrapper">
-                                                            <img src={cartItem1} className="w-100"/>
+                                                            <img src={cartItem1} className="w-100" alt="Cart item"/>
                                                         </div>
                                                         <div className="info px-30 ml-3">
                                                             <h6>Xiaomi 14T Pro 12GB 512GB</h6>
@@ -76,7 +76,7 @@ const Cart = () => {
                                                 <Link to="/product/1">
                                                     <div className="d-flex align-items-center cartItemimgWrapper">
                                                         <div className="imgWrapper">
-                                                            <img src={cartItem1} className="w-100"/>
+                                                            <img src={cartItem1} className="w-100" alt="Cart item"/>
                                                         </div>
                                                         <div className="info px-30 ml-3">
                                                             <h6>Xiaomi 14T Pro 12GB 512GB</h6>
@@ -97,7 +97,7 @@ const Cart = () => {
                                                 <Link to="/product/1">
                                                     <div className="d-flex align-items-center cartItemimgWrapper">
                                                         <div className="imgWrapper">
-                                                            <img src={cartItem1} className="w-100"/>
+                                                            <img src={cartItem1} className="w-100" alt="Cart item"/>
                                                         </div>
                                                         <div className="info px-30 ml-3">
                                                             <h6>Xiaomi 14T Pro 12GB 512GB</h6>
@@ -118,7 +118,7 @@ const Cart = () => {
                                                 <Link to="/product/1">
                                                     <div className="d-flex align-items-center cartItemimgWrapper">
                                                         <div className="imgWrapper">
-                                                            <img src={cartItem1} className="w-100"/>
+                                                            <img src={cartItem1} className="w-100" alt="Cart item"/>
                                                         </div>
                                                         <div className="info px-30 ml-3">
                                                             <h6>Xiaomi 14T Pro 12GB 512GB</h6>

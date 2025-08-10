@@ -5,13 +5,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import InnerImageZoom from 'react-inner-image-zoom';
 import 'react-inner-image-zoom/lib/styles.min.css';
-import item1 from "../../assets/images/itemDetails1.png";
-import item2 from "../../assets/images/itemDetails2.png";
-import item3 from "../../assets/images/itemDetails3.webp";
-import item4 from "../../assets/images/itemDetails4.webp";
-import item5 from "../../assets/images/itemDetails5.webp";
-import item6 from "../../assets/images/itemDetails6.webp";
-import { useContext, useState } from "react";
+import { useState } from "react";
 const ProductZoom =(props)=>{
     const [slideIndex, setSlideIndex] = useState(0);
     const [zoomSlider, setZoomSlider] = useState(null);
@@ -89,7 +83,7 @@ const ProductZoom =(props)=>{
                       <img 
                           src="https://via.placeholder.com/100x100?text=No+Image" 
                           className="w-100" 
-                          alt="No image" 
+                          alt="Product placeholder" 
                       />                 
                   </div>               
               </SwiperSlide>

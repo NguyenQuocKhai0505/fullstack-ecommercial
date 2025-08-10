@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import {Swiper, SwiperSlide} from 'swiper/react'
 import "swiper/css"
 import "swiper/css/navigation"
-import { Navigation, Autoplay } from 'swiper/modules' // thêm Autoplay
+import { Navigation } from 'swiper/modules'
 import { useEffect } from 'react';
 
 const HomeCat=(props)=>{
@@ -12,7 +12,7 @@ const HomeCat=(props)=>{
     const [catData, setCatData] = useState([])
     useEffect(()=>{
         setCatData(props.category)
-    },[])
+    },[props.category])
 
         return(
         <section className="homeCat"> 
@@ -31,7 +31,7 @@ const HomeCat=(props)=>{
                         <SwiperSlide>
                             <div className='item text-center'
                             style={{background:item.color}}>
-                            <img src={item.images[0]}/>
+                            <img src={item.images[0]} alt={item.name || 'Category'}/>
                             <h6>{item.name}</h6>
                         </div>
                       </SwiperSlide>

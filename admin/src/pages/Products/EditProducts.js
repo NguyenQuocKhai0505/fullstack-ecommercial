@@ -56,6 +56,9 @@ const EditProducts =() =>{
         isFeatured: "",
         countInStock: "",
         rating: 0,
+        productRam: "",
+        productSize: "",
+        productWeight: "",
       });
     //Fetch Product and Category on mount 
     useEffect(() => {
@@ -85,6 +88,10 @@ const EditProducts =() =>{
             isFeatured: product.isFeatured === true ? true : product.isFeatured === false ? false : "",
             countInStock: product.countInStock || "",
             rating: product.rating || 1,
+            // Chuyển array thành string để hiển thị trong input
+            productRam: Array.isArray(product.productRam) ? product.productRam.join(', ') : (product.productRam || ""),
+            productSize: Array.isArray(product.productSize) ? product.productSize.join(', ') : (product.productSize || ""),
+            productWeight: Array.isArray(product.productWeight) ? product.productWeight.join(', ') : (product.productWeight || ""),
           })
           setCategoryVal(product.category?._id || product.category || "")
           setFeaturedVal(product.isFeatured === true ? true : product.isFeatured === false ? false : "")
@@ -202,7 +209,26 @@ const EditProducts =() =>{
             return;
           }
           setIsLoading(true);
-          editData(`/api/products/${id}`, formFields).then((res) =>{
+
+          // Chuẩn bị payload với xử lý specs
+          const payload = { ...formFields };
+          
+          // Hàm chuẩn hóa dữ liệu multi-value
+          const normalizeMulti = (v) => 
+            Array.isArray(v) ? v.map(x => String(x).trim()).filter(Boolean)
+            : String(v || '').split(',').map(s => s.trim()).filter(Boolean);
+
+          // Xử lý các trường specs
+          ["productRam", "productSize", "productWeight"].forEach(k => {
+            if (payload[k] !== undefined && payload[k] !== null && payload[k] !== "") {
+              payload[k] = normalizeMulti(payload[k]);
+              if (payload[k].length === 0) delete payload[k];
+            } else {
+              delete payload[k]; // Xóa trường nếu không có dữ liệu
+            }
+          });
+
+          editData(`/api/products/${id}`, payload).then((res) =>{
             setIsLoading(false);
             if(res.success){
               context.showSnackbar("Product updated successfully", "success");
@@ -345,6 +371,45 @@ const EditProducts =() =>{
                           </div>
                         </div>
                       </div>
+                       {/* PRODUCT SPECS */}
+                       <div className="row">
+                          <div className="col">
+                            <div className="form-group">
+                              <h6>PRODUCT RAM</h6>
+                              <input 
+                                type="text" 
+                                placeholder="e.g., 4GB, 8GB, 12GB" 
+                                name="productRam" 
+                                value={formFields.productRam || ''}
+                                onChange={inputChange}
+                              />
+                            </div>
+                          </div>
+                          <div className="col">
+                            <div className="form-group">
+                              <h6>PRODUCT SIZE</h6>
+                              <input 
+                                type="text" 
+                                placeholder="e.g., 147x71x7.8mm, Small, Medium" 
+                                name="productSize" 
+                                value={formFields.productSize || ''}
+                                onChange={inputChange}
+                              />
+                            </div>
+                          </div>
+                          <div className="col">
+                            <div className="form-group">
+                              <h6>PRODUCT WEIGHT</h6>
+                              <input 
+                                type="text" 
+                                placeholder="e.g., 172g, 200g" 
+                                name="productWeight" 
+                                value={formFields.productWeight || ''}
+                                onChange={inputChange}
+                              />
+                            </div>
+                          </div>
+                        </div>
                       <div className="row">
                         {/* RATINGS */}
                         <div className="col">

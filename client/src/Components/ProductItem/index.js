@@ -2,11 +2,9 @@ import Rating from '@mui/material/Rating';
 import { TfiFullscreen } from "react-icons/tfi";
 import Button from "@mui/material/Button"
 import { CiHeart } from "react-icons/ci";
-import { useContext, useState } from 'react';
+import { useContext, useState, useRef } from 'react';
 import { MyContext } from '../../App';
-import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { autocompleteClasses } from '@mui/material';
 import Slider from 'react-slick';
 
 const ProductItem = (props) => {
@@ -16,13 +14,17 @@ const ProductItem = (props) => {
     const sliderRef = useRef()
     const settings = {
         dots: true,
-        infinite: true,
+        infinite: product.images && product.images.length > 1,
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
         arrows: false,
-        autoplay: true,
-        autoplaySpeed: 1500,
+        autoplay: isHover,
+        autoplaySpeed: 2000,
+        pauseOnHover: false,
+        adaptiveHeight: true,
+        fade: false,
+        cssEase: 'linear',
         appendDots: dots => (
             <div style={{ position: 'absolute', bottom: 10, width: '100%' }}>
                 <ul style={{ margin: 0, padding: 0, display: 'flex', justifyContent: 'center' }}>{dots}</ul>
@@ -33,20 +35,12 @@ const ProductItem = (props) => {
         context.setisOpenProductModal(true)
     }
     const handleMouseEnter = () =>{
-        setIsHover(true)
-        setTimeout(()=>{
-            if(sliderRef.current){
-                sliderRef.current.slickPlay()
-            }
-        },20)
+        if(product.images && product.images.length > 1) {
+            setIsHover(true)
+        }
     }
     const handleMouseLeave = () =>{
         setIsHover(false)
-        setTimeout(()=>{
-            if(sliderRef.current){
-                sliderRef.current.slickPause()
-            }
-        },20)
     }
 
     // Calculate discount percentage
@@ -61,36 +55,51 @@ const ProductItem = (props) => {
 
     return (
         <>
-            <div className={`productItem ${props.itemView}`}
+            <div 
+                className={`productItem ${props.itemView}`}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
             >
-                <div className="imgWrapper">
-                    <Link to={`/product/${product._id}`}>
-                        {isHover && product.images && product.images.length > 1 ? (
-                            <Slider {...settings} ref={sliderRef}>
-                                {product.images.map((img, idx) => (
-                                    <div key={idx}>
-                                        <img
-                                            src={img}
-                                            className="w-100"
-                                            alt={product.name || 'Product'}
-                                            loading="lazy"
-                                            style={{ height: 250, objectFit: 'cover', borderRadius: 8 }}
-                                        />
-                                    </div>
-                                ))}
-                            </Slider>
-                        ) : (
+                <div className="imgWrapper" style={{ position: 'relative' }}>
+                    <div style={{ 
+                        width: '100%', 
+                        height: 250, 
+                        overflow: 'hidden', 
+                        borderRadius: 8,
+                        position: 'relative'
+                    }}>
+                        <Link to={`/product/${product._id}`}>
+                            {product.images && product.images.length > 1 ? (
+                                <div style={{ display: isHover ? 'block' : 'none' }}>
+                                    <Slider {...settings} ref={sliderRef}>
+                                        {product.images.map((img, idx) => (
+                                            <div key={idx}>
+                                                <img
+                                                    src={img}
+                                                    className="w-100"
+                                                    alt={product.name || 'Product'}
+                                                    loading="lazy"
+                                                    style={{ height: 250, objectFit: 'cover', borderRadius: 8 }}
+                                                />
+                                            </div>
+                                        ))}
+                                    </Slider>
+                                </div>
+                            ) : null}
                             <img
                                 src={product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/300x300?text=No+Image'}
                                 className="w-100"
                                 alt={product.name || 'Product'}
                                 loading="lazy"
-                                style={{ height: 250, objectFit: 'cover', borderRadius: 8 }}
+                                style={{ 
+                                    height: 250, 
+                                    objectFit: 'cover', 
+                                    borderRadius: 8,
+                                    display: (isHover && product.images && product.images.length > 1) ? 'none' : 'block'
+                                }}
                             />
-                        )}
-                    </Link>
+                        </Link>
+                    </div>
                     <Link to={`/product/${product._id}`}><h4>{product.name || 'Product Name'}</h4></Link>
                     {discount > 0 && <span className="badge badge-primary">{discount}%</span>}
                     <div className="actions">

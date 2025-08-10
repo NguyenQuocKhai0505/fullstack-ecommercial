@@ -273,18 +273,15 @@ const Products = () => {
                             {/* HEADER */}
                             <thead className="thead-dark">
                                 <tr>
-                                    <th>UID</th>
                                     <th>PRODUCT</th>
                                     <th>CATEGORY</th>
                                     <th>SUBCATEGORY</th>
+                                    <th>CAPACITY</th>
                                     <th>BRAND</th>
                                     <th>PRICE</th>
-                                    <th>IS FEATURED</th>
                                     <th>RATING</th>
                                     <th>STOCK</th>
-                                    <th>ACTION</th>
-                                    <th>DATE CREATED</th>
-                                  
+                                    <th>ACTION</th>                                  
                                 </tr>
                             </thead>
                             
@@ -292,12 +289,6 @@ const Products = () => {
                             <tbody>
                                 {productList?.length!==0 && productList?.map((product, index) => (
                                     <tr key={product._id}>
-                                        <td>
-                                            <div className="d-flex align-items-center">
-                                                <input type="checkbox" className="mr-2" />
-                                                #{index+1}
-                                            </div>
-                                        </td>
                                         <td>
                                             <div className="d-flex align-items-center productBox">
                                                 <div className="imgWrapper">
@@ -340,12 +331,63 @@ const Products = () => {
                                                 }
                                               })()}
                                         </td>
+                                        <td>
+                                            <div className="capacity-specs">
+                                                {/* Render productRam */}
+                                                {product.productRam && product.productRam.length > 0 && (
+                                                    <div className="spec-item">
+                                                        <span className="spec-label">RAM:</span>
+                                                        <div className="spec-values">
+                                                            {product.productRam.map((ram, idx) => (
+                                                                <span key={idx} className="spec-tag ram-tag">
+                                                                    {ram}GB
+                                                                </span>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {/* Render productSize */}
+                                                {product.productSize && product.productSize.length > 0 && (
+                                                    <div className="spec-item">
+                                                        <span className="spec-label">Size:</span>
+                                                        <div className="spec-values">
+                                                            {product.productSize.map((size, idx) => (
+                                                                <span key={idx} className="spec-tag size-tag">
+                                                                    {size}
+                                                                </span>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {/* Render productWeight */}
+                                                {product.productWeight && product.productWeight.length > 0 && (
+                                                    <div className="spec-item">
+                                                        <span className="spec-label">Weight:</span>
+                                                        <div className="spec-values">
+                                                            {product.productWeight.map((weight, idx) => (
+                                                                <span key={idx} className="spec-tag weight-tag">
+                                                                    {weight}
+                                                                </span>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {/* Hiển thị "—" nếu không có dữ liệu nào */}
+                                                {(!product.productRam || product.productRam.length === 0) &&
+                                                 (!product.productSize || product.productSize.length === 0) &&
+                                                 (!product.productWeight || product.productWeight.length === 0) && (
+                                                    <span className="no-data">—</span>
+                                                )}
+                                            </div>
+                                        </td>
                                         <td>{product.brand}</td>
                                         <td>
                                             <span className="oldPrice">${product.oldPrice}</span>
                                             <span className="newPrice">${product.price}</span>
                                         </td>
-                                        <td className="d-flex align-items-center justify-content-center">{product.isFeatured ? "Yes" : "No"} </td>
                                         <td>
                                             <div className="d-flex align-items-center">
                                                 <div className="rating-stars">
@@ -382,11 +424,6 @@ const Products = () => {
                                                 </Button>
                                             </div>
                                             
-                                        </td>
-                                        <td>
-                                        {product.dateCreated
-                                            ? new Date(product.dateCreated).toLocaleDateString('vi-VN')
-                                            : ''}
                                         </td>
                                     </tr>
                                 ))}

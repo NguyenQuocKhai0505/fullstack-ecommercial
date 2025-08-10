@@ -3,8 +3,8 @@ import banner from "../../assets/images/banner5.png"
 import Button from '@mui/material/Button';
 import { IoMdMenu } from "react-icons/io";
 import { CgMenuGridR } from "react-icons/cg";
-import { PiDotsSixVerticalBold } from "react-icons/pi";
-import { IoGrid } from "react-icons/io5";
+// import { PiDotsSixVerticalBold } from "react-icons/pi";
+// import { IoGrid } from "react-icons/io5";
 import { PiDotsNineBold } from "react-icons/pi";
 import { FaAngleDown } from "react-icons/fa";
 import Menu from '@mui/material/Menu';
@@ -12,7 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useState } from "react";
 import ProductItem from "../../Components/ProductItem";
 import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
+// import Stack from '@mui/material/Stack';
 const Listing = ()=>{
             const [anchorEl, setAnchorEl] = useState(null)
             const [productView, setProductView] = useState('four')
@@ -32,7 +32,7 @@ const Listing = ()=>{
                     <Sidebar/>
 
                     <div className="content_right">
-                       <img src={banner} className="w-100" style={{borderRadius:"8px"}}/>
+                       <img src={banner} className="w-100" style={{borderRadius:"8px"}} alt="Listing banner"/>
                        <div className="showBy mt-3 mb-3 d-flex align-items-center">
                             <div className="d-flex btnWrapper">
                                 <Button className={productView ==='one'   && 'act'} onClick={()=>setProductView('one')}><IoMdMenu/></Button>

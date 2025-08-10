@@ -7,7 +7,7 @@ const QuantityBox =()=>{
     const[inputVal, setInputVal] = useState(1)
 
     const minus =()=>{
-       if (inputVal > 0 && inputVal !=1) {
+       if (inputVal > 0 && inputVal !== 1) {
         setInputVal(inputVal - 1);
         }
     }

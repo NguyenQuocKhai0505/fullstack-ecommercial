@@ -11,7 +11,7 @@ const SignIn =()=>{
 
     useEffect(()=>{
         context.setisHeaderFooterShow(false)
-    },[])
+    },[context])
 
     return(
       <section className="section signInPage">
@@ -35,7 +35,7 @@ const SignIn =()=>{
         <div className="container">
             <div className="box card p-3 shadow border-0">
                 <div className="text-center">
-                    <img src={Logo} className="banner" style={{width: "100px",height:"100px"}}/>
+                    <img src={Logo} className="banner" style={{width: "100px",height:"100px"}} alt="Logo"/>
                 </div>
 
                 <form className="mt-3">
@@ -67,13 +67,13 @@ const SignIn =()=>{
                         </Link>
                 </div>
 
-                    <a className="border-effect cursor mb-3">Forget Password?</a>
+                    <button type="button" className="border-effect cursor mb-3" style={{background: 'none', border: 'none', color: 'inherit', textDecoration: 'underline'}}>Forget Password?</button>
                     
 
                    <p>Not Registered? <Link to="/signUp" className="border-effect cursor mb-3 ml-2">Sign Up</Link></p>
 
                    <h6 className="mt-3 text-center font-weight-bold">Or continue with your social account</h6>
-                    <Button className="loginWithGoogle mt-2 mb-3" variant="outlined"><img src={googleImg}/>Sign In with Google</Button>
+                    <Button className="loginWithGoogle mt-2 mb-3" variant="outlined"><img src={googleImg} alt="Google"/>Sign In with Google</Button>
                 </form>
                 
                 

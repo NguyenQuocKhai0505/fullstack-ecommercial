@@ -1,9 +1,9 @@
 
 import Slider from "react-slick";
 import React from "react";
-import picture1 from "../../assets/images/picture1.jpg";
-import picture2 from "../../assets/images/picture1.jpg";
-import picture3 from "../../assets/images/picture1.jpg";
+// import picture1 from "../../assets/images/picture1.jpg";
+// import picture2 from "../../assets/images/picture1.jpg";
+// import picture3 from "../../assets/images/picture1.jpg";
 const HomeBanner =()=>{
   var settings = {
     dots: false,

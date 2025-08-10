@@ -13,7 +13,9 @@ import { useParams } from "react-router-dom";
 import { fetchDataFromApi } from "../../utils/api";
 const ProductDetails =()=>{
     const [activeTabs, setActiveTabs] = useState(null)
-    const [activeSize, setActiveSize]= useState(null)
+    const [activeSize, setActiveSize] = useState(null)
+    const [activeRam, setActiveRam] = useState(null)
+    const [activeWeight, setActiveWeight] = useState(null)
     const {id} = useParams()
     const [productData, setProductData] = useState([])
 
@@ -22,12 +24,14 @@ const ProductDetails =()=>{
             setProductData(res)
         })
     })
- 
-
-
-
-    const isActive =(index)=>{
+    const isActive = (index) => {
         setActiveSize(index)
+    }
+    const isActiveRam = (index) => {
+        setActiveRam(index)
+    }
+    const isActiveWeight = (index) => {
+        setActiveWeight(index)
     }
     return(
         <>
@@ -62,25 +66,67 @@ const ProductDetails =()=>{
                     </div>
 
                     <span className="badge btn-success ml-3 mb-3">{productData.countInStock > 0 ? "IN STOCK" : "OUT STOCK"}</span>
-                    <p className="mt-2 ml-3" style={{fontWeight:"600"}}>{productData.description}</p>
+                    <p className="mt-2 ml-3 mb-3" style={{fontWeight:"600", fontSize:"16px", color:"#333"}}>{productData.description}</p>
+                    {/* Render product RAM */}
+                    {productData.productRam && productData.productRam.length > 0 && (
+                        <div className="productSize d-flex align-items-center ml-3 mb-3">
+                            <span className="spec-label mr-3">RAM:</span>
+                            <ul className="list list-inline mb-0">
+                                {productData.productRam.map((ram, idx) => (
+                                    <li className="list-inline-item" key={idx}>
+                                        <button 
+                                            className={`tag ${activeRam === idx ? "active" : ""}`} 
+                                            onClick={() => isActiveRam(idx)}
+                                            type="button"
+                                        >
+                                            {ram}
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
 
-                    {/* <div className="productSize d-flex align-items-center">
-                        <span>RAM: </span>
-                        <ul className="list list-inline mb-0 pl-4">
-                            <li className="list-inline-item">
-                                <a className={`tag ${activeSize ==0 ?"active":""}`} 
-                                onClick={()=>isActive(0)}>256GB</a>
-                            </li>
-                            <li className="list-inline-item">
-                                <a className={`tag ${activeSize ==1 ?"active":""}`}
-                                onClick={()=>isActive(1)}>512GB</a>
-                            </li>
-                            <li className="list-inline-item">
-                                <a className={`tag ${activeSize ==2 ?"active":""}`}
-                                 onClick={()=>isActive(2)}>1TB</a>
-                            </li>
-                        </ul>
-                    </div> */}
+                    {/* Render product Size */}
+                    {productData.productSize && productData.productSize.length > 0 && (
+                        <div className="productSize d-flex align-items-center ml-3 mb-3">
+                            <span className="spec-label mr-3">Size:</span>
+                            <ul className="list list-inline mb-0">
+                                {productData.productSize.map((size, idx) => (
+                                    <li className="list-inline-item" key={idx}>
+                                        <button 
+                                            className={`tag ${activeSize === idx ? "active" : ""}`} 
+                                            onClick={() => isActive(idx)}
+                                            type="button"
+                                        >
+                                            {size}
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
+                    {/* Render product Weight */}
+                    {productData.productWeight && productData.productWeight.length > 0 && (
+                        <div className="productSize d-flex align-items-center ml-3 mb-3">
+                            <span className="spec-label mr-3">Weight:</span>
+                            <ul className="list list-inline mb-0">
+                                {productData.productWeight.map((weight, idx) => (
+                                    <li className="list-inline-item" key={idx}>
+                                        <button 
+                                            className={`tag ${activeWeight === idx ? "active" : ""}`} 
+                                            onClick={() => isActiveWeight(idx)}
+                                            type="button"
+                                        >
+                                            {weight}
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )} 
+                    
                     <div className="d-flex align-items-center ml-3 mt-3">
                         <QuantityBox/>
                         <Button className="btn-blue btn-lg btn-big btn-round mr-3 ml-2"><FaShoppingCart/>&nbsp; Add to cart</Button>
@@ -101,20 +147,20 @@ const ProductDetails =()=>{
                 <div className="customTabs">
                     <ul className="list list-inline">
                         <li className="list-inline-item">
-                            <Button className={`${activeTabs ==0 && 'active'}`}
+                            <Button className={`${activeTabs === 0 && 'active'}`}
                             onClick={()=>{
                                 setActiveTabs(0)
                             }}
                             >Description</Button>
                         </li>
                         <li className="list-inline-item">
-                            <Button className={`${activeTabs==1 && 'active'}`}
+                            <Button className={`${activeTabs === 1 && 'active'}`}
                             onClick={()=>{
                                 setActiveTabs(1)
                             }}>Additional info</Button>
                         </li>
                         <li className="list-inline-item">
-                            <Button className={`${activeTabs==2 && "active"}`}
+                            <Button className={`${activeTabs === 2 && "active"}`}
                             onClick={()=>{
                                 setActiveTabs(2)
                             }}
@@ -123,13 +169,13 @@ const ProductDetails =()=>{
                     </ul>
                     <br/>
                     {
-                        activeTabs ==0 &&
+                        activeTabs === 0 &&
                         <div className="tabContent">
                             <p>{productData.description} </p>
                          </div>   
                     }
                     {
-                        activeTabs ==1 &&
+                        activeTabs === 1 &&
                         <div className="tabContent"> 
                             <div className="table-responsive">
                                 <table className="table table-bordered">
@@ -220,7 +266,7 @@ const ProductDetails =()=>{
                     }
 
                     {
-                        activeTabs==2 &&
+                        activeTabs === 2 &&
                         <div className="tabContent">
                             <div className="row">
                                 <div className="col-md-8">
@@ -229,7 +275,7 @@ const ProductDetails =()=>{
                                      <div className="card p-4 reviewsCard flex-row">
                                         <div className="image">
                                             <div className="rounded-circle">
-                                                <img src="https://wp.alithemes.com/html/nest/demo/assets/imgs/blog/author-2.png"/>
+                                                <img src="https://wp.alithemes.com/html/nest/demo/assets/imgs/blog/author-2.png" alt="Author avatar"/>
                                             </div>
                                             <span className="text-g d-block text-center font-weight-bold">Ngoc Thien</span>
                                         </div>

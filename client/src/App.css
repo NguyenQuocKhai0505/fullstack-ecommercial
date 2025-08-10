@@ -1828,7 +1828,8 @@ footer .copyright ul li a svg{
 .productSize ul li{
     margin-right: 10px !important;
 }
-.productSize ul li a{
+.productSize ul li a,
+.productSize ul li button.tag{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1840,8 +1841,10 @@ footer .copyright ul li a svg{
     color: #000;
     font-size: 16px !important;
     transition: all 0.1s ease-in-out;
+    background: transparent;
 }
-.productSize ul li a.active{
+.productSize ul li a.active,
+.productSize ul li button.tag.active{
     background: #06bd18!important;
     color: #fff !important;
 }
@@ -1862,6 +1865,17 @@ footer .copyright ul li a svg{
 }
 .productDetails .btn-circle:hover{
     background: #ccc !important;
+}
+
+/* Custom margin classes */
+.mr-10 {
+    margin-right: 2.5rem !important; /* 40px */
+}
+
+.productDetails p {
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 15px;
 }
 
 /* ===== Product Details Page Styling ===== */
@@ -3420,3 +3434,48 @@ footer img {
     transform: scale(1.05);
     filter: brightness(1.1);
 }
+
+/* All Products Grid Styles */
+.allProductsGrid .productItem {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    margin-bottom: 20px;
+}
+
+.allProductsGrid .productItem:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border-color: rgba(102, 126, 234, 0.3);
+}
+
+.allProductsGrid .productItem img {
+    transition: all 0.4s ease;
+    border-radius: 12px;
+}
+
+.allProductsGrid .productItem:hover img {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+/* Pagination Styles */
+.pagination-container {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination-container .MuiPagination-root {
+    background: white;
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+

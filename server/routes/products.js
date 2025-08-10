@@ -148,6 +148,11 @@ router.post("/create", async(req, res) => {
         }
 
         // Tạo sản phẩm mới
+        // Helper chuẩn hoá mảng từ input (mảng hoặc chuỗi phẩy)
+        const normalizeMulti = (v) => Array.isArray(v)
+          ? v.map(x => String(x).trim()).filter(Boolean)
+          : String(v || '').split(',').map(s => s.trim()).filter(Boolean);
+
         let product = new Product({
             name: name.trim(),
             description: description.trim(),
@@ -159,7 +164,11 @@ router.post("/create", async(req, res) => {
             rating: parseFloat(req.body.rating) || 0,
             isFeatured: Boolean(req.body.isFeatured),
             price: parseFloat(req.body.price) || 0, 
-            oldPrice: parseFloat(req.body.oldPrice) || 0,// Thêm trường giá bị thiếu
+            oldPrice: parseFloat(req.body.oldPrice) || 0, // Thêm trường giá bị thiếu
+            // Thông số kỹ thuật dạng mảng String
+            productRam: req.body.productRam ? normalizeMulti(req.body.productRam) : undefined,
+            productSize: req.body.productSize ? normalizeMulti(req.body.productSize) : undefined,
+            productWeight: req.body.productWeight ? normalizeMulti(req.body.productWeight) : undefined,
             dateCreated: new Date()
         });
 
@@ -257,6 +266,9 @@ router.put("/:id", async(req, res) => {
             price,
             oldPrice,
             subCat,
+            productRam,
+            productSize,
+            productWeight
         } = req.body;
 
         let imgUrls = [];
@@ -315,6 +327,13 @@ router.put("/:id", async(req, res) => {
         if (price !== undefined) updateData.price = parseFloat(price) || 0;
         if (oldPrice !== undefined) updateData.oldPrice = parseFloat(oldPrice) || 0;
         if (subCat !== undefined) updateData.subCat = subCat;
+        // Thêm các trường tuỳ chọn (dạng mảng String)
+        const normalizeMultiForPut = (v) => Array.isArray(v)
+          ? v.map(x => String(x).trim()).filter(Boolean)
+          : String(v || '').split(',').map(s => s.trim()).filter(Boolean);
+        if (productRam !== undefined && productRam !== null) updateData.productRam = normalizeMultiForPut(productRam);
+        if (productSize !== undefined && productSize !== null) updateData.productSize = normalizeMultiForPut(productSize);
+        if (productWeight !== undefined && productWeight !== null) updateData.productWeight = normalizeMultiForPut(productWeight);
         
         // Thêm thời gian cập nhật
         updateData.dateUpdated = new Date();

@@ -44,6 +44,22 @@ const productSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
+    productRam:[
+        {
+            type:String
+        }
+    ],
+    productSize:[
+        {
+            type:String
+        }
+    ],
+    productWeight:[
+        {
+            type:String
+        }
+    ],
+
     isFeatured:{
         type:Boolean,
         default: false
