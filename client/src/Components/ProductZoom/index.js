@@ -5,13 +5,14 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import InnerImageZoom from 'react-inner-image-zoom';
 import 'react-inner-image-zoom/lib/styles.min.css';
-import { useState } from "react";
-const ProductZoom =(props)=>{
+import { useState,useEffect } from "react";
+const ProductZoom = (props) => {
     const [slideIndex, setSlideIndex] = useState(0);
     const [zoomSlider, setZoomSlider] = useState(null);
     const [zoomSliderBig, setZoomSliderBig] = useState(null);
-    const productData = props.product || {}
-    const images = productData.images || []
+    
+    // Hỗ trợ cả hai cách truyền props
+    const images = props.images || props.product?.images || [];
     
     const goto = (index) => {
         setSlideIndex(index);
@@ -19,19 +20,20 @@ const ProductZoom =(props)=>{
         zoomSliderBig?.slideTo(index);
     };
     
-    // Calculate discount percentage
+    // Tính discount nếu có product data
     const calculateDiscount = () => {
-        if (productData.oldPrice && productData.price && productData.oldPrice > productData.price) {
-            return Math.round(((productData.oldPrice - productData.price) / productData.oldPrice) * 100)
+        if (props.product?.oldPrice && props.product?.price && props.product.oldPrice > props.product.price) {
+            return Math.round(((props.product.oldPrice - props.product.price) / props.product.oldPrice) * 100)
         }
         return 0
     }
 
     const discount = calculateDiscount()
+    
     return(
             <div className="productZoom">
              <div className="productZoom position-relative">
-            <div className="badge badge-primary">{discount}%</div>
+            {discount > 0 && <div className="badge badge-primary">{discount}%</div>}
             <Swiper
               slidesPerView={1}
               spaceBetween={0}

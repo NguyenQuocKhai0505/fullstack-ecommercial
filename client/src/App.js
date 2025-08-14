@@ -21,6 +21,7 @@ function App() {
   const [countryList,setCountryList] = useState([]);
   const [selectedCountry,setselectedCountry] = useState('')
   const [isOpenProductModal, setisOpenProductModal] = useState(false)
+  const [selectedProductID,setSelectedProductID]= useState(null)
   const [isHeaderFooterShow, setisHeaderFooterShow] = useState(true)
   const [isLogin, setIsLogin] = useState(false)
   useEffect(()=>{
@@ -33,19 +34,19 @@ function App() {
       // console.log(res.data.data)
     })
   }
-
   const values={
     countryList,
     setselectedCountry,
     selectedCountry,
     isOpenProductModal,
     setisOpenProductModal,
+    selectedProductID,        // Thêm dòng này
+    setSelectedProductID,     // Thêm dòng này
     isHeaderFooterShow,
     setisHeaderFooterShow,
     isLogin,
     setIsLogin
   }
-
   return (
     <>
       <BrowserRouter>
@@ -62,9 +63,9 @@ function App() {
           <Route exact={true} path="/signIn" element={<SignIn/>}/>
           <Route exact={true} path="/signUp" element={<SignUp/>}/>
         </Routes>
-         {
-            isOpenProductModal ===true && <ProductModal/>
-         }
+         
+        {isOpenProductModal === true && <ProductModal />}
+         
         {
           isHeaderFooterShow === true && <Footer/>
         }

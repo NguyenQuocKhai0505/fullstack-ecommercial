@@ -4,6 +4,7 @@ const express = require("express")
 const router = express.Router()
 const cloudinary = require("cloudinary").v2; 
 const { default: pLimit } = require("p-limit");
+const { deleteImagesFromCloudinary, deleteMultipleImagesFromCloudinary } = require("../helpers/deleteImages.js");
 // Cấu hình Cloudinary với thông tin từ biến môi trường (.env file)
 cloudinary.config({
   cloud_name: process.env.cloudinary_Config_Cloud_Name, // Tên cloud trên Cloudinary
@@ -217,17 +218,68 @@ router.post("/create", async(req, res) => {
 });
 //DELETE "/:id"
 router.delete("/:id",async(req,res)=>{
-    const deleteProduct = await Product.findByIdAndDelete(req.params.id)
-    if(!deleteProduct){
-        return res.status(404).json({
-            message:"Không tìm thấy sản phẩm",
-            status:false,
-        })
+    // const deleteProduct = await Product.findByIdAndDelete(req.params.id)
+    // if(!deleteProduct){
+    //     return res.status(404).json({
+    //         message:"Không tìm thấy sản phẩm",
+    //         status:false,
+    //     })
+    // }
+    // res.status(200).send({
+    //     message:"Sản phẩm đã bị xóa",
+    //     status: true,
+    // })
+    try {
+        // Tìm sản phẩm trước khi xóa để lấy danh sách ảnh
+        const productToDelete = await Product.findById(req.params.id);
+        if (!productToDelete) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found"
+            });
+        }
+
+        // Xóa ảnh từ Cloudinary trước
+        if (productToDelete.images && productToDelete.images.length > 0) {
+            console.log(`Deleting ${productToDelete.images.length} images from Cloudinary for product: ${productToDelete.name}`);
+            
+            const imagesDeleted = await deleteMultipleImagesFromCloudinary(productToDelete.images);
+            
+            if (imagesDeleted) {
+                console.log("Images deleted from Cloudinary successfully");
+            } else {
+                console.log("Some images failed to delete from Cloudinary");
+            }
+        }
+
+        // Xóa sản phẩm từ database
+        const deleteProduct = await Product.findByIdAndDelete(req.params.id);
+        
+        if (!deleteProduct) {
+            return res.status(404).json({
+                success: false,
+                message: "Không tìm thấy sản phẩm",
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Sản phẩm đã bị xóa thành công",
+            data: {
+                productId: deleteProduct._id,
+                productName: deleteProduct.name,
+                imagesDeleted: productToDelete.images ? productToDelete.images.length : 0
+            }
+        });
+        
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        res.status(500).json({
+            success: false,
+            message: "Lỗi server khi xóa sản phẩm",
+            error: error.message
+        });
     }
-    res.status(200).send({
-        message:"Sản phẩm đã bị xóa",
-        status: true,
-    })
 })
 //GET "/:id" Lấy sản phẩm theo ID
 router.get("/:id", async(req, res) => {

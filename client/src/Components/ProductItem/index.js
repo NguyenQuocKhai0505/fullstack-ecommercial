@@ -32,6 +32,7 @@ const ProductItem = (props) => {
         ),
     };
     const viewProductDetails = (id) => {
+        context.setSelectedProductID(id)  
         context.setisOpenProductModal(true)
     }
     const handleMouseEnter = () =>{
