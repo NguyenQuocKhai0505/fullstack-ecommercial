@@ -214,32 +214,37 @@ const EditProducts =() =>{
           const payload = { ...formFields };
           
           // Hàm chuẩn hóa dữ liệu multi-value
-          const normalizeMulti = (v) => 
-            Array.isArray(v) ? v.map(x => String(x).trim()).filter(Boolean)
-            : String(v || '').split(',').map(s => s.trim()).filter(Boolean);
+          const normalizeMulti = (v) => {
+            if (!v || v === "") return []; // Trả về array rỗng nếu không có giá trị
+            
+            return Array.isArray(v) 
+              ? v.map(x => String(x).trim()).filter(Boolean)
+              : String(v).split(',').map(s => s.trim()).filter(Boolean);
+          };
+         // Xử lý các trường specs 
+        ["productRam", "productSize", "productWeight"].forEach(k => {
+          const normalizedValue = normalizeMulti(payload[k]);
+          
+          if (normalizedValue.length > 0) {
+            payload[k] = normalizedValue;
+          } else {
+            // Nếu array rỗng hoặc không có giá trị, set thành array rỗng
+            payload[k] = [];
+          }
+        });
 
-          // Xử lý các trường specs
-          ["productRam", "productSize", "productWeight"].forEach(k => {
-            if (payload[k] !== undefined && payload[k] !== null && payload[k] !== "") {
-              payload[k] = normalizeMulti(payload[k]);
-              if (payload[k].length === 0) delete payload[k];
-            } else {
-              delete payload[k]; // Xóa trường nếu không có dữ liệu
-            }
-          });
-
-          editData(`/api/products/${id}`, payload).then((res) =>{
-            setIsLoading(false);
-            if(res.success){
-              context.showSnackbar("Product updated successfully", "success");
-              navigate("/products");
-            }else{
-              context.showSnackbar("Failed to update product", "error");
-            }
-          }).catch((err) =>{
-            setIsLoading(false);
+        editData(`/api/products/${id}`, payload).then((res) => {
+          setIsLoading(false);
+          if(res.success){
+            context.showSnackbar("Product updated successfully", "success");
+            navigate("/products");
+          }else{
             context.showSnackbar("Failed to update product", "error");
-          })
+          }
+        }).catch((err) => {
+          setIsLoading(false);
+          context.showSnackbar("Failed to update product", "error");
+        });
         }
 
         return (
