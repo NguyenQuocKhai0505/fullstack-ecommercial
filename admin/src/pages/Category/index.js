@@ -293,7 +293,6 @@ const Category = () => {
                             {/* HEADER */}
                             <thead>
                                 <tr style={{backgroundColor: '#4285f4', color: 'white'}}>
-                                    <th style={{backgroundColor: '#4285f4', color: 'white', fontWeight: 'bold', padding: '15px'}}>UID</th>
                                     <th style={{backgroundColor: '#4285f4', color: 'white', fontWeight: 'bold', padding: '15px'}}>CATEGORY</th>
                                     <th style={{backgroundColor: '#4285f4', color: 'white', fontWeight: 'bold', padding: '15px'}}>IMAGE</th>
                                     <th style={{backgroundColor: '#4285f4', color: 'white', fontWeight: 'bold', padding: '15px'}}>COLOR</th>
@@ -305,17 +304,7 @@ const Category = () => {
                             <tbody>
                                 {  catData?.categoryList?.length !==0 && catData?.categoryList?.map((item,index) => (
                                     <tr key={item.id} >
-                                        {/* UID COLUMN */}
-                                        <td style={{padding: '15px', verticalAlign: 'middle'}}>
-                                            <div className="d-flex align-items-center">
-                                                <input 
-                                                    type="checkbox" 
-                                                    className="mr-2" 
-                                                    style={{marginRight: '8px'}}
-                                                />
-                                                <span style={{fontWeight: 'bold'}}>#{index + 1}</span>
-                                            </div>
-                                        </td>
+                                        
                                         
                                         {/* CATEGORY COLUMN */}
                                         <td style={{padding: '15px', verticalAlign: 'middle'}}>
