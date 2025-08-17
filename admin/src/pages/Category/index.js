@@ -152,8 +152,17 @@ const Category = () => {
             // Close dialog
             handleClose();
             
-            // Success snackbar
-            context.showSnackbar('Category updated successfully!', 'success');
+            // Success snackbar với thông tin images updated
+            let successMessage = 'Category updated successfully!';
+            if (response.data && response.data.imagesUpdated) {
+                if (response.data.imagesUpdated.oldImagesDeleted > 0) {
+                    successMessage += ` ${response.data.imagesUpdated.oldImagesDeleted} old images were deleted from Cloudinary.`;
+                }
+                if (response.data.imagesUpdated.newImagesUploaded > 0) {
+                    successMessage += ` ${response.data.imagesUpdated.newImagesUploaded} new images were uploaded.`;
+                }
+            }
+            context.showSnackbar(successMessage, 'success');
             
         } catch (error) {
             console.error('❌ Update failed:', error);
@@ -210,10 +219,13 @@ const Category = () => {
             // Close dialog
             closeDeleteDialog();
             
-            // Success snackbar với thông tin cascade delete
+            // Success snackbar với thông tin cascade delete và images deleted
             let successMessage = 'Category deleted successfully!';
             if (response.data && response.data.deletedSubCategoriesCount > 0) {
                 successMessage += ` ${response.data.deletedSubCategoriesCount} subcategories were also deleted.`;
+            }
+            if (response.data && response.data.imagesDeleted > 0) {
+                successMessage += ` ${response.data.imagesDeleted} images were deleted from Cloudinary.`;
             }
             context.showSnackbar(successMessage, 'success');
             

@@ -28,7 +28,7 @@ const HomeCat=(props)=>{
                    {
                     catData?.map((item,index)=>{
                         return(
-                        <SwiperSlide>
+                        <SwiperSlide key={item._id || index}>
                             <div className='item text-center'
                             style={{background:item.color}}>
                             <img src={item.images[0]} alt={item.name || 'Category'}/>

@@ -4,17 +4,27 @@ import { IoIosArrowRoundForward } from "react-icons/io";
 import Slider from "react-slick";
 import ProductItem from "../../Components/ProductItem";
 import HomeCat from "../../Components/HomeCat";
-// import banner1 from "../../assets/images/banner1.png"
-// import banner2 from "../../assets/images/Banner2.png"
 import coupon from "../../assets/images/banner3.png"
 import { IoMdMail } from "react-icons/io";
-// import Footer from "../../Components/Footer/index"
-import { useState, useMemo } from "react";
+import { useState, useMemo, useContext } from "react";
 import { useEffect } from "react";
 import { fetchDataFromApi } from "../../utils/api";
 import Pagination from '@mui/material/Pagination';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import { MyContext } from "../../App";
 
 const Home = () => {
+    const context = useContext(MyContext);
+    
+    // State cho Tabs
+    const [tabValue, setTabValue] = useState(0);
+    
+    // Function xử lý thay đổi tab
+    const handleTabChange = (event, newValue) => {
+        setTabValue(newValue);
+    };
+
     const productSliderOptions = useMemo(() => ({
         dots: true,
         infinite: false,
@@ -58,11 +68,13 @@ const Home = () => {
     const [totalPages, setTotalPages] = useState(1);
     const productPerPage = 12
     const [allProducts,setAllProducts] = useState([])
-    //Tính toán số lượng phân bổ
+    //State cho filtered products 
+    const [filteredProducts,setFilteredProducts] = useState([])
+    const [filteredProductsLoading,setFilteredProductsLoading] = useState(false)
+    //Tính toán số lượng phân bo
     const indexOfLastProduct = currentPage * productPerPage
     const indexOfFirstProduct = indexOfLastProduct - productPerPage
     const currentProducts = allProducts.slice(indexOfFirstProduct, indexOfLastProduct);
-    // const currentProducts = allProducts;
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -139,7 +151,47 @@ const Home = () => {
         }
         fetchAllProducts()
     },[currentPage,productPerPage])
-   
+    //Filter Product by Category 
+    useEffect(()=>{
+        const fetchProductsByCategory = async ()=>{
+            if(catData.length===0) return 
+            try{
+                setFilteredProductsLoading(true)
+                setError(null)
+                
+                // Nếu tabValue = 0 (tab đầu tiên), hiển thị tất cả featured products
+                if(tabValue === 0) {
+                    const res = await fetchDataFromApi("/api/products?isFeatured=true")
+                    if(res && res.success && Array.isArray(res.data)){
+                        setFilteredProducts(res.data)
+                        console.log('Fetched all featured products:', res.data.length);
+                    }else{
+                        setFilteredProducts([])
+                    }
+                } else {
+                    // Lấy products theo category được chọn
+                    const selectedCategory = catData[tabValue]
+                    if(!selectedCategory) return 
+                    console.log(`Fetching products for category: ${selectedCategory.name} (${selectedCategory._id})`);
+                    const res = await fetchDataFromApi(`/api/products?category=${selectedCategory._id}&isFeatured=true`)
+                    if(res && res.success && Array.isArray(res.data)){
+                        setFilteredProducts(res.data)
+                        console.log(`Fetched ${res.data.length} products for category: ${selectedCategory.name}`);
+                    }else{
+                        setFilteredProducts([])
+                        console.log(`No products found for category: ${selectedCategory.name}`);
+                    }
+                }
+            }catch(error){
+                console.error('Error fetching products by category:', error);
+                setError('Failed to load products for this category');
+                setFilteredProducts([]);
+            }finally{
+                setFilteredProductsLoading(false)
+            }
+        }
+        fetchProductsByCategory()
+    },[tabValue,catData])
     return (
         <>
             <HomeBanner />
@@ -175,33 +227,51 @@ const Home = () => {
                             <div className="productRow">
                                 <div className="d-flex align-items-center shift-content-right">
                                     <div className="info w-75">
-                                        <h3 className="mb-0 hd">FEATURED PRODUCTS</h3>
+                                        <h3 className="mb-0 hd">Popular Products</h3>
                                     </div>
-                                    <Button className="viewAllBtn ml-auto">
-                                        View All<IoIosArrowRoundForward />
-                                    </Button>
+                                    <div className="ml-auto">
+                                        <Tabs
+                                            value={tabValue}
+                                            onChange={handleTabChange}
+                                            variant="scrollable"
+                                            scrollButtons="auto">
+                                            {
+                                                catData?.map((item,idx) => {
+                                                    return(
+                                                        <Tab 
+                                                            key={item._id}
+                                                            label={item.name}
+                                                            value={idx}
+                                                        />
+                                                    )
+                                                })
+                                            }
+                                        </Tabs>
+                                    </div>
                                 </div>
 
                                 <div className="product-row w-100 mt-2">
-                                    {loading ? (
-                                        <div className="text-center">
-                                            <p>Loading featured products...</p>
-                                        </div>
-                                    ) : error ? (
-                                        <div className="text-center text-danger">
-                                            <p>{error}</p>
-                                        </div>
-                                    ) : isFeaturedProduct.length > 0 ? (
-                                        <Slider {...productSliderOptions} className="bestSellerSlider">
-                                            {isFeaturedProduct.map((product) => (
-                                                <ProductItem key={product._id} product={product} />
-                                            ))}
-                                        </Slider>
-                                    ) : (
-                                        <div className="text-center">
-                                            <p>No featured products available</p>
-                                        </div>
-                                    )}
+                                    {
+                                        filteredProductsLoading ? (
+                                            <div className="text-center">
+                                                <p>Loading products...</p>
+                                            </div>
+                                        ): error ?(
+                                            <div className="text-center text-danger">
+                                                <p>{error}</p>
+                                            </div>
+                                        ): filteredProducts.length > 0 ? (
+                                            <Slider {...productSliderOptions} className="bestSellerSlider">
+                                                {filteredProducts.map((product)=>(
+                                                    <ProductItem key={product._id} product={product}/>
+                                                ))}
+                                            </Slider>
+                                        ):(
+                                            <div className="text-center">
+                                                <p>No products available for this category</p>
+                                            </div>
+                                        )
+                                    }
                                 </div>
                             </div>
 

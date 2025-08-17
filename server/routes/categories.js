@@ -162,6 +162,26 @@ router.delete("/:id", async (req, res) => {
       });
     }
     
+    // Xóa ảnh trên Cloudinary trước khi xóa category
+    if (category.images && category.images.length > 0) {
+      console.log(`Deleting ${category.images.length} images from Cloudinary for category: ${category.name}`);
+      
+      try {
+        // Import helper function để xóa ảnh
+        const { deleteMultipleImagesFromCloudinary } = require("../helpers/deleteImages.js");
+        
+        const imagesDeleted = await deleteMultipleImagesFromCloudinary(category.images);
+        if (imagesDeleted) { 
+          console.log("Images deleted from Cloudinary successfully"); 
+        } else { 
+          console.log("Some images failed to delete from Cloudinary"); 
+        }
+      } catch (cloudinaryError) {
+        console.error('Error deleting images from Cloudinary:', cloudinaryError);
+        // Không dừng quá trình xóa category nếu xóa ảnh thất bại
+      }
+    }
+    
     // Xóa tất cả subcategories thuộc category này
     const deletedSubCategories = await SubCategory.deleteMany({ category: req.params.id });
     
@@ -173,7 +193,8 @@ router.delete("/:id", async (req, res) => {
       message: `Xóa danh mục thành công! Đã xóa ${deletedSubCategories.deletedCount} subcategories.`,
       data: {
         category: deletedCategory,
-        deletedSubCategoriesCount: deletedSubCategories.deletedCount
+        deletedSubCategoriesCount: deletedSubCategories.deletedCount,
+        imagesDeleted: category.images ? category.images.length : 0
       }
     });
   } catch (error) {
@@ -189,6 +210,15 @@ router.put("/:id", async (req, res) => {
   try {
     // console.log("Request params ID:", req.params.id); // Debug log
     // console.log("Request body:", req.body); // Debug log
+    
+    // Lấy category hiện tại để so sánh ảnh
+    const currentCategory = await Category.findById(req.params.id);
+    if (!currentCategory) {
+      return res.status(404).json({
+        message: "Không tìm thấy danh mục để cập nhật!",
+        success: false
+      });
+    }
     
     let imgurl = [];
     
@@ -220,6 +250,26 @@ router.put("/:id", async (req, res) => {
           error: "Không thể upload ảnh",
           success: false
         });
+      }
+      
+      // Xóa ảnh cũ trên Cloudinary sau khi upload ảnh mới thành công
+      if (currentCategory.images && currentCategory.images.length > 0) {
+        console.log(`Deleting ${currentCategory.images.length} old images from Cloudinary for category: ${currentCategory.name}`);
+        
+        try {
+          // Import helper function để xóa ảnh
+          const { deleteMultipleImagesFromCloudinary } = require("../helpers/deleteImages.js");
+          
+          const imagesDeleted = await deleteMultipleImagesFromCloudinary(currentCategory.images);
+          if (imagesDeleted) { 
+            console.log("Old images deleted from Cloudinary successfully"); 
+          } else { 
+            console.log("Some old images failed to delete from Cloudinary"); 
+          }
+        } catch (cloudinaryError) {
+          console.error('Error deleting old images from Cloudinary:', cloudinaryError);
+          // Không dừng quá trình cập nhật nếu xóa ảnh cũ thất bại
+        }
       }
     }
     
@@ -271,7 +321,11 @@ router.put("/:id", async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Cập nhật danh mục thành công!",
-      data: category
+      data: category,
+      imagesUpdated: {
+        oldImagesDeleted: currentCategory.images ? currentCategory.images.length : 0,
+        newImagesUploaded: imgurl.length
+      }
     });
     
   } catch (error) {
