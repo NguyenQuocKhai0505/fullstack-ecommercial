@@ -107,7 +107,7 @@ const isActiveWeight = (index) => {
                        onClick={() => isActiveRam(idx)}
                        type="button"
                      >
-                       {ram}
+                       {ram} GB
                      </button>
                    </li>
                  ))}
@@ -145,7 +145,7 @@ const isActiveWeight = (index) => {
                                             onClick={() => isActiveWeight(idx)}
                                             type="button"
                                         >
-                                            {weight}
+                                            {weight} g
                                         </button>
                                     </li>
                                 ))}

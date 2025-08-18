@@ -161,7 +161,7 @@ const Home = () => {
                 
                 // Nếu tabValue = 0 (tab đầu tiên), hiển thị tất cả featured products
                 if(tabValue === 0) {
-                    const res = await fetchDataFromApi("/api/products?isFeatured=true")
+                    const res = await fetchDataFromApi("/api/products?isFeatured=true&perPage=1000")
                     if(res && res.success && Array.isArray(res.data)){
                         setFilteredProducts(res.data)
                         console.log('Fetched all featured products:', res.data.length);
@@ -173,7 +173,7 @@ const Home = () => {
                     const selectedCategory = catData[tabValue]
                     if(!selectedCategory) return 
                     console.log(`Fetching products for category: ${selectedCategory.name} (${selectedCategory._id})`);
-                    const res = await fetchDataFromApi(`/api/products?category=${selectedCategory._id}&isFeatured=true`)
+                    const res = await fetchDataFromApi(`/api/products?category=${selectedCategory._id}&isFeatured=true&perPage=1000`)
                     if(res && res.success && Array.isArray(res.data)){
                         setFilteredProducts(res.data)
                         console.log(`Fetched ${res.data.length} products for category: ${selectedCategory.name}`);
