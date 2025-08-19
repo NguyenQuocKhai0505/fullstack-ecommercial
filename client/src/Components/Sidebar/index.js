@@ -116,9 +116,6 @@ const Sidebar = () => {
         ))}
       </ul>
     </div>
-      {/*Banner*/}
-      <Link><img src={banner} className='w-100' alt='Sidebar banner'/></Link>
-      
       </div>
   );
 };
