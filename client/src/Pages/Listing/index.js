@@ -28,45 +28,15 @@ const Listing = ()=>{
             };
             const {id:categoryId} = useParams()
             const [searchParams] = useSearchParams();
-            const subcatId = searchParams.get("subcat")
+            const subcatParam = searchParams.get("subcat")
+            const brandsParam = searchParams.get("brands"); // add this
             const [products,setProducts] = useState([])
             const [loading,setLoading]= useState(false)
             const [error,setError] = useState(null)
             const [page,setPage]= useState(1)
             const [perPage,setPerPage]= useState(12)
             const [totalPages,setTotalPages]= useState(1)
-            const productSliderOptions = useMemo(() => ({
-                dots: true,
-                infinite: false,
-                speed: 500,
-                slidesToShow: 4,
-                slidesToScroll: 2,
-                arrows: true,
-                autoplay: true,
-                responsive: [
-                    {
-                        breakpoint: 1024,
-                        settings: {
-                            slidesToShow: 3,
-                            slidesToScroll: 1,
-                        }
-                    },
-                    {
-                        breakpoint: 768,
-                        settings: {
-                            slidesToShow: 2,
-                            slidesToScroll: 1,
-                        }
-                    },
-                    {
-                        breakpoint: 480,
-                        settings: {
-                            slidesToShow: 1,
-                            slidesToScroll: 1,
-                        }
-                    }
-                ]
-            }), [])
+        
             useEffect(() => {
                 const load = async () => {
                   try {
@@ -75,7 +45,8 @@ const Listing = ()=>{
               
                     let url = `/api/products?page=${page}&perPage=${perPage}`;
                     if (categoryId) url += `&category=${categoryId}`;
-                    if (subcatId) url += `&subCat=${subcatId}`;
+                    if (subcatParam) url += `&subCat=${encodeURIComponent(subcatParam)}`;
+                    if (brandsParam) url += `&brands=${encodeURIComponent(brandsParam)}`; // add this
               
                     const res = await fetchDataFromApi(url);
                     if (res && res.success && Array.isArray(res.data)) {
@@ -94,7 +65,7 @@ const Listing = ()=>{
                   }
                 };
                 load();
-              }, [categoryId, subcatId, page, perPage]);
+              }, [categoryId, subcatParam, brandsParam, page, perPage]);
 
     return(
         <>

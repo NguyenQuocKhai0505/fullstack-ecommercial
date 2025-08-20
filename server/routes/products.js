@@ -20,6 +20,8 @@ router.get("/", async (req, res) => {
         const perPage = parseInt(req.query.perPage) || 5
         const category = req.query.category; // Lấy category từ query
         const isFeatured = req.query.isFeatured; // Lấy isFeatured từ query
+        const subCatQuery = req.query.subCat; // Có thể là 1 id hoặc chuỗi 'id1,id2'
+        const brandsQuery = req.query.brands; // Có thể là 1 brand hoặc chuỗi 'brand1,brand2"
 
         // Tạo filter object
         let filter = {};
@@ -28,6 +30,21 @@ router.get("/", async (req, res) => {
         }
         if (isFeatured !== undefined) {
             filter.isFeatured = isFeatured === 'true';
+        }
+        // Lọc theo nhiều subCat (hỗ trợ chuỗi cách nhau bởi dấu phẩy)
+        if (subCatQuery) {
+            const ids = String(subCatQuery).split(',').map(s => s.trim()).filter(Boolean);
+            filter.subCat = ids.length > 1 ? { $in: ids } : ids[0];
+        }
+        // Lọc theo nhiều brands (hỗ trợ chuỗi cách nhau bởi dấu phẩy)
+        if (brandsQuery) {
+            const brands = String(brandsQuery).split(',').map(s => s.trim()).filter(Boolean);
+            filter.brand = brands.length > 1 ? { $in: brands } : brands[0];
+        }
+        //Lọc theo nhiều brands 
+        if(brandsQuery){
+            const brands = String(brandsQuery).split(",").map(s=>s.trim()).filter(Boolean)
+            filter.brand = brands.length > 1 ? {$in:brands} : brands[0]
         }
 
         // Đếm tổng số sản phẩm theo filter
@@ -73,6 +90,49 @@ router.get("/", async (req, res) => {
         });
     }
 });
+
+// GET "/brands" - Lấy danh sách brands theo category (nếu có)
+router.get("/brands", async (req, res) => {
+    try {
+        const { category } = req.query;
+        let filter = {};
+        if (category) {
+            filter.category = category;
+        }
+        const brands = await Product.distinct("brand", filter);
+        const filteredBrands = brands.filter(brand => brand && String(brand).trim() !== "");
+        res.status(200).json({ success: true, brands: filteredBrands });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Lỗi server khi lấy danh sách brands",
+            error: error.message
+        });
+    }
+});
+//GET "/brands" - lấy danh sách brands theo category
+router.get("/brands",async(req,res)=>{
+    try{
+        const {category} = req.query //Lấy category từ query
+        let filter = {}
+        if(category){
+            filter.category = category //Chỉ lấy brands thuộc category 
+        }
+        //Lấy brands theo filter 
+        const brands = await Product.distinct("brand",filter)
+        const filteredBrands = brands.filter(brand => brand && brand.trim() !=="")
+        res.status(200).json({
+            success:true,
+            brands: filteredBrands
+        })
+    }catch(error){
+        res.status(500).json({
+            success:false,
+            message:"Fail to fetch brands",
+            error: error.message
+        })
+    }
+})
 //POST "/create" - Route tạo sản phẩm mới
 router.post("/create", async(req, res) => {
     try {

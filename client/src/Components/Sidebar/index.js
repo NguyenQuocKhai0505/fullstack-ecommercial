@@ -3,62 +3,112 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import RangeSlider from "react-range-slider-input"
 import "react-range-slider-input/dist/style.css"
-import { useState } from 'react';
 import React from 'react';
-import { Link } from 'react-router-dom';
-import banner from "../../assets/images/banner4.png"
+import {useState,useEffect} from "react"
+import { useParams,useSearchParams } from 'react-router-dom';
+import {fetchDataFromApi} from "../../utils/api"
 
 const Sidebar = () => {
-     const [value,setValue] = useState([100,60000])
-     // const [value2,setValue2] = useState(0)
-     const categories = ["Men", "Women", "Beauty", "Kids", "Gifts","Men", "Women", "Beauty", "Kids", "Gifts"];
-     const statusProduct = ["In Stock", "On Sale"]
-     const brandProduct =["iPhone", "SamSung","Huawei","Xiaomi", "Nokia", "Oppo"]
+     const [value,setValue] = useState([10,10000])
+     const [categories,setCategories]= useState([])
+     const statusProduct = []
+     const brandProduct =[]
+     const {id: categoryId} = useParams()
+     const [searchParams,setSearchParams] = useSearchParams()
+     const selectedSubcats = (searchParams.get("subcat") || "").split(",").filter(Boolean)
+     const selectedBrands = (searchParams.get("brands") || "").split(",").filter(Boolean)
+     const [subcats,setSubcats] = useState([])
+     const [brands, setBrands] = useState([]);
+
+     useEffect(() => {
+      if (!categoryId) { 
+        setSubcats([]);
+        setBrands([])
+        return;
+       }
+      (async () => {
+           //Fetch cả subcategory và brands theo category
+           try{
+             const [subRes,brandsRes]= await Promise.all([
+              fetchDataFromApi(`/api/subcat?category=${categoryId}`),
+              fetchDataFromApi(`/api/products/brands?category=${categoryId}`)
+             ])
+             setSubcats(subRes?.subcats || [])
+             setBrands(brandsRes?.brands || [])
+           }catch(error){
+            console.log("Error fetching data",error)
+           }
+      })();
+    }, [categoryId]);
+     const onToggleSubcat = (id) => {
+      const next = new URLSearchParams(searchParams);
+      const setIds = new Set(selectedSubcats);
+      if (setIds.has(id)) setIds.delete(id); else setIds.add(id);
+      const value = Array.from(setIds).join(",");
+      if (value) next.set("subcat", value); else next.delete("subcat");
+      next.set("page", "1");
+      setSearchParams(next);
+    };
+    const onToggleBrand = (brandname) =>{
+      const next = new URLSearchParams(searchParams)
+      const setBrands = new Set(selectedBrands)
+      if(setBrands.has(brandname)){
+        setBrands.delete(brandname)
+      }else{
+        setBrands.add(brandname)
+      }
+      const value = Array.from(setBrands).join(",")
+      if(value){
+        next.set("brands",value)
+      }else{
+        next.delete("brands");
+      }
+      next.set("page","1")
+      setSearchParams(next)
+    }
+  
   return (
 
     <div className="sidebar">
       <div className="filterBox">
-        <h6>PRODUCT CATEGORIES</h6>
+        <h6>CATEGORY</h6>
       {/* Scroll */}
       </div>
       <div className="scroll">
-        <ul>
-          {categories.map((category, index) => (
-            <li key={index}>
-              <FormControlLabel
+        <ul style={{paddingLeft: '0px', marginTop: '0px'}}>
+          {subcats.map(s=>{
+            const checked = selectedSubcats.includes(s._id)
+            return(
+              <li key={s._id} style={{listStyle:"none"}}>
+                <FormControlLabel
                 control={
                   <Checkbox
-                    defaultChecked
-                    sx={{
-                      p: 0.1, // padding nhỏ
-                      '& .MuiSvgIcon-root': { fontSize: 16,} // chỉnh kích thước ô checkbox
-                    }}
+                  checked={checked}
+                  onChange={()=>onToggleSubcat(s._id)}
+                  sx={{ p: 0.5, '& .MuiSvgIcon-root': { fontSize: 18 } }}
                   />
                 }
-                label={category}
-                sx={{
-                  width: '100%',
-                  '& .MuiFormControlLabel-label': {
-                    fontSize: '14px',
-                  },
-                }}
-              />
-            </li>
-          ))}
+                label={s.subCategory || s.name}
+                sx={{ width: "100%", '& .MuiFormControlLabel-label': { fontSize: 14 } }}
+                />
+              </li>
+            )
+          })}
+          
         </ul>
       </div>
        {/* Filter Product By Price */}
       <div className="filterBox">
         <h6>FILTER BY PRICE</h6>
-        <RangeSlider value={value} onInput={setValue} min={100} max={60000}></RangeSlider>
+        <RangeSlider value={value} onInput={setValue} min={100} max={10000}></RangeSlider>
         <div className='d-flex pt-2 pb-2 priceRange'>
-          <span>From: <strong className='text-dark'>Rs: {value[0]}</strong></span>
-          <span className='ml-auto'>From: <strong className='text-dark'>Rs: {value[1]}</strong></span>
+          <span>From: <strong className='text-dark'>${value[0]}</strong></span>
+          <span className='ml-auto'>From: <strong className='text-dark'>${value[1]}</strong></span>
         </div>
       </div>
        {/*Product Status */}
       <div className="filterBox">
-      <h6 style={{ marginBottom: '10px' }}>PRODUCT STATUS</h6>
+      <h6 style={{ marginBottom: '10px' }}>PRODUCT RATING</h6>
 
       <ul style={{ paddingLeft: '0px', marginTop: '0px' }}>
         {statusProduct.map((status, index) => (
@@ -87,33 +137,37 @@ const Sidebar = () => {
       </ul>
       </div>
         {/*Products' Brands*/}
-      <div className="filterBox">
+    <div className="filterBox">
       <h6 style={{ marginBottom: '10px' }}>BRANDS</h6>
-
       <ul style={{ paddingLeft: '0px', marginTop: '0px' }}>
-        {brandProduct.map((brands, index) => (
-          <li key={index} style={{ listStyle: 'none', marginTop: '0px' }}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  sx={{
-                    p: 0.5,
-                    pl: 1,
-                    pb: 0.1,
-                    '& .MuiSvgIcon-root': { fontSize: 20 }
-                  }}
-                />
-              }
-              label={brands}
-              sx={{
-                width: '100%',
-                '& .MuiFormControlLabel-label': {
-                  fontSize: '16px',
+        {brands.map((brand, index) => {
+          const checked = selectedBrands.includes(brand);
+          return (
+            <li key={index} style={{ listStyle: 'none', marginTop: '0px' }}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={checked}
+                    onChange={() => onToggleBrand(brand)}
+                    sx={{
+                      p: 0.5,
+                      pl: 1,
+                      pb: 0.1,
+                      '& .MuiSvgIcon-root': { fontSize: 20 }
+                    }}
+                  />
                 }
-              }}
-            />
-          </li>
-        ))}
+                label={brand}
+                sx={{
+                  width: '100%',
+                  '& .MuiFormControlLabel-label': {
+                    fontSize: '16px',
+                  }
+                }}
+              />
+            </li>
+          );
+        })}
       </ul>
     </div>
       </div>
