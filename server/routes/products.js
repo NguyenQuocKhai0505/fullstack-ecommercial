@@ -22,6 +22,8 @@ router.get("/", async (req, res) => {
         const isFeatured = req.query.isFeatured; // Lấy isFeatured từ query
         const subCatQuery = req.query.subCat; // Có thể là 1 id hoặc chuỗi 'id1,id2'
         const brandsQuery = req.query.brands; // Có thể là 1 brand hoặc chuỗi 'brand1,brand2"
+        const minPrice = Number(req.query.minPrice) || 0
+        const maxPrice = Number(req.query.maxPrice) || 10000
 
         // Tạo filter object
         let filter = {};
@@ -45,6 +47,10 @@ router.get("/", async (req, res) => {
         if(brandsQuery){
             const brands = String(brandsQuery).split(",").map(s=>s.trim()).filter(Boolean)
             filter.brand = brands.length > 1 ? {$in:brands} : brands[0]
+        }
+        //Lọc theo giá 
+        if(minPrice || maxPrice){
+            filter.price = {$gte:minPrice,$lte:maxPrice}
         }
 
         // Đếm tổng số sản phẩm theo filter

@@ -30,6 +30,8 @@ const Listing = ()=>{
             const [searchParams] = useSearchParams();
             const subcatParam = searchParams.get("subcat")
             const brandsParam = searchParams.get("brands"); // add this
+            const minPrice = searchParams.get("minPrice")
+            const maxPrice = searchParams.get("maxPrice")
             const [products,setProducts] = useState([])
             const [loading,setLoading]= useState(false)
             const [error,setError] = useState(null)
@@ -47,6 +49,8 @@ const Listing = ()=>{
                     if (categoryId) url += `&category=${categoryId}`;
                     if (subcatParam) url += `&subCat=${encodeURIComponent(subcatParam)}`;
                     if (brandsParam) url += `&brands=${encodeURIComponent(brandsParam)}`; // add this
+                    if (minPrice) url += `&minPrice=${minPrice}`;
+                    if (maxPrice) url += `&maxPrice=${maxPrice}`;
               
                     const res = await fetchDataFromApi(url);
                     if (res && res.success && Array.isArray(res.data)) {
@@ -65,7 +69,7 @@ const Listing = ()=>{
                   }
                 };
                 load();
-              }, [categoryId, subcatParam, brandsParam, page, perPage]);
+              }, [categoryId, subcatParam, brandsParam, page, perPage,minPrice,maxPrice]);
 
     return(
         <>

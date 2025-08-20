@@ -9,7 +9,7 @@ import { useParams,useSearchParams } from 'react-router-dom';
 import {fetchDataFromApi} from "../../utils/api"
 
 const Sidebar = () => {
-     const [value,setValue] = useState([10,10000])
+     const [value,setValue] = useState([0,10000])
      const [categories,setCategories]= useState([])
      const statusProduct = []
      const brandProduct =[]
@@ -17,6 +17,7 @@ const Sidebar = () => {
      const [searchParams,setSearchParams] = useSearchParams()
      const selectedSubcats = (searchParams.get("subcat") || "").split(",").filter(Boolean)
      const selectedBrands = (searchParams.get("brands") || "").split(",").filter(Boolean)
+
      const [subcats,setSubcats] = useState([])
      const [brands, setBrands] = useState([]);
 
@@ -40,6 +41,13 @@ const Sidebar = () => {
            }
       })();
     }, [categoryId]);
+    //Filter By Price
+    useEffect(()=>{
+      const min = Number(searchParams.get("minPrice")) || 0
+      const max = Number(searchParams.get("maxPrice")) || 10000
+      setValue([min,max])
+     },[searchParams])
+     //Change Subcategory
      const onToggleSubcat = (id) => {
       const next = new URLSearchParams(searchParams);
       const setIds = new Set(selectedSubcats);
@@ -49,6 +57,7 @@ const Sidebar = () => {
       next.set("page", "1");
       setSearchParams(next);
     };
+    //Change Brand
     const onToggleBrand = (brandname) =>{
       const next = new URLSearchParams(searchParams)
       const setBrands = new Set(selectedBrands)
@@ -66,7 +75,15 @@ const Sidebar = () => {
       next.set("page","1")
       setSearchParams(next)
     }
-  
+    //Change Price
+   const onChangePriceValue = (newValue)=>{
+    setValue(newValue)
+    const next = new URLSearchParams(searchParams)
+    next.set("minPrice",newValue[0])
+    next.set("maxPrice",newValue[1])
+    next.set("page","1")
+    setSearchParams(next)
+   }
   return (
 
     <div className="sidebar">
@@ -100,7 +117,7 @@ const Sidebar = () => {
        {/* Filter Product By Price */}
       <div className="filterBox">
         <h6>FILTER BY PRICE</h6>
-        <RangeSlider value={value} onInput={setValue} min={100} max={10000}></RangeSlider>
+        <RangeSlider value={value} onInput={onChangePriceValue} min={0} max={10000}></RangeSlider>
         <div className='d-flex pt-2 pb-2 priceRange'>
           <span>From: <strong className='text-dark'>${value[0]}</strong></span>
           <span className='ml-auto'>From: <strong className='text-dark'>${value[1]}</strong></span>
