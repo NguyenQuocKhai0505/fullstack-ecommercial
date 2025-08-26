@@ -9,7 +9,7 @@ import { useParams,useSearchParams } from 'react-router-dom';
 import {fetchDataFromApi} from "../../utils/api"
 import { Rating } from '@mui/material';
 
-const Sidebar = () => {
+const Sidebar = ({showFilter}) => {
      const [value,setValue] = useState([0,10000])
      const [ratingValue,setRatingValue] = useState([0,5])
      const [categories,setCategories]= useState([])
@@ -87,8 +87,8 @@ const Sidebar = () => {
     setSearchParams(next)
    }
   return (
-
-    <div className="sidebar">
+   <>
+   {showFilter && ( <div className="sidebar">
       <div className="filterBox">
         <h6>CATEGORY</h6>
       {/* Scroll */}
@@ -159,7 +159,8 @@ const Sidebar = () => {
         })}
       </ul>
     </div>
-      </div>
+      </div>)}
+   </>
   );
 };
 

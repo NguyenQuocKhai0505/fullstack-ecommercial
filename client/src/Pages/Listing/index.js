@@ -13,7 +13,8 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { fetchDataFromApi } from "../../utils/api";
 import { Button, Menu, MenuItem, ListItemIcon, ListItemText } from "@mui/material";
 import { MdArrowDropDown, MdArrowDropUp, MdAccessTime, MdArrowUpward, MdArrowDownward, MdStar } from "react-icons/md";
-
+import { FaToggleOn } from "react-icons/fa";
+import { FaToggleOff } from "react-icons/fa";
 // import Stack from '@mui/material/Stack';
 const Listing = ()=>{
             const [anchorEl, setAnchorEl] = useState(null); // Cho menu Show Per Page
@@ -23,7 +24,8 @@ const Listing = ()=>{
             const open = Boolean(anchorEl);
             const [anchorElSort, setAnchorElSort] = useState(null); // Cho menu Sort By
             const openSort = Boolean(anchorElSort); // Cho menu Sort By
-            
+            const [showFilter,setShowFilter] = useState(true)
+
             const handleClick = (event) => {
               setAnchorEl(event.currentTarget);
             };
@@ -91,7 +93,9 @@ const Listing = ()=>{
         <section className="product_Listing_Page">
             <div className="container">
                 <div className="listingLayout d-flex">
-                    <Sidebar/>
+                    {/* Hiệu ứng backdrop và sidebar filter */}
+                    {showFilter && <div className="sidebar-backdrop" onClick={() => setShowFilter(false)} />}
+                    <Sidebar showFilter={showFilter} />
 
                     <div className="content_right">
                        <img src={banner} className="w-100" style={{borderRadius:"8px"}} alt="Listing banner"/>
@@ -102,6 +106,7 @@ const Listing = ()=>{
                                 <Button className={`showByBtn${productView ==='four' ? ' act' : ''}`} onClick={()=>setProductView('four')}><PiDotsNineBold/></Button>
                                 {/* Filter product By Price and Date */}
                                <Button
+                               className="sortByBtn"
                                variant="text"
                                onClick={handleClickSort}
                                endIcon={openSort ? <MdArrowDropUp/> : <MdArrowDropDown/>}
@@ -135,6 +140,16 @@ const Listing = ()=>{
                                 <ListItemText>Price: Low-High</ListItemText>
                                 </MenuItem>
                             </Menu>
+                            <Button
+                                className="toggle-filter-btn"
+                                onClick={()=>setShowFilter((prev)=>!prev)}
+                            >
+                                {showFilter ? (
+                                <>Hide Filter <FaToggleOff className="mr-5 ml-2"/></>
+                                ) : (
+                                <>Show Filter <FaToggleOn className="mr-5 ml-2"/></>
+                                )}
+                            </Button>
                             </div>
                             <div className="ml-auto showByFilter">
                             <Button onClick={handleClick}>Show {perPage} <FaAngleDown /></Button>

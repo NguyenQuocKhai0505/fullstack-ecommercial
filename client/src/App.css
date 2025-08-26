@@ -3629,38 +3629,33 @@ footer img {
   height: 36px !important;
   width: 36px !important;
   border-radius: 50% !important;
-  color: #233a95;
-  background: #fff;
-  border: 1.5px solid transparent;
-  box-shadow: none;
-  margin-right: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-  font-size: 20px;
+  color: #233a95 !important;
+  background: #fff !important;
+  border: 1.5px solid transparent !important;
+  box-shadow: none !important;
+  margin-right: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: background 0.2s !important, color 0.2s !important, border-color 0.2s !important, box-shadow 0.2s !important, transform 0.2s !important;
+  font-size: 20px !important;
+  font-weight: 500 !important;
+}
+.showByBtn:hover, .showByBtn.act, .showByBtn:active {
+  background: #e6f7fd !important;
+  color: #2bbef9 !important;
+  border-color: #2bbef9 !important;
+  transform: scale(1.08) !important;
 }
 .showByBtn svg {
-  color: #233a95;
-  opacity: 0.5;
-  transition: opacity 0.2s;
-}
-.showByBtn.act,
-.showByBtn:active {
-  background: #f6f8fb !important;
-  border-color: #2bbef9 !important;
-  color: #2bbef9 !important;
-  font-weight: bold;
+  color: #233a95 !important;
+  opacity: 0.5 !important;
+  transition: opacity 0.2s !important, color 0.2s !important;
 }
 .showByBtn.act svg,
 .showByBtn:hover svg {
-  opacity: 1;
-  color: #2bbef9;
-}
-.showByBtn:hover {
-  background: #e6f7fd;
-  border-color: #2bbef9;
-  color: #2bbef9;
+  opacity: 1 !important;
+  color: #2bbef9 !important;
 }
 
 /* --- Nút Sort By --- */
@@ -3672,13 +3667,145 @@ footer img {
   padding: 8px 18px !important;
   box-shadow: none !important;
   border: none !important;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.2s !important, color 0.2s !important, box-shadow 0.2s !important, transform 0.2s !important;
   font-size: 18px !important;
-  margin-left: 16px;
+  margin-left: 16px !important;
 }
 .sortByBtn:hover,
 .sortByBtn:focus {
   background: #e6f7fd !important;
   color: #2bbef9 !important;
+  transform: translateY(-2px) scale(1.04) !important;
+  box-shadow: 0 2px 8px rgba(43, 190, 249, 0.08) !important;
+}
+
+/* --- Nút Toggle Filter --- */
+.toggle-filter-btn {
+  background: #fff !important;
+  color: #233a95 !important;
+  border: 1.5px solid #2bbef9 !important;
+  border-radius: 24px !important;
+  padding: 8px 18px !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  margin-left: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  box-shadow: 0 2px 8px rgba(43, 190, 249, 0.05) !important;
+  transition: background 0.2s !important, color 0.2s !important, border-color 0.2s !important, box-shadow 0.2s !important, transform 0.2s !important;
+}
+.toggle-filter-btn:hover {
+  background: #e6f7fd !important;
+  color: #2bbef9 !important;
+  border-color: #2bbef9 !important;
+  transform: scale(1.04) !important;
+  box-shadow: 0 4px 16px rgba(43, 190, 249, 0.12) !important;
+}
+.toggle-filter-btn svg {
+  font-size: 20px !important;
+  transition: color 0.2s !important, transform 0.2s !important;
+}
+
+/* --- Nút Show Per Page --- */
+.showByFilter button {
+  min-width: auto !important;
+  color: #000 !important;
+  background: #fff !important;
+  border: 1.5px solid #e0e0e0 !important;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+  padding: 8px 16px !important;
+  margin-left: 8px !important;
+  transition: background 0.2s !important, color 0.2s !important, border-color 0.2s !important, box-shadow 0.2s !important, transform 0.2s !important;
+}
+.showByFilter button:hover {
+  background: #e6f7fd !important;
+  color: #2bbef9 !important;
+  border-color: #2bbef9 !important;
+  transform: scale(1.04) !important;
+}
+.showByFilter button svg {
+  color: #000 !important;
+  opacity: 0.5 !important;
+  margin-left: 5px !important;
+  transition: color 0.2s !important, opacity 0.2s !important;
+}
+.showByFilter button.act svg {
+  opacity: 1 !important;
+  color: #2bbef9 !important;
+}
+
+/* Sidebar Filter Offcanvas (Mobile) */
+.sidebar-filter {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 80vw;
+  max-width: 350px;
+  background: #fff;
+  z-index: 1200;
+  box-shadow: 2px 0 16px rgba(0,0,0,0.08);
+  transform: translateX(-100%);
+  transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+  will-change: transform;
+  overflow-y: auto;
+  padding: 24px 16px;
+  display: block;
+}
+.sidebar-filter.open {
+  transform: translateX(0);
+}
+
+/* Backdrop for sidebar filter */
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  z-index: 1100;
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+.sidebar-backdrop.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Close button for sidebar (mobile) */
+.close-sidebar-btn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #333;
+  z-index: 10;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.close-sidebar-btn:hover {
+  color: #007bff;
+}
+
+@media (min-width: 992px) {
+  .sidebar-filter {
+    position: static;
+    width: 100%;
+    max-width: none;
+    box-shadow: none;
+    transform: none;
+    transition: none;
+    padding: 0;
+    background: transparent;
+  }
+  .sidebar-backdrop {
+    display: none;
+  }
+  .close-sidebar-btn {
+    display: none;
+  }
 }
 
