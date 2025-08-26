@@ -3,13 +3,15 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import RangeSlider from "react-range-slider-input"
 import "react-range-slider-input/dist/style.css"
-import React from 'react';
+import React, { use } from 'react';
 import {useState,useEffect} from "react"
 import { useParams,useSearchParams } from 'react-router-dom';
 import {fetchDataFromApi} from "../../utils/api"
+import { Rating } from '@mui/material';
 
 const Sidebar = () => {
      const [value,setValue] = useState([0,10000])
+     const [ratingValue,setRatingValue] = useState([0,5])
      const [categories,setCategories]= useState([])
      const statusProduct = []
      const brandProduct =[]
@@ -122,36 +124,6 @@ const Sidebar = () => {
           <span>From: <strong className='text-dark'>${value[0]}</strong></span>
           <span className='ml-auto'>From: <strong className='text-dark'>${value[1]}</strong></span>
         </div>
-      </div>
-       {/*Product Status */}
-      <div className="filterBox">
-      <h6 style={{ marginBottom: '10px' }}>PRODUCT RATING</h6>
-
-      <ul style={{ paddingLeft: '0px', marginTop: '0px' }}>
-        {statusProduct.map((status, index) => (
-          <li key={index} style={{ listStyle: 'none', marginTop: '0px' }}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  sx={{
-                    p: 0.5,
-                    pl: 1,
-                    pb: 0.1,
-                    '& .MuiSvgIcon-root': { fontSize: 20 }
-                  }}
-                />
-              }
-              label={status}
-              sx={{
-                width: '100%',
-                '& .MuiFormControlLabel-label': {
-                  fontSize: '16px',
-                }
-              }}
-            />
-          </li>
-        ))}
-      </ul>
       </div>
         {/*Products' Brands*/}
     <div className="filterBox">

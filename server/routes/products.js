@@ -24,6 +24,7 @@ router.get("/", async (req, res) => {
         const brandsQuery = req.query.brands; // Có thể là 1 brand hoặc chuỗi 'brand1,brand2"
         const minPrice = Number(req.query.minPrice) || 0
         const maxPrice = Number(req.query.maxPrice) || 10000
+        const sortBy   = req.query.sortBy || "newest"
 
         // Tạo filter object
         let filter = {};
@@ -63,10 +64,19 @@ router.get("/", async (req, res) => {
                 message: "Page not found"
             })
         }
+        //Sort Object 
+        let sortOption = {createAt:-1} //mac dinh moi nhat
+        if(sortBy ==="asc") sortOption = {price:1}
+        if(sortBy ==="desc") sortOption = {price:-1}
+        if(sortBy ==="featured") sortOption = {isFeatured: -1, createAt: -1}
+        if(sortBy === 'newest') sortOption = { createdAt: -1 };
+
 
 
         // Lấy danh sách sản phẩm cho trang hiện tại theo filter
-        const productList = await Product.find(filter).populate("category")
+        const productList = await Product.find(filter)
+            .populate("category")
+            .sort(sortOption)
             .skip((page - 1) * perPage)
             .limit(perPage)
             .exec()

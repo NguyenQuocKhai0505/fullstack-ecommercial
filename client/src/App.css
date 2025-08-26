@@ -3623,3 +3623,62 @@ footer img {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
+/* --- Nút chuyển view (list/grid/4 cột) --- */
+.showByBtn {
+  min-width: 36px !important;
+  height: 36px !important;
+  width: 36px !important;
+  border-radius: 50% !important;
+  color: #233a95;
+  background: #fff;
+  border: 1.5px solid transparent;
+  box-shadow: none;
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  font-size: 20px;
+}
+.showByBtn svg {
+  color: #233a95;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+.showByBtn.act,
+.showByBtn:active {
+  background: #f6f8fb !important;
+  border-color: #2bbef9 !important;
+  color: #2bbef9 !important;
+  font-weight: bold;
+}
+.showByBtn.act svg,
+.showByBtn:hover svg {
+  opacity: 1;
+  color: #2bbef9;
+}
+.showByBtn:hover {
+  background: #e6f7fd;
+  border-color: #2bbef9;
+  color: #2bbef9;
+}
+
+/* --- Nút Sort By --- */
+.sortByBtn {
+  background: #f6f8fb !important;
+  color: #233a95 !important;
+  font-weight: bold !important;
+  border-radius: 8px !important;
+  padding: 8px 18px !important;
+  box-shadow: none !important;
+  border: none !important;
+  transition: background 0.2s, color 0.2s;
+  font-size: 18px !important;
+  margin-left: 16px;
+}
+.sortByBtn:hover,
+.sortByBtn:focus {
+  background: #e6f7fd !important;
+  color: #2bbef9 !important;
+}
+

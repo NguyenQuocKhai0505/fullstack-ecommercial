@@ -1,30 +1,44 @@
 import Sidebar from "../../Components/Sidebar"
 import banner from "../../assets/images/banner5.png"
-import Button from '@mui/material/Button';
 import { IoMdMenu } from "react-icons/io";
 import { CgMenuGridR } from "react-icons/cg";
 // import { PiDotsSixVerticalBold } from "react-icons/pi";
 // import { IoGrid } from "react-icons/io5";
 import { PiDotsNineBold } from "react-icons/pi";
 import { FaAngleDown } from "react-icons/fa";
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import { useState,useEffect,useMemo } from "react";
 import ProductItem from "../../Components/ProductItem";
 import Pagination from '@mui/material/Pagination';
 import { useParams, useSearchParams } from "react-router-dom";
 import { fetchDataFromApi } from "../../utils/api";
+import { Button, Menu, MenuItem, ListItemIcon, ListItemText } from "@mui/material";
+import { MdArrowDropDown, MdArrowDropUp, MdAccessTime, MdArrowUpward, MdArrowDownward, MdStar } from "react-icons/md";
 
 // import Stack from '@mui/material/Stack';
 const Listing = ()=>{
-            const [anchorEl, setAnchorEl] = useState(null)
+            const [anchorEl, setAnchorEl] = useState(null); // Cho menu Show Per Page
             const [productView, setProductView] = useState('four')
             const openDropDown = Boolean(anchorEl);
+            const [sortBy,setSortBy] = useState("newest")
+            const open = Boolean(anchorEl);
+            const [anchorElSort, setAnchorElSort] = useState(null); // Cho menu Sort By
+            const openSort = Boolean(anchorElSort); // Cho menu Sort By
+            
             const handleClick = (event) => {
-                setAnchorEl(event.currentTarget);
+              setAnchorEl(event.currentTarget);
             };
             const handleClose = () => {
-                setAnchorEl(null);
+              setAnchorEl(null);
+            };
+            const handleClickSort = (event) => {
+                setAnchorElSort(event.currentTarget);
+              };
+              const handleCloseSort = () => {
+                setAnchorElSort(null);
+              };
+            const handleSort = (value) => {
+              setSortBy(value);
+              setAnchorElSort(null);
             };
             const {id:categoryId} = useParams()
             const [searchParams] = useSearchParams();
@@ -46,11 +60,12 @@ const Listing = ()=>{
                     setError(null);
               
                     let url = `/api/products?page=${page}&perPage=${perPage}`;
-                    if (categoryId) url += `&category=${categoryId}`;
+                    if (categoryId)  url += `&category=${categoryId}`;
                     if (subcatParam) url += `&subCat=${encodeURIComponent(subcatParam)}`;
                     if (brandsParam) url += `&brands=${encodeURIComponent(brandsParam)}`; // add this
-                    if (minPrice) url += `&minPrice=${minPrice}`;
-                    if (maxPrice) url += `&maxPrice=${maxPrice}`;
+                    if (minPrice)    url += `&minPrice=${minPrice}`;
+                    if (maxPrice)    url += `&maxPrice=${maxPrice}`;
+                    if (sortBy)      url += `&sortBy=${sortBy}`
               
                     const res = await fetchDataFromApi(url);
                     if (res && res.success && Array.isArray(res.data)) {
@@ -69,7 +84,7 @@ const Listing = ()=>{
                   }
                 };
                 load();
-              }, [categoryId, subcatParam, brandsParam, page, perPage,minPrice,maxPrice]);
+              }, [categoryId, subcatParam, brandsParam, page, perPage,minPrice,maxPrice,sortBy]);
 
     return(
         <>
@@ -82,9 +97,44 @@ const Listing = ()=>{
                        <img src={banner} className="w-100" style={{borderRadius:"8px"}} alt="Listing banner"/>
                        <div className="showBy mt-3 mb-3 d-flex align-items-center">
                             <div className="d-flex btnWrapper">
-                                <Button className={productView ==='one'   && 'act'} onClick={()=>setProductView('one')}><IoMdMenu/></Button>
-                                <Button className={productView ==="three" && "act"}  onClick={()=>setProductView('three')}><CgMenuGridR/></Button>
-                                <Button className={productView ==="four"  && "act"}  onClick={()=>setProductView('four')}><PiDotsNineBold/></Button>
+                                <Button className={`showByBtn${productView ==='one' ? ' act' : ''}`} onClick={()=>setProductView('one')}><IoMdMenu/></Button>
+                                <Button className={`showByBtn${productView ==='three' ? ' act' : ''}`} onClick={()=>setProductView('three')}><CgMenuGridR/></Button>
+                                <Button className={`showByBtn${productView ==='four' ? ' act' : ''}`} onClick={()=>setProductView('four')}><PiDotsNineBold/></Button>
+                                {/* Filter product By Price and Date */}
+                               <Button
+                               variant="text"
+                               onClick={handleClickSort}
+                               endIcon={openSort ? <MdArrowDropUp/> : <MdArrowDropDown/>}
+                               sx={{fontWeight:600,fontSize:16,ml:2}}
+                               >Sort By
+                               </Button>
+                               <Menu
+                                anchorEl={anchorElSort}
+                                open={openSort}
+                                onClose={handleCloseSort}
+                                PaperProps={{
+                                sx: { borderRadius: 3, minWidth: 180, p: 1 }
+                                }}
+                                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                                transformOrigin={{ vertical: "top", horizontal: "left" }}
+                            >
+                                <MenuItem selected={sortBy === "featured"} onClick={() => handleSort("featured")}>
+                                <ListItemIcon><MdStar /></ListItemIcon>
+                                <ListItemText>Featured</ListItemText>
+                                </MenuItem>
+                                <MenuItem selected={sortBy === "newest"} onClick={() => handleSort("newest")}>
+                                <ListItemIcon><MdAccessTime /></ListItemIcon>
+                                <ListItemText>Newest</ListItemText>
+                                </MenuItem>
+                                <MenuItem selected={sortBy === "desc"} onClick={() => handleSort("desc")}>
+                                <ListItemIcon><MdArrowDownward /></ListItemIcon>
+                                <ListItemText>Price: High-Low</ListItemText>
+                                </MenuItem>
+                                <MenuItem selected={sortBy === "asc"} onClick={() => handleSort("asc")}>
+                                <ListItemIcon><MdArrowUpward /></ListItemIcon>
+                                <ListItemText>Price: Low-High</ListItemText>
+                                </MenuItem>
+                            </Menu>
                             </div>
                             <div className="ml-auto showByFilter">
                             <Button onClick={handleClick}>Show {perPage} <FaAngleDown /></Button>
