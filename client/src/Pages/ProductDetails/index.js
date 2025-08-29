@@ -24,6 +24,17 @@ const ProductDetails =()=>{
             setProductData(res)
         })
     },[id])
+    useEffect(()=>{
+        if(!productData._id) return 
+        let viewed = JSON.parse(localStorage.getItem("recentlyViewed")|| "[]")
+        //Xoa neu da co
+        viewed = viewed.filter(id=>id !== productData._id)
+        //Them moi nhat len tren dau
+        viewed.unshift(productData._id)
+        //Gioi han so luong
+        if(viewed.length > 10) viewed = viewed.slice(0,10)
+        localStorage.setItem("recentlyViewed",JSON.stringify(viewed))
+    },[productData._id])
     const isActive = (index) => {
         setActiveSize(index)
     }
@@ -343,7 +354,10 @@ const ProductDetails =()=>{
                   excludeId ={productData._id}
                 />
             )}
-           
+           <RelatedProducts 
+                ids = {JSON.parse(localStorage.getItem("recentlyViewed") || "[]")}
+                title="RECENTLY VIEWED PRODUCTS"
+           />
 
             </div>
             </section>

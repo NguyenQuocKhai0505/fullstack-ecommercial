@@ -26,6 +26,8 @@ router.get("/", async (req, res) => {
         const maxPrice = Number(req.query.maxPrice) || 10000
         const sortBy   = req.query.sortBy || "newest"
         const excludeId = req.query.exclude
+        const idsQuery = req.query.ids
+
 
         
         // Tạo filter object
@@ -55,9 +57,15 @@ router.get("/", async (req, res) => {
         if(minPrice || maxPrice){
             filter.price = {$gte:minPrice,$lte:maxPrice}
         }
-        if(excludeId){
-            filter._id  = {$ne:excludeId}
-        }
+        if (idsQuery) {
+            let ids = idsQuery.split(',').map(id => id.trim());
+            if (excludeId) {
+              ids = ids.filter(id => id !== excludeId);
+            }
+            filter._id = { $in: ids };
+          } else if (excludeId) {
+            filter._id = { $ne: excludeId };
+          }
 
         // Đếm tổng số sản phẩm theo filter
         const totalPosts = await Product.countDocuments(filter);

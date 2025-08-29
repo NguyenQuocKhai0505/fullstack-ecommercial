@@ -27,10 +27,10 @@ const Listing = ()=>{
             const [showFilter,setShowFilter] = useState(true)
 
             const handleClick = (event) => {
-              setAnchorEl(event.currentTarget);
+                setAnchorEl(event.currentTarget);
             };
             const handleClose = () => {
-              setAnchorEl(null);
+                setAnchorEl(null);
             };
             const handleClickSort = (event) => {
                 setAnchorElSort(event.currentTarget);
@@ -153,12 +153,12 @@ const Listing = ()=>{
                             </div>
                             <div className="ml-auto showByFilter">
                             <Button onClick={handleClick}>Show {perPage} <FaAngleDown /></Button>
-                            <Menu
-                                className="w-100 showPerPageDropdown"
-                                id="basic-menu"
-                                anchorEl={anchorEl}
-                                open={openDropDown}
-                                onClose={handleClose}
+                                 <Menu
+                                    className="w-100 showPerPageDropdown"
+                                    id="basic-menu"
+                                    anchorEl={anchorEl}
+                                    open={openDropDown}
+                                    onClose={handleClose}
                                 MenuListProps={{ 'aria-labelledby': 'basic-button' }}
                             >
                                 {[12, 24, 36].map(n => (
@@ -166,7 +166,7 @@ const Listing = ()=>{
                                     {n}
                                 </MenuItem>
                                 ))}
-                            </Menu>
+                               </Menu>
                             </div>
                        </div>  
                        <div className={`productListing ${productView}`}>

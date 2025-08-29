@@ -2,22 +2,25 @@ import { IoIosArrowRoundForward } from "react-icons/io";
 import Slider from "react-slick";
 import ProductItem from "../../../Components/ProductItem";
 import Button from "@mui/material/Button"
-import {useEffect,useState} from "react"
+import { useEffect,useState} from "react"
 import {fetchDataFromApi} from "../../../utils/api"
-const RelatedProducts = ({categoryId,subcatId,excludeId,title}) => {
+const RelatedProducts = ({categoryId,subcatId,excludeId,title,ids}) => {
     const [products,setProducts] = useState([])
     useEffect(()=>{
-        if(!categoryId) return 
-        let url = `/api/products?category=${categoryId}`
-        if(subcatId){
-            url += `&subCat=${subcatId}`
+        let url = ""
+        if(ids && ids.length>0){
+            url = `/api/products?ids=${ids.join(",")}`
+        }else if(categoryId){
+            url = `/api/products?category=${categoryId}`
+            if(subcatId) url += `&subCat=${subcatId}`
+            if(excludeId) url += `&exclude=${excludeId}`
+        }else{
+            setProducts([])
+            return 
         }
-        if(excludeId){
-            url += `&exclude=${excludeId}`
-        }
-        fetchDataFromApi(url).then(res => setProducts(res.data || []))
-    },[categoryId,subcatId,excludeId])
-    console.log(products)
+        fetchDataFromApi(url).then(res=>setProducts(res.data || []))
+
+    },[categoryId,subcatId,excludeId,ids])
  const productSliderOptions = {
     dots: true,
     infinite: false,
