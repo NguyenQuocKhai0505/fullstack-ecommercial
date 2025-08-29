@@ -25,7 +25,9 @@ router.get("/", async (req, res) => {
         const minPrice = Number(req.query.minPrice) || 0
         const maxPrice = Number(req.query.maxPrice) || 10000
         const sortBy   = req.query.sortBy || "newest"
+        const excludeId = req.query.exclude
 
+        
         // Tạo filter object
         let filter = {};
         if (category) {
@@ -52,6 +54,9 @@ router.get("/", async (req, res) => {
         //Lọc theo giá 
         if(minPrice || maxPrice){
             filter.price = {$gte:minPrice,$lte:maxPrice}
+        }
+        if(excludeId){
+            filter._id  = {$ne:excludeId}
         }
 
         // Đếm tổng số sản phẩm theo filter

@@ -2,8 +2,22 @@ import { IoIosArrowRoundForward } from "react-icons/io";
 import Slider from "react-slick";
 import ProductItem from "../../../Components/ProductItem";
 import Button from "@mui/material/Button"
-
-const RelatedProducts = (props) => {
+import {useEffect,useState} from "react"
+import {fetchDataFromApi} from "../../../utils/api"
+const RelatedProducts = ({categoryId,subcatId,excludeId,title}) => {
+    const [products,setProducts] = useState([])
+    useEffect(()=>{
+        if(!categoryId) return 
+        let url = `/api/products?category=${categoryId}`
+        if(subcatId){
+            url += `&subCat=${subcatId}`
+        }
+        if(excludeId){
+            url += `&exclude=${excludeId}`
+        }
+        fetchDataFromApi(url).then(res => setProducts(res.data || []))
+    },[categoryId,subcatId,excludeId])
+    console.log(products)
  const productSliderOptions = {
     dots: true,
     infinite: false,
@@ -43,23 +57,15 @@ const RelatedProducts = (props) => {
             <div className="product-section">
                 <div className="section-header">
                     <div className="section-info">
-                        <h3 className="section-title">{props.title}</h3>
+                        <h3 className="section-title">{title}</h3>
                     </div>
-                    <Button className="view-all-btn">
-                        View All<IoIosArrowRoundForward />
-                    </Button>
                 </div>
 
                 <div className="products-slider-container">
                     <Slider {...productSliderOptions} className="products-slider">
-                        <ProductItem />
-                        <ProductItem />
-                        <ProductItem />
-                        <ProductItem />
-                        <ProductItem />
-                        <ProductItem />
-                        <ProductItem />
-                        <ProductItem />
+                       {products?.map(product =>(
+                        <ProductItem key={product._id} product={product}/>
+                       ))}
                     </Slider>
                 </div>
             </div>

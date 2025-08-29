@@ -23,7 +23,7 @@ const ProductDetails =()=>{
         fetchDataFromApi(`/api/products/${id}`).then(res=>{
             setProductData(res)
         })
-    })
+    },[id])
     const isActive = (index) => {
         setActiveSize(index)
     }
@@ -33,6 +33,7 @@ const ProductDetails =()=>{
     const isActiveWeight = (index) => {
         setActiveWeight(index)
     }
+    
     return(
         <>
            <section className="productDetails section">
@@ -56,7 +57,7 @@ const ProductDetails =()=>{
                     </li>
 
                     <li className="list-inline-item d-flex align-items-center">
-                      <Rating  name="read-only" value={productData.rating} precision={0.5} size="small" readOnly />
+                      <Rating  name="read-only" value={Number(productData.rating)} precision={0.5} size="small" readOnly />
                      </li>
                     </ul>
 
@@ -334,8 +335,15 @@ const ProductDetails =()=>{
             </div>
 
             <br/>
-            <RelatedProducts title="RELATED PRODUCTS"/>
-            <RelatedProducts title="RECENT VIEWED PRODUCTS"/>
+            {productData && (
+                <RelatedProducts 
+                  title ="RELATED PRODUCTS"
+                  categoryId = {productData.category?._id}
+                  subcatId = {productData.subCat}
+                  excludeId ={productData._id}
+                />
+            )}
+           
 
             </div>
             </section>

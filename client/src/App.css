@@ -3625,8 +3625,6 @@ footer img {
 
 /* --- Nút chuyển view (list/grid/4 cột) --- */
 .showByBtn {
-  min-width: 36px !important;
-  height: 36px !important;
   width: 36px !important;
   border-radius: 50% !important;
   color: #233a95 !important;
@@ -3637,7 +3635,11 @@ footer img {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  transition: background 0.2s !important, color 0.2s !important, border-color 0.2s !important, box-shadow 0.2s !important, transform 0.2s !important;
+  transition: background 0.2s !important;
+  color: 0.2s !important;
+  border-color: 0.2s !important;
+  box-shadow: 0.2s !important;
+  transform: 0.2s !important;
   font-size: 20px !important;
   font-weight: 500 !important;
 }
@@ -3650,7 +3652,8 @@ footer img {
 .showByBtn svg {
   color: #233a95 !important;
   opacity: 0.5 !important;
-  transition: opacity 0.2s !important, color 0.2s !important;
+  transition: opacity 0.2s !important;
+  color: 0.2s !important;
 }
 .showByBtn.act svg,
 .showByBtn:hover svg {
@@ -3658,25 +3661,39 @@ footer img {
   color: #2bbef9 !important;
 }
 
-/* --- Nút Sort By --- */
+/* --- Nút Sort By (vừa phải, hiện đại) --- */
 .sortByBtn {
   background: #f6f8fb !important;
   color: #233a95 !important;
-  font-weight: bold !important;
-  border-radius: 8px !important;
-  padding: 8px 18px !important;
+  font-weight: 600 !important;
+  border-radius: 20px !important;
+  padding: 8px 20px !important;
   box-shadow: none !important;
-  border: none !important;
-  transition: background 0.2s !important, color 0.2s !important, box-shadow 0.2s !important, transform 0.2s !important;
-  font-size: 18px !important;
+  border: 1.5px solid #2bbef9 !important;
+  transition: background 0.2s !important;
+  color: 0.2s !important;
+  box-shadow: 0.2s !important;
+  transform: 0.2s !important;
+  border-color: 0.2s !important;
+  font-size: 16px !important;
   margin-left: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  letter-spacing: 0.2px !important;
+  text-transform: none !important;
+  gap: 8px !important;
 }
 .sortByBtn:hover,
 .sortByBtn:focus {
   background: #e6f7fd !important;
   color: #2bbef9 !important;
+  border-color: #2bbef9 !important;
   transform: translateY(-2px) scale(1.04) !important;
   box-shadow: 0 2px 8px rgba(43, 190, 249, 0.08) !important;
+}
+.sortByBtn .MuiButton-endIcon {
+  margin-left: 8px !important;
 }
 
 /* --- Nút Toggle Filter --- */
@@ -3693,7 +3710,11 @@ footer img {
   align-items: center !important;
   gap: 8px !important;
   box-shadow: 0 2px 8px rgba(43, 190, 249, 0.05) !important;
-  transition: background 0.2s !important, color 0.2s !important, border-color 0.2s !important, box-shadow 0.2s !important, transform 0.2s !important;
+  transition: background 0.2s !important;
+  color: 0.2s !important;
+  border-color: 0.2s !important;
+  box-shadow: 0.2s !important;
+  transform: 0.2s !important;
 }
 .toggle-filter-btn:hover {
   background: #e6f7fd !important;
@@ -3704,7 +3725,8 @@ footer img {
 }
 .toggle-filter-btn svg {
   font-size: 20px !important;
-  transition: color 0.2s !important, transform 0.2s !important;
+  transition: color 0.2s !important; 
+  transform: 0.2s !important;
 }
 
 /* --- Nút Show Per Page --- */
@@ -3718,7 +3740,11 @@ footer img {
   font-size: 15px !important;
   padding: 8px 16px !important;
   margin-left: 8px !important;
-  transition: background 0.2s !important, color 0.2s !important, border-color 0.2s !important, box-shadow 0.2s !important, transform 0.2s !important;
+  transition: background 0.2s !important;
+  color: 0.2s !important;
+  border-color: 0.2s !important;
+  box-shadow: 0.2s !important;
+  transform: 0.2s !important;
 }
 .showByFilter button:hover {
   background: #e6f7fd !important;
@@ -3730,7 +3756,8 @@ footer img {
   color: #000 !important;
   opacity: 0.5 !important;
   margin-left: 5px !important;
-  transition: color 0.2s !important, opacity 0.2s !important;
+  transition: color 0.2s !important;
+  opacity: 0.2s !important;
 }
 .showByFilter button.act svg {
   opacity: 1 !important;
@@ -3806,6 +3833,21 @@ footer img {
   }
   .close-sidebar-btn {
     display: none;
+  }
+}
+
+/* --- Sidebar Filter hiệu ứng chuyển động mượt khi show/hide (mobile) --- */
+@media (max-width: 991.98px) {
+  .sidebar-filter {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-40px);
+    transition: opacity 0.35s cubic-bezier(.4,0,.2,1), transform 0.35s cubic-bezier(.4,0,.2,1);
+  }
+  .sidebar-filter.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
   }
 }
 

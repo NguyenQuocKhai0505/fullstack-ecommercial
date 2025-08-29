@@ -6,7 +6,7 @@ import "swiper/css"
 import "swiper/css/navigation"
 import { Navigation } from 'swiper/modules'
 import { useEffect } from 'react';
-
+import { Link } from 'react-router-dom';
 const HomeCat=(props)=>{
         
     const [catData, setCatData] = useState([])
@@ -28,13 +28,15 @@ const HomeCat=(props)=>{
                    {
                     catData?.map((item,index)=>{
                         return(
-                        <SwiperSlide key={item._id || index}>
+                         <SwiperSlide key={item._id || index}>
+                            <Link to={`/cat/${item._id}`}>
                             <div className='item text-center'
                             style={{background:item.color}}>
                             <img src={item.images[0]} alt={item.name || 'Category'}/>
                             <h6>{item.name}</h6>
                         </div>
-                      </SwiperSlide>
+                        </Link>
+                       </SwiperSlide>
                         )
                     })
                    }
