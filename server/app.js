@@ -17,6 +17,7 @@ app.use(express.static(__dirname));
 
 //Route
 const categoryRoutes = require("./routes/categories")
+console.log("Category routes:", categoryRoutes.stack ? "Loaded" : "Not loaded");
 const productRoutes = require("./routes/products")
 const subcatRoutes = require("./routes/subcat")
 
