@@ -1,11 +1,14 @@
-import { useContext, useEffect } from "react"
+import React, { useState, useContext, useEffect } from "react";
 import { MyContext } from "../../App"
 import Logo from "../../assets/images/logo.png"
 import TextField from '@mui/material/TextField';
 import { Button} from "@mui/material";
 import googleImg from "../../assets/images/googleImg.png"
 import { Link } from 'react-router-dom';
+import {fetchDataFromApi,postData} from "../../utils/api"
+
 const SignIn =()=>{
+    
 
     const context = useContext(MyContext)
 
@@ -47,7 +50,7 @@ const SignIn =()=>{
                      <div className="form-group">
                          <TextField id="standard-basic" label="Password" 
                          variant="standard"  required type="password" className="w-100"/>
-                    </div>
+                     </div>
                     
                   <div className="d-flex gap-3 mt-3 mb-3">
                         <Button

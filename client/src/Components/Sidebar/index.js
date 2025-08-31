@@ -99,7 +99,7 @@ const Sidebar = ({showFilter}) => {
             const checked = selectedSubcats.includes(s._id)
             return(
               <li key={s._id} style={{listStyle:"none"}}>
-                <FormControlLabel
+              <FormControlLabel
                 control={
                   <Checkbox
                   checked={checked}
@@ -109,8 +109,8 @@ const Sidebar = ({showFilter}) => {
                 }
                 label={s.subCategory || s.name}
                 sx={{ width: "100%", '& .MuiFormControlLabel-label': { fontSize: 14 } }}
-                />
-              </li>
+              />
+            </li>
             )
           })}
           
@@ -126,35 +126,35 @@ const Sidebar = ({showFilter}) => {
         </div>
       </div>
         {/*Products' Brands*/}
-    <div className="filterBox">
+      <div className="filterBox">
       <h6 style={{ marginBottom: '10px' }}>BRANDS</h6>
       <ul style={{ paddingLeft: '0px', marginTop: '0px' }}>
         {brands.map((brand, index) => {
           const checked = selectedBrands.includes(brand);
           return (
-            <li key={index} style={{ listStyle: 'none', marginTop: '0px' }}>
-              <FormControlLabel
-                control={
-                  <Checkbox
+          <li key={index} style={{ listStyle: 'none', marginTop: '0px' }}>
+            <FormControlLabel
+              control={
+                <Checkbox
                     checked={checked}
                     onChange={() => onToggleBrand(brand)}
-                    sx={{
-                      p: 0.5,
-                      pl: 1,
-                      pb: 0.1,
-                      '& .MuiSvgIcon-root': { fontSize: 20 }
-                    }}
-                  />
-                }
+                  sx={{
+                    p: 0.5,
+                    pl: 1,
+                    pb: 0.1,
+                    '& .MuiSvgIcon-root': { fontSize: 20 }
+                  }}
+                />
+              }
                 label={brand}
-                sx={{
-                  width: '100%',
-                  '& .MuiFormControlLabel-label': {
-                    fontSize: '16px',
-                  }
-                }}
-              />
-            </li>
+              sx={{
+                width: '100%',
+                '& .MuiFormControlLabel-label': {
+                  fontSize: '16px',
+                }
+              }}
+            />
+          </li>
           );
         })}
       </ul>

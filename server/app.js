@@ -4,7 +4,7 @@ const app = express();
 const mongoose = require("mongoose")
 const cors = require("cors")
 require("dotenv/config")
-
+const authRoutes = require("./routes/auth")
 app.use(cors())
 app.options("*",cors())
 
@@ -23,6 +23,7 @@ const subcatRoutes = require("./routes/subcat")
 app.use("/api/category",categoryRoutes)
 app.use("/api/products",productRoutes)
 app.use("/api/subcat",subcatRoutes)
+app.use("/api/auth",authRoutes)
 //Database
 mongoose.connect(process.env.CONNECTION_STRING, {
     useNewUrlParser: true,
