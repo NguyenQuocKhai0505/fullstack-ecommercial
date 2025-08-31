@@ -13,7 +13,7 @@ app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 // Serve static files
-app.use(express.static(__dirname));
+// app.use(express.static(__dirname));
 
 //Route
 const categoryRoutes = require("./routes/categories")
