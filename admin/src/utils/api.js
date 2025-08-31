@@ -1,11 +1,11 @@
 import axios from "axios"
 
-
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:4000";
 
 // GET request function
 export const fetchDataFromApi = async(url) => {
     try {
-        const {data} = await axios.get("http://localhost:4000" + url)
+        const {data} = await axios.get(API_URL + url)
         return data
     } catch(error) {
         console.log(error)
@@ -13,10 +13,10 @@ export const fetchDataFromApi = async(url) => {
     }
 }
 
-// POST request function - ĐÃ SỬA LỖI
+// POST request function
 export const postData = async (url, formData) => {
     try {
-        const {data} = await axios.post("http://localhost:4000" + url, formData)
+        const {data} = await axios.post(API_URL + url, formData)
         return data
     } catch(error) {
         console.log(error)
@@ -24,24 +24,23 @@ export const postData = async (url, formData) => {
     }
 }
 
-//PUT edit data
+// PUT edit data
 export const editData = async(url,updateData) =>{
      try {
-        const {data} = await axios.put("http://localhost:4000" + url, updateData)
+        const {data} = await axios.put(API_URL + url, updateData)
         return data
     } catch(error) {
         console.log(error)
         throw error
     }
 }
-//DELETE
+// DELETE
 export const deleteData = async (url)=>{
      try {
-       const {data} = await axios.delete(`http://localhost:4000${url}`)
+       const {data} = await axios.delete(`${API_URL}${url}`)
         return data
     } catch(error) {
         console.log(error)
         throw error
     }
-    
 }
