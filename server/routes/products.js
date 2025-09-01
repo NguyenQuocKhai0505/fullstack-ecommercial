@@ -15,6 +15,10 @@ cloudinary.config({
 //GET "/" - Lấy danh sách sản phẩm
 router.get("/", async (req, res) => {
     try {
+        console.log("API /api/products called");
+        // Log toàn bộ query nhận được
+        console.log("Query params:", req.query);
+
         // Lấy tham số page từ query, mặc định là 1
         const page = parseInt(req.query.page) || 1
         const perPage = parseInt(req.query.perPage) || 5
@@ -67,8 +71,11 @@ router.get("/", async (req, res) => {
             filter._id = { $ne: excludeId };
           }
 
+        console.log("MongoDB filter:", filter);
+
         // Đếm tổng số sản phẩm theo filter
         const totalPosts = await Product.countDocuments(filter);
+        console.log("Total products found:", totalPosts);
         const totalPages = Math.ceil(totalPosts / perPage)
 
         // Nếu page vượt quá tổng số trang, trả về lỗi
@@ -94,8 +101,12 @@ router.get("/", async (req, res) => {
             .limit(perPage)
             .exec()
 
+        // Log kết quả trả về
+        console.log("Product list length:", productList.length);
+
         // Nếu không có sản phẩm nào
         if (!productList || productList.length === 0) {
+            console.log("No products found for filter:", filter);
             return res.status(404).json({
                 success: false,
                 message: "Không tìm thấy sản phẩm nào"
@@ -112,6 +123,7 @@ router.get("/", async (req, res) => {
             totalPosts: totalPosts
         });
     } catch (error) {
+        console.error("Error in /api/products:", error);
         res.status(500).json({
             success: false,
             message: "Lỗi server khi lấy danh sách sản phẩm",
