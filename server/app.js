@@ -5,8 +5,24 @@ const mongoose = require("mongoose")
 const cors = require("cors")
 require("dotenv/config")
 const authRoutes = require("./routes/auth")
-app.use(cors())
-app.options("*",cors())
+const allowedOrigins = [
+  "https://fullstack-ecommerical-gvu6-h4hnn39iq-nguyen-quoc-khais-projects.vercel.app",
+  "https://fullstack-ecommerical-gvu6.vercel.app"
+];
+
+app.use(cors({
+  origin: function(origin, callback){
+    // Cho phép request không có origin (như từ Postman)
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){
+      var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true
+}));
+app.options("*", cors());
 
 //Middleware 
 app.use(bodyParser.json({ limit: '10mb' }));
