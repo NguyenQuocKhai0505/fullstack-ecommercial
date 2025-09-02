@@ -32,7 +32,7 @@ const AddSubCategory = () => {
         context.setisHiddenSidebarAndHeader(false)
         window.scroll(0, 0)
         fetchCategories();
-    }, [])
+    }, [context, fetchCategories]);
 
     // Hàm lấy danh sách categories
     const fetchCategories = async () => {

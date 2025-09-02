@@ -323,7 +323,7 @@ const Category = () => {
                                                             alt={item.name}
                                                             style={{objectFit: 'cover'}}
                                                         />
-                                                    </div>F
+                                                    </div>
                                                 </div>
                                             </div>
                                         </td>

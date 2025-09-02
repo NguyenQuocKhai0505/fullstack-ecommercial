@@ -25,8 +25,6 @@ const SubCategory = () => {
     const [categories, setCategories] = useState([])
     const context = useContext(MyContext)
     const navigate = useNavigate()
-    const [page, setPage] = useState(1)
-    const [loading, setLoading] = useState(false)
     
     // State cho delete confirmation dialog
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -39,7 +37,7 @@ const SubCategory = () => {
         window.scroll(0, 0);
         fetchSubCategories();
         fetchCategories();
-    }, [])
+    }, [context, fetchCategories, fetchSubCategories]);
 
     // Hàm lấy danh sách SubCategory từ API
     const fetchSubCategories = async() => {
@@ -311,7 +309,7 @@ const SubCategory = () => {
                         {/* PAGINATION FOOTER */}
                         <div className="d-flex justify-content-between align-items-center tableFooter" style={{marginTop: '20px', padding: '10px 0'}}>
                             <p style={{margin: '0', color: '#666', fontSize: '14px'}}>
-                                showing <b>{page}</b> of <b>{groupedData?.length || 0}</b> categories
+                                showing <b>{subCatData?.length || 0}</b> of <b>{subCatData?.length || 0}</b> categories
                             </p>
                         </div>
                     </div>

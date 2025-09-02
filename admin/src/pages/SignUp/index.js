@@ -11,7 +11,6 @@ import { Link } from 'react-router-dom'; // Thay đổi này
 import Google from "../../assets/images/Google.png"
 import { FaUser } from "react-icons/fa";
 import { IoShieldCheckmark } from "react-icons/io5";
-import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { FaHome } from "react-icons/fa";
@@ -22,9 +21,9 @@ const SignUp = () =>{
     const [isShowPassword, setisShowPassword] = useState(false)
     const [isShowConfirmPassword, setisShowConfirmPassword] = useState(false)
     
-    useEffect(()=>{
-        context.setisHiddenSidebarAndHeader(true)
-    },[])
+    useEffect(() => {
+      context.setisHeaderFooterShow(false)
+    }, [context]);
 
     const focusInput = (index)=>{
         setInputIndex(index)
@@ -53,7 +52,7 @@ const SignUp = () =>{
                  <div className="col-md-4">
                         <div className="loginBox">
                 <div className="logo text-center">
-                    <img src={Logo} style={{width: "120px", borderRadius:"30px"}} className="pb-2"/>
+                    <img src={Logo} style={{width: "120px", borderRadius:"30px"}} className="pb-2" alt="Logo"/>
                     <h4 className="font-weight-bold">Register a new account</h4>
                 </div>
 
