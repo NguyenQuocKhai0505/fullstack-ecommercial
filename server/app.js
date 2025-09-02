@@ -6,8 +6,10 @@ const cors = require("cors")
 require("dotenv/config")
 const authRoutes = require("./routes/auth")
 const allowedOrigins = [
-  "https://fullstack-ecommerical-gvu6-h4hnn39iq-nguyen-quoc-khais-projects.vercel.app",
-  "https://fullstack-ecommerical-gvu6.vercel.app"
+  "https://fullstack-ecommerical-gvu6-h4hnn39iq-nguyen-quoc-khais-projects.vercel.app", // admin cũ
+  "https://fullstack-ecommerical-gvu6.vercel.app", // admin mới
+  "https://fullstack-ecommerical-ch2fdcd9-nguyen-quoc-khais-projects.vercel.app", // client
+  "https://fullstack-ecommerical-gvu6.vercel.app" // client/admin (nếu dùng chung)
 ];
 
 app.use(cors({
