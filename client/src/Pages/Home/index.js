@@ -329,26 +329,23 @@ const Home = () => {
                 </div>
             </section>
 
-            <section className="newsLetterSection mt-3 mb-3 d-flex align-items-center">
+            <section className="newsLetterSection mt-3 mb-3 d-flex align-items-center" style={{background: '#4b1fa4', borderRadius: 16, minHeight: 220, overflow: 'hidden', position: 'relative', padding: '32px 0'}}>
                 <div className="container ">
                     <div className="row">
                        <div className="col-md-6">
                          <p className="text-white mb-0">$20 discount for your first order</p>
                          <h3 className="text-white">Join our  newsletter and get ....</h3>
-                         <p className="text-light">Join our email subscription noew to get updates on <br/>promotions and coupons.</p>
+                         <p className="text-light">Join our email subscription now to get updates on <br/>promotions and coupons.</p>
 
-                        <form>
-                            <IoMdMail />
-                            <input className="text" placeholder="Your Email Address" style={{color:"black"}}></input>
-                            <Button>Subscribe</Button>
+                        <form style={{display: 'flex', alignItems: 'center', gap: 8, background: '#fff', borderRadius: 8, padding: '6px 12px', marginTop: 16, boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
+                            <IoMdMail style={{fontSize: 24, color: '#4b1fa4'}} />
+                            <input type="email" placeholder="Your Email Address" style={{color:"black", border: 'none', outline: 'none', flex: 1, padding: '8px 12px', fontSize: '1rem', background: 'transparent'}} />
+                            <Button style={{minWidth: 100, borderRadius: 6, marginLeft: 8}}>Subscribe</Button>
                         </form>
                        </div>
-                        
-                        <div className="col-md-6">
-                            <img src={coupon} alt="Coupon banner"></img>
+                        <div className="col-md-6 d-flex align-items-center justify-content-center">
+                            <img src={coupon} alt="Coupon banner" style={{maxWidth: '100%', height: 'auto', display: 'block'}} />
                         </div>
-
-
                     </div>
                 </div>
             </section>
