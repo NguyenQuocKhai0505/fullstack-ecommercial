@@ -10,6 +10,7 @@ const allowedOrigins = [
   "https://fullstack-ecommerical.vercel.app",
   "https://fullstack-ecommerical-g1yhrrpqptesdaffpbn3a4jpkmlr.vercel.app",
   "https://fullstack-ecommerical-5cfw5sp3-nguyen-quoc-khais-projects.vercel.app",
+  "https://fullstack-ecommercial-5cjfw5sp3-nguyen-quoc-khais-projects.vercel.app",
   // Admin
   "https://fullstack-ecommerical-gvu6.vercel.app",
   "https://fullstack-ecommerical-gvu6-neubxuc156f8ks4ulwjtf1ufyyj6.vercel.app",
