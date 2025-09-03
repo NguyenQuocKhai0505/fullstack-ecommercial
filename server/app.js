@@ -14,7 +14,8 @@ const allowedOrigins = [
   // Admin
   "https://fullstack-ecommerical-gvu6.vercel.app",
   "https://fullstack-ecommerical-gvu6-neubxuc156f8ks4ulwjtf1ufyyj6.vercel.app",
-  "https://fullstack-ecommerical-gvu6-g6t504sl-nguyen-quoc-khais-projects.vercel.app"
+  "https://fullstack-ecommerical-gvu6-g6t504sl-nguyen-quoc-khais-projects.vercel.app",
+  " https://fullstack-ecommercial-qzbohhulw-nguyen-quoc-khais-projects.vercel.app"
 ];
 
 app.use(cors({
