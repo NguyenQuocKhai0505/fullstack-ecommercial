@@ -28,14 +28,26 @@ router.post("/signUp", async(req,res)=>{
 
         //Tạo token xác thực email
         const emailToken = jwt.sign({id:newUser._id},process.env.JWT_SECRET,{expiresIn:"1d"})
-        const url = `http://localhost:4000/api/auth/verify/${emailToken}`;
+        // Sử dụng biến môi trường BACKEND_URL nếu có, fallback về localhost khi dev
+        const backendUrl = process.env.BACKEND_URL || "http://localhost:4000";
+        const url = `${backendUrl}/api/auth/verify/${emailToken}`;
         
         //Gửi email xác thực bằng SendGrid
         const msg = {
             to: email,
             from: process.env.EMAIL_FROM,
             subject: 'Xác thực email',
-            html: `Bấm vào <a href="${url}">đây</a> để xác thực tài khoản của bạn.`
+            html: `
+              <div style="font-family: Arial, sans-serif; color: #222;">
+                <h2>Chào ${name},</h2>
+                <p>Cảm ơn bạn đã đăng ký tài khoản tại <b>Kmarket</b>.</p>
+                <p>Vui lòng bấm vào nút bên dưới để xác thực tài khoản:</p>
+                <a href="${url}" target="_blank" style="display:inline-block;padding:12px 24px;background:#0f288e;color:#fff;text-decoration:none;border-radius:6px;font-weight:bold;margin:16px 0;">Xác thực tài khoản</a>
+                <p>Nếu nút không hoạt động, hãy copy và dán link sau vào trình duyệt:</p>
+                <p><a href="${url}" target="_blank">${url}</a></p>
+                <p style="color:#888;font-size:13px;">Nếu bạn không đăng ký tài khoản, hãy bỏ qua email này.</p>
+              </div>
+            `
         };
         try {
             await sgMail.send(msg);

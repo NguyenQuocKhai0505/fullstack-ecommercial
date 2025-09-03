@@ -8,6 +8,7 @@ const authRoutes = require("./routes/auth")
 const allowedOrigins = [
   //Local
   "http://localhost:3000",
+  "http://localhost:3001",
   "http://localhost:4000",
   // Client
   "https://fullstack-ecommercial.vercel.app",

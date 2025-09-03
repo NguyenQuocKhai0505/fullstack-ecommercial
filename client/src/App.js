@@ -15,6 +15,8 @@ import SignUp from "./Pages/SignUp";
 import ScrollToTop from "./Components/ScrollToTop";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import {ToastContainer} from "react-toastify"
+
 const MyContext = createContext();
 
 function App() {
@@ -71,6 +73,7 @@ function App() {
         }
         </MyContext.Provider>
       </BrowserRouter>
+      <ToastContainer position="top-center" autoClose={4000}/>
     </>
   );
 }

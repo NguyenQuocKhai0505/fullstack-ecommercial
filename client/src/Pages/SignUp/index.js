@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 import { Button } from "@mui/material";
 import googleImg from "../../assets/images/googleImg.png";
 import { Link } from 'react-router-dom';
-
+import { toast } from "react-toastify";
 const SignUp = () => {
   const context = useContext(MyContext);
   const [name, setName] = useState("");
@@ -24,10 +24,10 @@ const SignUp = () => {
     setLoading(true);
     const res = await postData("/api/auth/signUp", { name, phone, email, password });
     if (res.success) {
-      alert("Đăng ký thành công! Vui lòng kiểm tra email để xác thực.");
+       toast.success("Đăng ký thành công! Vui lòng kiểm tra email để xác thực.");
       // Có thể chuyển hướng sang trang đăng nhập
     } else {
-      alert(res.message || "Đăng ký thất bại!");
+      toast.error(res.message || "Đăng ký thất bại!");
     }
     setLoading(false);
   };
