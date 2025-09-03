@@ -18,12 +18,17 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: function(origin, callback){
-    // Cho phép request không có origin (như từ Postman)
-    if(!origin) return callback(null, true);
+    console.log("[CORS DEBUG] Request from origin:", origin);
+    if(!origin) {
+      console.log("[CORS DEBUG] No origin (maybe Postman or server-to-server)");
+      return callback(null, true);
+    }
     if(allowedOrigins.indexOf(origin) === -1){
-      var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      var msg = '[CORS DEBUG] The CORS policy for this site does not allow access from the specified Origin: ' + origin;
+      console.error(msg);
       return callback(new Error(msg), false);
     }
+    console.log("[CORS DEBUG] Origin allowed:", origin);
     return callback(null, true);
   },
   credentials: true
@@ -41,6 +46,11 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 const categoryRoutes = require("./routes/categories")
 const productRoutes = require("./routes/products")
 const subcatRoutes = require("./routes/subcat")
+
+app.use((req, res, next) => {
+  console.log(`[ROUTE DEBUG] ${req.method} ${req.originalUrl}`);
+  next();
+});
 
 app.use("/api/category",categoryRoutes)
 app.use("/api/products",productRoutes)
