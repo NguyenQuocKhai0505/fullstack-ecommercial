@@ -6,8 +6,14 @@ const cors = require("cors")
 require("dotenv/config")
 const authRoutes = require("./routes/auth")
 const allowedOrigins = [
-  "https://fullstack-ecommerical-gvu6.vercel.app", // admin
-  "https://fullstack-ecommerical.vercel.app",      // client
+  // Client
+  "https://fullstack-ecommerical.vercel.app",
+  "https://fullstack-ecommerical-g1yhrrpqptesdaffpbn3a4jpkmlr.vercel.app",
+  "https://fullstack-ecommerical-5cfw5sp3-nguyen-quoc-khais-projects.vercel.app",
+  // Admin
+  "https://fullstack-ecommerical-gvu6.vercel.app",
+  "https://fullstack-ecommerical-gvu6-neubxuc156f8ks4ulwjtf1ufyyj6.vercel.app",
+  "https://fullstack-ecommerical-gvu6-g6t504sl-nguyen-quoc-khais-projects.vercel.app"
 ];
 
 app.use(cors({
@@ -33,7 +39,6 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 //Route
 const categoryRoutes = require("./routes/categories")
-console.log("Category routes:", categoryRoutes.stack ? "Loaded" : "Not loaded");
 const productRoutes = require("./routes/products")
 const subcatRoutes = require("./routes/subcat")
 
