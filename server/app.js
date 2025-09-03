@@ -11,14 +11,13 @@ const allowedOrigins = [
   "https://fullstack-ecommerical-g1yhrrpqptesdaffpbn3a4jpkmlr.vercel.app",
   "https://fullstack-ecommerical-5cfw5sp3-nguyen-quoc-khais-projects.vercel.app",
   "https://fullstack-ecommercial-5cjfw5sp3-nguyen-quoc-khais-projects.vercel.app",
-  "https://fullstack-ecommercial.vercel.app",
   // Admin
   "https://fullstack-ecommerical-gvu6.vercel.app",
   "https://fullstack-ecommerical-gvu6-neubxuc156f8ks4ulwjtf1ufyyj6.vercel.app",
   "https://fullstack-ecommerical-gvu6-g6t504sl-nguyen-quoc-khais-projects.vercel.app",
   "https://fullstack-ecommercial-qzbohhulw-nguyen-quoc-khais-projects.vercel.app",
-  "https://fullstack-ecommercial-gvu6-npcnb96ln-nguyen-quoc-khais-projects.vercel.app"
-  
+  "https://fullstack-ecommercial-gvu6-docheckf1-nguyen-quoc-khais-projects.vercel.app",
+  "https://fullstack-ecommercial-gvu6-docheckefi-nguyen-quoc-khais-projects.vercel.app"
 ];
 
 app.use(cors({
