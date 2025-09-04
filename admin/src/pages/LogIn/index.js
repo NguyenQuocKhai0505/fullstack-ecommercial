@@ -42,16 +42,7 @@ const Login =()=>{
             if (res.token) {
                 localStorage.setItem("token", res.token);
                 context.setIsLogin(true);
-                // Gọi API lấy thông tin admin
-                fetch("/api/admin/me", {
-                    headers: { Authorization: `Bearer ${res.token}` }
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data && (data.admin || data.name)) {
-                            context.setAdminInfo(data.admin || data);
-                        }
-                    });
+                // Bỏ fetch /api/admin/me và setAdminInfo để tăng tốc đăng nhập
             }
             context.showSnackbar("Đăng nhập thành công!", "success");
             navigate("/dashboard");
