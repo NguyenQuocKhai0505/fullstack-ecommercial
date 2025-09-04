@@ -28,7 +28,6 @@ function App() {
   const [isHiddenSidebarAndHeader, setisHiddenSidebarAndHeader] = useState(false)
   const [themeMode, setThemeMode] = useState(true)
   const [open, setOpen] = useState(false);
-  const [adminInfo,setAdminInfo] = useState(null)
 
    // Thêm state cho message và severity
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -51,13 +50,8 @@ function App() {
     const token = localStorage.getItem("token")
     if(token){
       setIsLogin(true)
-      fetch("/api/admin/me",{
-        headers:{Authorization: `Bearer ${token}`}
-      })
-      .then(res=>res.json())
-      .then(data=>setAdminInfo(data.admin))
     }
-  },[])
+  })
  
    const handleClose = (event,reason)=>{
     if(reason ==="clickaway"){
