@@ -27,6 +27,7 @@ const Header = () => {
     const [notificationAnchor, setNotificationAnchor] = useState(null);
     const openMyAcc = Boolean(anchorEl);
     const openNotifications = Boolean(notificationAnchor);
+    const adminInfo = context.adminInfo
 
 
     const context = useContext(MyContext)
@@ -231,11 +232,15 @@ const Header = () => {
                                         
                                         {/* User Information */}
                                         <div className="userInfo">
-                                            <h4 style={{ marginBottom: 0 }}>{(JSON.parse(localStorage.getItem("adminInfo"))?.name) || "Admin"}</h4>
-                                            <p className="mb-0" style={{ fontSize: 12, color: "#888" }}>
-                                                {(JSON.parse(localStorage.getItem("adminInfo"))?.email) || "admin@example.com"}
-                                            </p>
-                                        </div>
+                                        <h4 style={{ marginBottom: 0 }}>{adminInfo?.name || "Admin"}</h4>
+                                        <p className="mb-0" style={{ fontSize: 12, color: "#888" }}>
+                                        {adminInfo?.email
+                                            ? adminInfo.email.length > 20
+                                            ? adminInfo.email.slice(0, 20) + "..."
+                                            : adminInfo.email
+                                            : "admin@example.com"}
+                                        </p>
+                                    </div>
                                     </Button>
                                     
                                     {/* Account Menu */}
