@@ -3,18 +3,14 @@ import Button from '@mui/material/Button';
 import { MdDashboard } from "react-icons/md";
 import { FaAngleRight } from "react-icons/fa";
 import { FaProductHunt } from "react-icons/fa6";
-import { IoIosCart } from "react-icons/io";
-import { AiFillMessage } from "react-icons/ai";
-import { IoNotificationsCircle } from "react-icons/io5";
-import { IoSettings } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { SlLogout } from "react-icons/sl";
 import { MyContext } from '../../App';
 import { MdCategory } from "react-icons/md";
 import { DiSublime } from "react-icons/di";
+import { useNavigate } from 'react-router-dom';
 const Sidebar = () =>{
-
     const [activeTab,setActiveTab] = useState(0)
     const [isToggleSubmenu,setisToggleSubmenu] = useState(false)
     const isOpenSubmenu=(index)=>{
@@ -22,6 +18,13 @@ const Sidebar = () =>{
         setisToggleSubmenu(!isToggleSubmenu)
     }
     const context = useContext(MyContext)
+    const navigate = useNavigate()
+    const handleLogout = () =>{
+        localStorage.removeItem("token")
+        context.setIsLogin(false)
+        navigate("/signIn")
+    }
+
     return(
         <>
         <div className="sidebar">
@@ -89,7 +92,7 @@ const Sidebar = () =>{
             {/* Logout Button */}
             <div className='logoutWrapper'>
                <div className='logoutBox'>
-                 <Button variant="contained"><SlLogout/>Logout</Button>
+                 <Button variant="contained" onClick={handleLogout}><SlLogout/>Logout</Button>
                </div>
             </div>
 
