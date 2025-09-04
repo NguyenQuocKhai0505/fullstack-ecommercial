@@ -39,8 +39,20 @@ const Login =()=>{
         setLoading(true);
         const res = await postData("/api/admin/signIn", { email, password });
         if (res.success) {
-            if (res.token) localStorage.setItem("token", res.token);
-            context.setIsLogin(true);
+            if (res.token) {
+                localStorage.setItem("token", res.token);
+                context.setIsLogin(true);
+                // Gọi API lấy thông tin admin
+                fetch("/api/admin/me", {
+                    headers: { Authorization: `Bearer ${res.token}` }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data && (data.admin || data.name)) {
+                            context.setAdminInfo(data.admin || data);
+                        }
+                    });
+            }
             context.showSnackbar("Đăng nhập thành công!", "success");
             navigate("/dashboard");
         } else {
@@ -106,7 +118,7 @@ const Login =()=>{
                         {/* Button-SignIn */}
                         <div className="form-group">
                             <Button className="btn-blue btn-lg w-100 btn-big" type="submit" disabled={loading}>
-                                {loading ? "Đang xử lý..." : "Sign In"}
+                                {loading ? "Login..." : "Sign In"}
                             </Button>
                         </div>
                         {/* Forget Password */}
