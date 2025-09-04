@@ -224,15 +224,17 @@ const Header = () => {
                                         onClick={handleOpenMyAccDrop}
                                     >
                                         <div className="userImg">
-                                            <span className="rounded-circle">
-                                                <img src={Admin} alt="Admin"/>
+                                            <span className="rounded-circle" style={{ fontSize: 32, background: "#eee", padding: 8 }}>
+                                                <FaUser />
                                             </span>
                                         </div>
                                         
                                         {/* User Information */}
                                         <div className="userInfo">
-                                            <h4>Nguyen Quoc Khai</h4>
-                                            <p className="mb-0">@qkhai05</p>
+                                            <h4 style={{ marginBottom: 0 }}>{(JSON.parse(localStorage.getItem("adminInfo"))?.name) || "Admin"}</h4>
+                                            <p className="mb-0" style={{ fontSize: 12, color: "#888" }}>
+                                                {(JSON.parse(localStorage.getItem("adminInfo"))?.email) || "admin@example.com"}
+                                            </p>
                                         </div>
                                     </Button>
                                     

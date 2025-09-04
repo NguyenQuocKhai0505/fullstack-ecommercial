@@ -46,7 +46,12 @@ function App() {
     }
     
   }, [themeMode])
-  
+  useEffect(()=>{
+    const token = localStorage.getItem("token")
+    if(token){
+      setIsLogin(true)
+    }
+  })
    const handleClose = (event,reason)=>{
     if(reason ==="clickaway"){
         return
