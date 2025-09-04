@@ -41,10 +41,10 @@ const SignUp = () => {
           x="0px"
           y="0px"
           viewBox="0 0 1921 819.8"
-          style={{enableBackground:"new 0 0 1921 819.8;"}}
+          style={{enableBackground:"new 0 0 1921 819.8"}}
         >
           <path
-            class="st0"
+            className="st0"
             d="M1921,413.1v406.7H0.5h0.4l1228.1,598.3c30,74.4,80.8,130.6,152.5,168.6c107.6,57,212.1,40.7,245.7,34.4
             c22.4-4.2,54.9-13.1,97.5-26.6L1921,400.5V413.1z"
           />
@@ -71,11 +71,11 @@ const SignUp = () => {
               </div>
             </div>
             <div className="form-group">
-              <TextField id="standard-basic" label="Email" variant="standard" required type="email" className="w-100"
+              <TextField id="email-field" label="Email" variant="standard" required type="email" className="w-100"
                 value={email} onChange={e => setEmail(e.target.value)} />
             </div>
             <div className="form-group">
-              <TextField id="standard-basic" label="Password" variant="standard" required type="password" className="w-100"
+              <TextField id="password-field" label="Password" variant="standard" required type="password" className="w-100"
                 value={password} onChange={e => setPassword(e.target.value)} />
             </div>
             <div className="d-flex align-items-center mt-3 mb-3">

@@ -26,9 +26,16 @@ function App() {
   const [selectedProductID,setSelectedProductID]= useState(null)
   const [isHeaderFooterShow, setisHeaderFooterShow] = useState(true)
   const [isLogin, setIsLogin] = useState(false)
+
   useEffect(()=>{
     getCountry("https://countriesnow.space/api/v0.1/countries/")
   },[])
+
+  // Giữ trạng thái đăng nhập sau khi reload
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) setIsLogin(true);
+  }, []);
   
   const getCountry= async (url)=>{
     await axios.get(url).then((res)=>{
