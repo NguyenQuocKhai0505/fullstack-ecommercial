@@ -3,6 +3,7 @@ const router = express.Router();
 const Admin = require("../models/admin");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const sgMail = require('@sendgrid/mail');
 require("dotenv").config();
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
