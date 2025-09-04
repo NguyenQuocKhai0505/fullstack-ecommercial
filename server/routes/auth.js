@@ -30,7 +30,7 @@ router.post("/signUp", async(req,res)=>{
         const emailToken = jwt.sign({id:newUser._id},process.env.JWT_SECRET,{expiresIn:"1d"})
         // Sử dụng biến môi trường BACKEND_URL nếu có, fallback về localhost khi dev
         const backendUrl = process.env.BACKEND_URL || "http://localhost:4000";
-        const url = `${backendUrl}/api/auth/verify/${emailToken}`;
+        const url = `https://fullstack-ecommercial.vercel.app/verify/${emailToken}`;
         
         //Gửi email xác thực bằng SendGrid
         const msg = {

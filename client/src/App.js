@@ -16,7 +16,7 @@ import ScrollToTop from "./Components/ScrollToTop";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {ToastContainer} from "react-toastify"
-
+import Verify from "./Pages/Auth/verify";
 const MyContext = createContext();
 
 function App() {
@@ -64,6 +64,7 @@ function App() {
           <Route exact={true} path="/cart" element={<Cart/>}/>
           <Route exact={true} path="/signIn" element={<SignIn/>}/>
           <Route exact={true} path="/signUp" element={<SignUp/>}/>
+          <Route exact={true} path="/verify/:token" element={<Verify/>}/>
         </Routes>
          
         {isOpenProductModal === true && <ProductModal />}
