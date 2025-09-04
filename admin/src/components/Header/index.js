@@ -216,7 +216,7 @@ const Header = () => {
                             
                             {/* Fixed conditional rendering */}
                             {context.isLogin !== true ? 
-                                <Link to="/login"><Button className="btn-blue btn-lg btn-round">Sign in</Button></Link>
+                                <Link to="/signIn"><Button className="btn-blue btn-lg btn-round">Sign in</Button></Link>
                              : 
                                 <div className="myAccWrapper">
                                     <Button 

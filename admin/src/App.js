@@ -6,7 +6,6 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import Sidebar from './components/Sidebar';
 import { createContext, useEffect, useState } from 'react';
 import LogIn from './pages/LogIn';
-import SignUp from './pages/SignUp';
 import ProductDetails from './pages/Products/ProductDetails';
 import Products from './pages/Products';
 import Category from './pages/Category';
@@ -21,10 +20,11 @@ import EditProducts from './pages/Products/EditProducts';
 import AddSubCategory from "./pages/SubCategory/addSubCategory"
 import SubCategory from './pages/SubCategory/index';
 import EditSubCategory from '../src/pages/SubCategory/EditSubCategory';
+import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes';
 const MyContext = createContext()
 function App() {
   const [isToggleSidebar,setisToggleSidebar] = useState(false)
-  const [isLogin, setIsLogin] = useState(true)
+  const [isLogin, setIsLogin] = useState(false)
   const [isHiddenSidebarAndHeader, setisHiddenSidebarAndHeader] = useState(false)
   const [themeMode, setThemeMode] = useState(true)
   const [open, setOpen] = useState(false);
@@ -105,20 +105,68 @@ function App() {
            }
             <div className={`content ${isHiddenSidebarAndHeader===true && "full"} ${isToggleSidebar === true ? "toggle":""}`}>
               <Routes>
-                <Route path ="/"exact={true} element={<Dashboard/>}/>
-                <Route path ="/dashboard"exact={true} element={<Dashboard/>}/>
-                <Route exact={true} path="/login" element={<LogIn/>}/>
-                <Route exact={true} path="/signUp" element={<SignUp/>}/>
-                <Route exact={true} path="/products" element={<Products/>}/>
-                <Route exact={true} path="/products/details/:id" element={<ProductDetails/>}/>
-                <Route exact={true} path="/products/upload" element={<AddProducts/>}/>
-                <Route exact={true} path="/products/edit/:id" element={<EditProducts/>}/>
-                <Route exact={true} path="/category" element={<Category/>}/>
-                <Route exact={true} path="/category/add" element={<AddCategory/>}/>
-                <Route exact={true} path="/category/edit/:id" element={<EditCategory/>}/>
-                <Route exact={true} path="/subcat" element={<SubCategory/>}/>
-                <Route exact={true} path="/subcat/create" element={<AddSubCategory/>}/>
-                <Route exact={true} path="/subcat/edit/:id" element={<EditSubCategory/>}/>
+                <Route path ="/" exact={true} element={
+                  <ProtectedRoutes>
+                    <Dashboard/>
+                  </ProtectedRoutes>
+                }/>
+                <Route path ="/dashboard" exact={true} element={
+                  <ProtectedRoutes>
+                    <Dashboard/>
+                  </ProtectedRoutes>
+                }/>
+                <Route exact={true} path="/signIn" element={<LogIn/>}/>
+                {/* <Route exact={true} path="/signUp" element={<SignUp/>}/> */}
+                <Route exact={true} path="/products" element={
+                  <ProtectedRoutes>
+                    <Products/>
+                  </ProtectedRoutes>
+                }/>
+                <Route exact={true} path="/products/details/:id" element={
+                  <ProtectedRoutes>
+                    <ProductDetails/>
+                  </ProtectedRoutes>
+                }/>
+                <Route exact={true} path="/products/upload" element={
+                  <ProtectedRoutes>
+                    <AddProducts/>
+                  </ProtectedRoutes>
+                }/>
+                <Route exact={true} path="/products/edit/:id" element={
+                  <ProtectedRoutes>
+                    <EditProducts/>
+                  </ProtectedRoutes>
+                }/>
+                <Route exact={true} path="/category" element={
+                  <ProtectedRoutes>
+                    <Category/>
+                  </ProtectedRoutes>
+                }/>
+                <Route exact={true} path="/category/add" element={
+                  <ProtectedRoutes>
+                    <AddCategory/>
+                  </ProtectedRoutes>
+                }/>
+                <Route exact={true} path="/category/edit/:id" element={
+                  <ProtectedRoutes>
+                    <EditCategory/>
+                  </ProtectedRoutes>
+                }/>
+                <Route exact={true} path="/subcat" element={
+                  <ProtectedRoutes>
+                    <SubCategory/>
+                  </ProtectedRoutes>
+                }/>
+                <Route exact={true} path="/subcat/create" element={
+                  <ProtectedRoutes>
+                    <AddSubCategory/>
+                  </ProtectedRoutes>
+                }/>
+                <Route exact={true} path="/subcat/edit/:id" element={
+                  <ProtectedRoutes>
+                    <EditSubCategory/>
+                  </ProtectedRoutes>
+                }/>
              </Routes>
             </div>
           </div>
