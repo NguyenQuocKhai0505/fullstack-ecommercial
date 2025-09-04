@@ -27,11 +27,11 @@ const Header = () => {
     const [notificationAnchor, setNotificationAnchor] = useState(null);
     const openMyAcc = Boolean(anchorEl);
     const openNotifications = Boolean(notificationAnchor);
-    const adminInfo = context.adminInfo
+
 
 
     const context = useContext(MyContext)
-
+    const adminInfo = context.adminInfo
 
     const handleOpenMyAccDrop = (event) => {
         setAnchorEl(event.currentTarget);
