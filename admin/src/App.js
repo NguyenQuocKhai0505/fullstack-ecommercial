@@ -76,8 +76,6 @@ function App() {
     themeMode,
     setThemeMode,
     showSnackbar,
-    adminInfo,
-    setAdminInfo,
   }
   return (
       <BrowserRouter>
