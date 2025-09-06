@@ -17,6 +17,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {ToastContainer} from "react-toastify"
 import Verify from "./Pages/Auth/verify";
+import { getCartAPI } from "./utils/api";
 const MyContext = createContext();
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
   const [selectedProductID,setSelectedProductID]= useState(null)
   const [isHeaderFooterShow, setisHeaderFooterShow] = useState(true)
   const [isLogin, setIsLogin] = useState(false)
+  const [cartCount, setCartCount] = useState(0);
 
   useEffect(()=>{
     getCountry("https://countriesnow.space/api/v0.1/countries/")
@@ -34,7 +36,11 @@ function App() {
   // Giữ trạng thái đăng nhập sau khi reload
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) setIsLogin(true);
+    if (token) {
+      setIsLogin(true);
+      // Lấy cart từ backend để cập nhật số lượng sản phẩm
+      getCartAPI(token).then(cart => setCartCount(cart.items ? cart.items.length : 0));
+    }
   }, []);
   
   const getCountry= async (url)=>{
@@ -54,7 +60,9 @@ function App() {
     isHeaderFooterShow,
     setisHeaderFooterShow,
     isLogin,
-    setIsLogin
+    setIsLogin,
+    cartCount, // Truyền cartCount vào context
+    setCartCount // Để cập nhật khi thêm vào cart
   }
   return (
     <>

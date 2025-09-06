@@ -226,17 +226,6 @@ const Header = () => {
                                                 <FaUser />
                                             </span>
                                         </div>
-                                        
-                                        {/* User Information */}
-                                        <div className="userInfo">
-                                            <h4 style={{ marginBottom: 0 }}>{(JSON.parse(localStorage.getItem("adminInfo"))?.name) || "Admin"}</h4>
-                                            <p className="mb-0" style={{ fontSize: 12, color: "#888" }}>
-                                                {(() => {
-                                                    const email = (JSON.parse(localStorage.getItem("adminInfo"))?.email) || "admin@example.com";
-                                                    return email.length > 20 ? email.slice(0, 20) + "..." : email;
-                                                })()}
-                                            </p>
-                                        </div>
                                     </Button>
                                     
                                     {/* Account Menu */}

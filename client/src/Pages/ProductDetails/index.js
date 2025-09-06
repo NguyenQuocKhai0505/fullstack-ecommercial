@@ -11,6 +11,11 @@ import CustomerReview from "../../Components/Customer Review/index"
 import RelatedProducts from "./RelatedProducts/index"
 import { useParams } from "react-router-dom";
 import { fetchDataFromApi } from "../../utils/api";
+import { addToCartAPI } from "../../utils/api";
+import { toast } from "react-toastify";
+import { MyContext } from "../../App";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 const ProductDetails =()=>{
     const [activeTabs, setActiveTabs] = useState(null)
     const [activeSize, setActiveSize] = useState(null)
@@ -18,7 +23,8 @@ const ProductDetails =()=>{
     const [activeWeight, setActiveWeight] = useState(null)
     const {id} = useParams()
     const [productData, setProductData] = useState([])
-
+    const context = useContext(MyContext)
+    const navigate = useNavigate()
     useEffect(()=>{
         fetchDataFromApi(`/api/products/${id}`).then(res=>{
             setProductData(res)
@@ -43,6 +49,24 @@ const ProductDetails =()=>{
     }
     const isActiveWeight = (index) => {
         setActiveWeight(index)
+    }
+    const [quantity, setQuantity] = useState(1); // Thêm state quản lý số lượng
+    const handleAddToCart = async()=>{
+        //Kiem tra dang nhap
+        if(!context.isLogin){
+            toast.error("You need to login first!")
+            navigate("/signIn")
+            return
+        }
+        const token = localStorage.getItem("token")
+        //Goi API backend de them vao gio hang va kiem tra ton kho
+        // Gọi API backend với số lượng đã chọn
+        const res = await addToCartAPI(productData._id, quantity, token)
+        if(res.message){
+            toast.error(res.message)
+        }else{
+            toast.success("You added this product to cart successfully")
+        }
     }
     
     return(
@@ -140,14 +164,26 @@ const ProductDetails =()=>{
                     )} 
                     
                     <div className="d-flex align-items-center ml-3 mt-3">
-                        <QuantityBox/>
-                        <Button className="btn-blue btn-lg btn-big btn-round mr-3 ml-2"><FaShoppingCart/>&nbsp; Add to cart</Button>
+                        {/* QuantityBox truyền value và onChange để điều khiển số lượng */}
+                        <div className="quantityDrop d-flex align-items-center">
+                            <Button onClick={() => setQuantity(q => Math.max(1, q - 1))}>-</Button>
+                            <input
+                                type="text"
+                                value={quantity}
+                                style={{ width: 40, textAlign: "center" }}
+                                onChange={e => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                            />
+                            <Button onClick={() => setQuantity(q => q + 1)}>+</Button>
+                        </div>
+                        {/* Nút Add to cart gọi handleAddToCart khi click vào Button */}
+                        <Button className="btn-blue btn-lg btn-big btn-round mr-3 ml-2" onClick={handleAddToCart}>
+                            <FaShoppingCart/>&nbsp; Add to cart
+                        </Button>
                         <Tooltip title="Add to WishList" placement="top">
-                        <Button className="btn-circle"><FaHeart /></Button>
+                            <Button className="btn-circle"><FaHeart /></Button>
                         </Tooltip>
-
                         <Tooltip title="Compare Product" placement="top">
-                         <Button className="btn-circle ml-3"><IoMdGitCompare /></Button>
+                            <Button className="btn-circle ml-3"><IoMdGitCompare /></Button>
                         </Tooltip>
                     </div>
 

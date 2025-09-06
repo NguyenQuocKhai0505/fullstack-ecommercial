@@ -13,7 +13,8 @@ import { MyContext } from "../../App";
 const Header =()=>
 {
     const context = useContext(MyContext);
-
+    // Lấy số lượng sản phẩm trong giỏ hàng từ context (nếu có)
+    const cartCount = context.cartCount || 0;
     return(
         <>
         <div className="headerWrapper">
@@ -40,9 +41,14 @@ const Header =()=>
                                     context.isLogin !==true ?<Link to="/signIn"><Button className="btn-blue btn-lg btn-big btn-round mr-2">Sign In</Button></Link>
                                     :<Button className="circle mr-3"><FaUserCircle/></Button>
                                 }
-                                <div className="ml-auto cartTab">
-                                    <span className="price ml-3">$3.29</span>
-                                    <Button className="circle ml-3"><FaCartPlus/></Button>
+                                <div className="ml-auto cartTab" style={{position: 'relative'}}>
+                                    {/* <span className="price ml-3">$3.29</span> */}
+                                    <Button className="circle ml-3" component={Link} to="/cart">
+                                        <FaCartPlus />
+                                        {cartCount > 0 && (
+                                            <span className="count" style={{position: 'absolute', top: -6, right: -6, background: '#ea2b0f', color: '#fff', borderRadius: '50%', fontSize: 12, width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>{cartCount}</span>
+                                        )}
+                                    </Button>
                                 </div>
                             </div>
                             
