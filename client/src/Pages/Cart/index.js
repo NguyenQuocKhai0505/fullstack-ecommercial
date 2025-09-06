@@ -74,7 +74,12 @@ const Cart = () => {
                           <td width="40%" className="align-middle">
                             <div className="d-flex align-items-center cartItemimgWrapper">
                               <div className="imgWrapper">
-                                <img src={item.product.image} className="w-100" alt="Cart item"/>
+                                <img
+                                  src={item.product.images && item.product.images[0] ? item.product.images[0] : "/default-image.png"}
+                                  className="w-100"
+                                  alt="Cart item"
+                                  style={{ width: 60, height: 60, objectFit: "cover" }}
+                                />
                               </div>
                               <div className="info px-30 ml-3">
                                 <h6>{item.product.name}</h6>
