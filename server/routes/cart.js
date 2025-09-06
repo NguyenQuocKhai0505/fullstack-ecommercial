@@ -1,7 +1,8 @@
 const express = require("express")
 const router = express.Router()
 const Cart = require("../models/cart")
-const Product = require("../models/product")
+const { Product } = require("../models/product")
+
 
 // Middleware kiểm tra đăng nhập
 const jwt = require('jsonwebtoken');
@@ -15,7 +16,7 @@ const requireAuth = (req, res, next) => {
     const token = authHeader.split(' ')[1];
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded;
+        req.user = decoded;a
         console.log('[Auth] Token decoded, user:', req.user);
         next();
     } catch (err) {
