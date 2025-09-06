@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { CircularProgress, Button } from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
-
+import { MyContext } from "../../App";
 const Verify = () =>{
     const {token} = useParams()
     const [status, setStatus] = useState("loading")
-
+    const context = useContext(MyContext)
+    useEffect(()=>{
+      context.setisHeaderFooterShow(false)
+  },[context])
     useEffect(() => {
         const verifyEmail = async () => {
           try {
