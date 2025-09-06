@@ -45,16 +45,13 @@ export const deleteData = async (url)=>{
     }
 }
 //ADD PRODUCT IN CART 
-export const addToCartAPI = async (productId, quantity, token) => {
-    return fetch(`${process.env.REACT_APP_API_URL}/api/cart/add`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({ productId, quantity })
-    }).then(res => res.json());
-  };
+export const addToCartAPI = async (productId, quantity, token, size) => {
+  return fetch(`${API_URL}/api/cart/add`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+    body: JSON.stringify({ productId, quantity, size })
+  }).then(res => res.json());
+};
 //REMOVE PRODUCTS FROM CART
 export const removeFromCartAPI = async (productId, token) => {
     return fetch(`${process.env.REACT_APP_API_URL}/api/cart/remove`, {

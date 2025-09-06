@@ -51,6 +51,7 @@ const ProductDetails =()=>{
         setActiveWeight(index)
     }
     const [quantity, setQuantity] = useState(1); // Thêm state quản lý số lượng
+    const [selectedSize, setSelectedSize] = useState(null);
     const handleAddToCart = async()=>{
         //Kiem tra dang nhap
         if(!context.isLogin){
@@ -58,10 +59,14 @@ const ProductDetails =()=>{
             navigate("/signIn")
             return
         }
+        // Bắt buộc chọn size trước khi thêm vào giỏ hàng
+        if(productData.productSize && productData.productSize.length > 0 && !selectedSize){
+            toast.error("Vui lòng chọn kích thước (Size) trước khi thêm vào giỏ hàng!");
+            return;
+        }
         const token = localStorage.getItem("token")
-        //Goi API backend de them vao gio hang va kiem tra ton kho
-        // Gọi API backend với số lượng đã chọn
-        const res = await addToCartAPI(productData._id, quantity, token)
+        // Gọi API backend với số lượng và size đã chọn
+        const res = await addToCartAPI(productData._id, quantity, token, selectedSize)
         if(res.message){
             toast.error(res.message)
         }else{
@@ -131,8 +136,8 @@ const ProductDetails =()=>{
                                 {productData.productSize.map((size, idx) => (
                                     <li className="list-inline-item" key={idx}>
                                         <button 
-                                            className={`tag ${activeSize === idx ? "active" : ""}`} 
-                                            onClick={() => isActive(idx)}
+                                            className={`tag ${selectedSize === size ? "active" : ""}`} 
+                                            onClick={() => setSelectedSize(size)}
                                             type="button"
                                         >
                                             {size}
