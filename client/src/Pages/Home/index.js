@@ -84,13 +84,10 @@ const Home = () => {
                 const res = await fetchDataFromApi("/api/category?all=true")
                 if (res && Array.isArray(res.categoryList)) {
                     setCatData(res.categoryList)
-                    console.log('Fetched categories:', res.categoryList)
                 } else {
                     setCatData([])
-                    console.log('No categories found or invalid response')
                 }
             } catch (err) {
-                console.error('Error fetching categories:', err)
                 setError('Failed to load categories')
                 setCatData([])
             } finally {
@@ -108,13 +105,10 @@ const Home = () => {
                 const res = await fetchDataFromApi("/api/products?isFeatured=true")
                 if (res && res.success && Array.isArray(res.data)) {
                     setIsFeaturedProduct(res.data)
-                    console.log('Fetched featured products:', res.data)
                 } else {
                     setIsFeaturedProduct([])
-                    console.log('No featured products found or invalid response')
                 }
             } catch (err) {
-                console.error('Error fetching featured products:', err)
                 setIsFeaturedProduct([])
             }
         }
@@ -128,21 +122,16 @@ const Home = () => {
             try{
                 setProductsLoading(true)
                 setError(null)
-                console.log(`Fetching products: page=${currentPage}, perPage=${productPerPage}`)
                 const res = await fetchDataFromApi(`/api/products?page=${currentPage}&perPage=${productPerPage}`)
-                console.log('API Response:', res)
                 
                 if(res && res.success && Array.isArray(res.data)){
                     setAllProducts(res.data)
                     setTotalPages(res.totalPages || 1);
-                    console.log('Fetched all products:', res.data)
                 }else{
                     setAllProducts([])
                     setError('No products found or invalid API response')
-                    console.log('No all products found or invalid response:', res)
                 }
             }catch(err){
-                console.error('Error fetching all products:', err)
                 setError('Failed to load products: ' + (err.message || 'Unknown error'))
                 setAllProducts([])
             } finally {
@@ -164,7 +153,6 @@ const Home = () => {
                     const res = await fetchDataFromApi("/api/products?isFeatured=true&perPage=1000")
                     if(res && res.success && Array.isArray(res.data)){
                         setFilteredProducts(res.data)
-                        console.log('Fetched all featured products:', res.data.length);
                     }else{
                         setFilteredProducts([])
                     }
@@ -172,18 +160,14 @@ const Home = () => {
                     // Lấy products theo category được chọn
                     const selectedCategory = catData[tabValue]
                     if(!selectedCategory) return 
-                    console.log(`Fetching products for category: ${selectedCategory.name} (${selectedCategory._id})`);
                     const res = await fetchDataFromApi(`/api/products?category=${selectedCategory._id}&isFeatured=true&perPage=1000`)
                     if(res && res.success && Array.isArray(res.data)){
                         setFilteredProducts(res.data)
-                        console.log(`Fetched ${res.data.length} products for category: ${selectedCategory.name}`);
                     }else{
                         setFilteredProducts([])
-                        console.log(`No products found for category: ${selectedCategory.name}`);
                     }
                 }
             }catch(error){
-                console.error('Error fetching products by category:', error);
                 setError('Failed to load products for this category');
                 setFilteredProducts([]);
             }finally{

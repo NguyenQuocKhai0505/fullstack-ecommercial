@@ -30,7 +30,6 @@ const Navigation =()=>
                 setSubByCat(grouped)
             }catch(e){
                 // optional: log
-                console.log(e)
             }
         }
         load();

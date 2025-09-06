@@ -38,7 +38,6 @@ const isActiveWeight = (index) => {
       const response = await fetchDataFromApi(`/api/products/${context.selectedProductID}`)
       setProducts(response)
     }catch(err){
-      console.log("Error fetching product",err)
     }finally{
       setLoading(false)
     }

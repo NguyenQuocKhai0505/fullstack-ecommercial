@@ -39,7 +39,6 @@ const Sidebar = ({showFilter}) => {
              setSubcats(subRes?.subcats || [])
              setBrands(brandsRes?.brands || [])
            }catch(error){
-            console.log("Error fetching data",error)
            }
       })();
     }, [categoryId]);

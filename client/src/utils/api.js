@@ -8,7 +8,6 @@ export const fetchDataFromApi = async(url) => {
         const {data} = await axios.get(API_URL + url)
         return data
     } catch(error) {
-        console.log(error)
         return error
     }
 }
@@ -19,7 +18,6 @@ export const postData = async (url, formData) => {
         const {data} = await axios.post(API_URL + url, formData)
         return data
     } catch(error) {
-        console.log(error)
         return error
     }
 }
@@ -30,7 +28,6 @@ export const editData = async(url,updateData) =>{
         const {data} = await axios.put(API_URL + url, updateData)
         return data
     } catch(error) {
-        console.log(error)
         throw error
     }
 }
@@ -40,7 +37,6 @@ export const deleteData = async (url)=>{
        const {data} = await axios.delete(`${API_URL}${url}`)
         return data
     } catch(error) {
-        console.log(error)
         throw error
     }
 }
