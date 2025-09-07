@@ -28,10 +28,10 @@ const Cart = () => {
         }
     },[])
     //Tang giam so luong
-    const updateQuantity = async(productId,newQuantity) =>{
+    const updateQuantity = async(productId, size, newQuantity) =>{
         const token = localStorage.getItem("token")
         if(newQuantity < 1) return 
-        const res = await addToCartAPI(productId,newQuantity,token)
+        const res = await addToCartAPI(productId, newQuantity, token, size)
         if(res.message){
             toast.error(res.message)
         }else{
@@ -92,17 +92,17 @@ const Cart = () => {
                           <td width="15%" className="text-center align-middle">{item.product.price}$</td>
                           <td width="20%" className="text-center align-middle">
                             <div className="quantityDrop d-flex align-items-center">
-                              <Button onClick={() => updateQuantity(item.product._id, item.quantity - 1)}>-</Button>
+                              <Button onClick={() => updateQuantity(item.product._id, item.size, item.quantity - 1)}>-</Button>
                               <input
                                 type="text"
                                 value={item.quantity}
                                 style={{ width: 40, textAlign: "center" }}
                                 onChange={e => {
                                   const val = parseInt(e.target.value) || 1;
-                                  updateQuantity(item.product._id, val);
+                                  updateQuantity(item.product._id, item.size, val);
                                 }}
                               />
-                              <Button onClick={() => updateQuantity(item.product._id, item.quantity + 1)}>+</Button>
+                              <Button onClick={() => updateQuantity(item.product._id, item.size, item.quantity + 1)}>+</Button>
                             </div>
                           </td>
                           <td width="15%" className="text-center align-middle">{item.product.price * item.quantity}$</td>
