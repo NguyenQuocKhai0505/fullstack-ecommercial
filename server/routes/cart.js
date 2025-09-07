@@ -53,7 +53,7 @@ router.post("/add", requireAuth, async (req, res) => {
     // Tìm sản phẩm cùng productId và size
     const itemIndex = cart.items.findIndex(i => i.product.equals(productId) && i.size === size)
     if (itemIndex > -1) {
-        cart.items[itemIndex].quantity = quantity
+        cart.items[itemIndex].quantity += quantity
         cart.items[itemIndex].size = size
         console.log('[Cart] Updated quantity for product in cart:', productId, 'Size:', size, 'Quantity:', quantity);
     } else {
@@ -74,7 +74,7 @@ router.post("/remove", requireAuth, async (req, res) => {
         console.log('[Cart] Cart not found for user:', req.user._id);
         return res.status(404).json({ message: "Cart not found" })
     }
-    cart.items = cart.items.filter(i => !i.product.equals(productId))
+    cart.items = cart.items.filter(i => !i.product.equals(productId) && i.size === size)
     await cart.save()
     const populatedCart = await Cart.findOne({ user: req.user._id }).populate("items.product")
     res.json(populatedCart)

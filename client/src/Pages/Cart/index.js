@@ -62,7 +62,9 @@ const Cart = () => {
                     <thead>
                       <tr>
                         <th width="40%">Product</th>
+                        <th width="10%" className="text-center">Size</th>
                         <th width="15%" className="text-center">Unit Price</th>
+
                         <th width="20%" className="text-center">Quantity</th>
                         <th width="15%" className="text-center">Subtotal</th>
                         <th width="10%" className="text-center">Remove</th>
@@ -70,7 +72,7 @@ const Cart = () => {
                     </thead>
                     <tbody>
                       {cart.items.map(item => (
-                        <tr key={item.product._id}>
+                        <tr key={item.product._id + '-' + (item.size || '')}>
                           <td width="40%" className="align-middle">
                             <div className="d-flex align-items-center cartItemimgWrapper">
                               <div className="imgWrapper">
@@ -86,6 +88,7 @@ const Cart = () => {
                               </div>
                             </div>
                           </td>
+                          <td width="10%" className="text-center align-middle">{item.size || '-'}</td>
                           <td width="15%" className="text-center align-middle">{item.product.price}$</td>
                           <td width="20%" className="text-center align-middle">
                             <div className="quantityDrop d-flex align-items-center">
