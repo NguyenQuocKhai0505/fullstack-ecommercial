@@ -12,6 +12,7 @@ const allowedOrigins = [
   "http://localhost:4000",
   // Client
   "https://fullstack-ecommercial.vercel.app",
+  "https://fullstack-ecommercial-1eon289hq-nguyen-quoc-khais-projects.vercel.app", // <-- Thêm dòng này
   // Admin
   "https://fullstack-ecommercial-gvu6.vercel.app"
 ];
