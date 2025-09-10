@@ -53,9 +53,9 @@ router.post("/add", requireAuth, async (req, res) => {
     // Tìm sản phẩm cùng productId và size
     const itemIndex = cart.items.findIndex(i => i.product.equals(productId) && i.size === size)
     if (itemIndex > -1) {
-        cart.items[itemIndex].quantity += quantity
-        cart.items[itemIndex].size = size
-        console.log('[Cart] Updated quantity for product in cart:', productId, 'Size:', size, 'Quantity:', quantity);
+        cart.items[itemIndex].quantity = quantity; // set trực tiếp số lượng
+        cart.items[itemIndex].size = size;
+        console.log('[Cart] Set quantity for product in cart:', productId, 'Size:', size, 'Quantity:', quantity);
     } else {
         cart.items.push({ product: productId, quantity, size })
         console.log('[Cart] Added new product to cart:', productId, 'Size:', size, 'Quantity:', quantity);
