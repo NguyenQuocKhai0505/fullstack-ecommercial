@@ -1,7 +1,7 @@
 
 import Slider from "react-slick";
-import InnerImageZoom from 'react-inner-image-zoom';
-import 'react-inner-image-zoom/lib/styles.min.css';
+import Zoom from 'react-medium-image-zoom';
+import 'react-medium-image-zoom/dist/styles.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useState } from "react";
@@ -48,11 +48,15 @@ const ProductZoom = (props) => {
                 <Slider {...settingsBig} afterChange={setSlideIndex} asNavFor={null}>
                     {images.length > 0 ? images.map((img, i) => (
                         <div className="item" key={i}>
-                            <InnerImageZoom zoomType="hover" zoomScale={1.5} src={img} alt={`product-zoom-${i}`}/>
+                            <Zoom>
+                                <img src={img} alt={`product-zoom-${i}`} style={{width: '100%', maxHeight: 400, objectFit: 'contain', borderRadius: 8}} />
+                            </Zoom>
                         </div>
                     )) : (
                         <div className="item">
-                            <InnerImageZoom zoomType="hover" zoomScale={1.5} src="https://via.placeholder.com/400x400?text=No+Image" />
+                            <Zoom>
+                                <img src="https://via.placeholder.com/400x400?text=No+Image" alt="No Image" style={{width: '100%', maxHeight: 400, objectFit: 'contain', borderRadius: 8}} />
+                            </Zoom>
                         </div>
                     )}
                 </Slider>
