@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 const cartItemSchema = new mongoose.Schema({
     product:{type:mongoose.Schema.Types.ObjectId,ref:"Product",required:true},
     quantity:{type:Number,required:true,min:1},
-    size: { type: String } // Thêm trường size
+    option: { type: String } // Thêm trường size
 })
 //Moi user co mot cart fom nhieu items 
 const cartSchema = new mongoose.Schema({

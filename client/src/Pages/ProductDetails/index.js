@@ -59,14 +59,15 @@ const ProductDetails =()=>{
             navigate("/signIn")
             return
         }
-        // Bắt buộc chọn size trước khi thêm vào giỏ hàng
-        if(productData.productSize && productData.productSize.length > 0 && !selectedSize){
-            toast.error("Vui lòng chọn kích thước (Size) trước khi thêm vào giỏ hàng!");
-            return;
-        }
+    let option = null
+    if(productData.productSize && selectedSize) option = selectedSize
+    else if (productData.productRam && activeRam !== null) option = productData.productRam[activeRam]
+    else if (productData.productWeight && activeWeight !== null) option = productData.productWeight[activeWeight]
+
+  // Gọi API, truyền thêm các thuộc tính nếu backend hỗ trợ
         const token = localStorage.getItem("token")
         // Gọi API backend với số lượng và size đã chọn
-        const res = await addToCartAPI(productData._id, quantity, token, selectedSize)
+        const res = await addToCartAPI(productData._id, quantity, token, option)
         if(res.message){
             toast.error(res.message)
         }else{
@@ -127,6 +128,7 @@ const ProductDetails =()=>{
                             </ul>
                         </div>
                     )}
+
 
                     {/* Render product Size */}
                     {productData.productSize && productData.productSize.length > 0 && (

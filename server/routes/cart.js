@@ -34,8 +34,8 @@ router.get("/", requireAuth, async (req, res) => {
 
 // Thêm/cập nhật sản phẩm trong giỏ hàng (POST /api/cart/add)
 router.post("/add", requireAuth, async (req, res) => {
-    const { productId, quantity, size } = req.body;
-    console.log('[Cart] POST /api/cart/add', { user: req.user && req.user._id, productId, quantity, size });
+    const { productId, quantity, option } = req.body;
+    console.log('[Cart] POST /api/cart/add', { user: req.user && req.user._id, productId, quantity, option });
     const product = await Product.findById(productId)
     if (!product) {
         console.log('[Cart] Product not found:', productId);
@@ -50,15 +50,15 @@ router.post("/add", requireAuth, async (req, res) => {
         console.log('[Cart] No cart found, creating new cart for user:', req.user._id);
         cart = new Cart({ user: req.user._id, items: [] })
     }
-    // Tìm sản phẩm cùng productId và size
-    const itemIndex = cart.items.findIndex(i => i.product.equals(productId) && i.size === size)
+    // Tìm sản phẩm cùng productId và option
+    const itemIndex = cart.items.findIndex(i => i.product.equals(productId) && i.option === option)
     if (itemIndex > -1) {
         cart.items[itemIndex].quantity = quantity; // set trực tiếp số lượng
-        cart.items[itemIndex].size = size;
-        console.log('[Cart] Set quantity for product in cart:', productId, 'Size:', size, 'Quantity:', quantity);
+        cart.items[itemIndex].option = option;
+        console.log('[Cart] Set quantity for product in cart:', productId, 'Option:', option, 'Quantity:', quantity);
     } else {
-        cart.items.push({ product: productId, quantity, size })
-        console.log('[Cart] Added new product to cart:', productId, 'Size:', size, 'Quantity:', quantity);
+        cart.items.push({ product: productId, quantity, option })
+        console.log('[Cart] Added new product to cart:', productId, 'Option:', option, 'Quantity:', quantity);
     }
     await cart.save()
     const populatedCart = await Cart.findOne({ user: req.user._id }).populate("items.product")
@@ -67,14 +67,14 @@ router.post("/add", requireAuth, async (req, res) => {
 
 // Xóa sản phẩm khỏi giỏ hàng (POST /api/cart/remove)
 router.post("/remove", requireAuth, async (req, res) => {
-    const { productId } = req.body
-    console.log('[Cart] POST /api/cart/remove', { user: req.user && req.user._id, productId });
+    const { productId, option } = req.body;
+    console.log('[Cart] POST /api/cart/remove', { user: req.user && req.user._id, productId, option });
     let cart = await Cart.findOne({ user: req.user._id })
     if (!cart) {
         console.log('[Cart] Cart not found for user:', req.user._id);
         return res.status(404).json({ message: "Cart not found" })
     }
-    cart.items = cart.items.filter(i => !i.product.equals(productId) && i.size === size)
+    cart.items = cart.items.filter(i => !(i.product.equals(productId) && i.option === option))
     await cart.save()
     const populatedCart = await Cart.findOne({ user: req.user._id }).populate("items.product")
     res.json(populatedCart)

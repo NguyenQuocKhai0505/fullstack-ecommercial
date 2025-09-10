@@ -9,9 +9,12 @@ import { IoGitCompare } from "react-icons/io5";
 import { MyContext } from "../../App";
 import ProductZoom from "../ProductZoom";
 import { fetchDataFromApi } from "../../utils/api";
+import { addToCartAPI } from "../../utils/api";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const ProductModal = () => {
-
+  const navigate = useNavigate()
   const [products,setProducts]= useState(null)
   const [loading,setLoading] = useState(true)
   const context = useContext(MyContext);
@@ -42,6 +45,20 @@ const isActiveWeight = (index) => {
       setLoading(false)
     }
   }
+  const [quantity,setQuantity] = useState(1)
+  const [selectedSize, setSelectedSize] = useState(null)
+  // const handleAddToCart = async()=>{
+  //   //Kiem tra dang nhap
+  //   if(!context.isLogin){
+  //     toast.error("You need to login first!")
+  //     navigate("/signIn")
+  //     return
+  //   }
+  //   //Bat buoc chon size 
+  //   if(products.prod)
+  // }
+
+
 
   // Hiển thị loading khi đang fetch
   if (loading) {

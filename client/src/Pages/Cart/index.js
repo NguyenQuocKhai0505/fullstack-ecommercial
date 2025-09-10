@@ -22,16 +22,17 @@ const Cart = () => {
         const token = localStorage.getItem("token")
         if(token){
             getCartAPI(token).then(cart => {
+                console.log("[DEBUG] Cart API result:", cart); // Thêm log này
                 setCart(cart);
                 if (context.setCartCount) context.setCartCount(cart.items ? cart.items.length : 0);
             })
         }
     },[])
     //Tang giam so luong
-    const updateQuantity = async(productId, size, newQuantity) =>{
+    const updateQuantity = async(productId, option, newQuantity) =>{
         const token = localStorage.getItem("token")
         if(newQuantity < 1) return 
-        const res = await addToCartAPI(productId, newQuantity, token, size)
+        const res = await addToCartAPI(productId, newQuantity, token, option)
         if(res.message){
             toast.error(res.message)
         }else{
@@ -40,9 +41,9 @@ const Cart = () => {
         }
     }
     //Xoa san pham
-    const removeFromCart = async(productId) =>{
+    const removeFromCart = async(productId, option) =>{
         const token = localStorage.getItem("token")
-        const res = await removeFromCartAPI(productId,token)
+        const res = await removeFromCartAPI(productId, token, option)
         setCart(res)
         if (context.setCartCount) context.setCartCount(res.items ? res.items.length : 0);
     }
@@ -50,6 +51,7 @@ const Cart = () => {
     const subtotal = cart.items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
     const shipping = 20.12
     const total = subtotal + shipping
+    console.log('[DEBUG] cart.items:', cart.items);
     return (
         <section className="section mr-2 cartPage">
           <div className="container">
@@ -72,7 +74,7 @@ const Cart = () => {
                     </thead>
                     <tbody>
                       {cart.items.map(item => (
-                        <tr key={item.product._id + '-' + (item.size || '')}>
+                        <tr key={item.product._id + '-' + (item.option || '')}>
                           <td width="40%" className="align-middle">
                             <div className="d-flex align-items-center cartItemimgWrapper">
                               <div className="imgWrapper">
@@ -88,26 +90,26 @@ const Cart = () => {
                               </div>
                             </div>
                           </td>
-                          <td width="10%" className="text-center align-middle">{item.size || '-'}</td>
+                          <td width="10%" className="text-center align-middle">{item.option || '-'}</td>
                           <td width="15%" className="text-center align-middle">{item.product.price}$</td>
                           <td width="20%" className="text-center align-middle">
                             <div className="quantityDrop d-flex align-items-center">
-                              <Button onClick={() => updateQuantity(item.product._id, item.size, item.quantity - 1)}>-</Button>
+                              <Button onClick={() => updateQuantity(item.product._id, item.option, item.quantity - 1)}>-</Button>
                               <input
                                 type="text"
                                 value={item.quantity}
                                 style={{ width: 40, textAlign: "center" }}
                                 onChange={e => {
                                   const val = parseInt(e.target.value) || 1;
-                                  updateQuantity(item.product._id, item.size, val);
+                                  updateQuantity(item.product._id, item.option, val);
                                 }}
                               />
-                              <Button onClick={() => updateQuantity(item.product._id, item.size, item.quantity + 1)}>+</Button>
+                              <Button onClick={() => updateQuantity(item.product._id, item.option, item.quantity + 1)}>+</Button>
                             </div>
                           </td>
                           <td width="15%" className="text-center align-middle">{item.product.price * item.quantity}$</td>
                           <td width="10%" className="text-center align-middle">
-                            <span className="remove" onClick={() => removeFromCart(item.product._id)}>
+                            <span className="remove" onClick={() => removeFromCart(item.product._id, item.option)}>
                               <IoClose />
                             </span>
                           </td>

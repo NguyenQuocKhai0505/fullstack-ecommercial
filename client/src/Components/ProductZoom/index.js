@@ -4,9 +4,13 @@ import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { useState } from "react";
+import { useState,useRef,useEffect, use } from "react";
 
 const ProductZoom = (props) => {
+    const sliderBigRef = useRef()
+    const sliderThumbRef = useRef()
+    const [nav1,setNav1] = useState()
+    const [nav2,setNav2] = useState()
     const images = props.images || props.product?.images || [];
     const [slideIndex, setSlideIndex] = useState(0);
 
@@ -17,6 +21,10 @@ const ProductZoom = (props) => {
         }
         return 0
     }
+    useEffect(()=>{
+        setNav1(sliderBigRef.current)
+        setNav2(sliderThumbRef.current)
+    },[])
     const discount = calculateDiscount();
 
     const settingsBig = {
@@ -45,7 +53,7 @@ const ProductZoom = (props) => {
         <div className="productZoom">
             <div className="productZoom position-relative">
                 {discount > 0 && <div className="badge badge-primary">{discount}%</div>}
-                <Slider {...settingsBig} afterChange={setSlideIndex} asNavFor={null}>
+                <Slider {...settingsBig} afterChange={setSlideIndex} asNavFor={nav2} ref={sliderBigRef}>
                     {images.length > 0 ? images.map((img, i) => (
                         <div className="item" key={i}>
                             <Zoom>
@@ -62,14 +70,17 @@ const ProductZoom = (props) => {
                 </Slider>
             </div>
             <div style={{marginTop: 16}}>
-                <Slider {...settingsThumb} asNavFor={null} afterChange={setSlideIndex}>
+                <Slider {...settingsThumb} asNavFor={nav1} afterChange={setSlideIndex} ref={sliderThumbRef}>
                     {images.length > 0 ? images.map((img, i) => (
                         <div className={`item ${slideIndex === i ? "item_active" : ""}`} key={i}>
                             <img
                                 src={img}
                                 className="w-100"
                                 style={{border: slideIndex === i ? '2px solid #007bff' : 'none', cursor: 'pointer', maxHeight: 80, objectFit: 'contain'}}
-                                onClick={() => setSlideIndex(i)}
+                                onClick={() => {
+                                    setSlideIndex(i);
+                                    if (nav1) nav1.slickGoTo(i);
+                                }}
                                 alt={`thumb-${i}`}
                             />
                         </div>
