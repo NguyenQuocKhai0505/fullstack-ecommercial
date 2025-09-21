@@ -209,17 +209,11 @@ const ProductDetails =()=>{
                             >Description</Button>
                         </li>
                         <li className="list-inline-item">
-                            <Button className={`${activeTabs === 1 && 'active'}`}
-                            onClick={()=>{
-                                setActiveTabs(1)
-                            }}>Additional info</Button>
-                        </li>
-                        <li className="list-inline-item">
-                            <Button className={`${activeTabs === 2 && "active"}`}
+                            <Button className={`${activeTabs === 1 && "active"}`}
                             onClick={()=>{
                                 setActiveTabs(2)
                             }}
-                            >Reviews(3)</Button>
+                            >Reviews</Button>
                         </li>
                     </ul>
                     <br/>
@@ -229,8 +223,6 @@ const ProductDetails =()=>{
                             <p>{productData.description} </p>
                          </div>   
                     }
-                   
-
                     {
                         activeTabs === 1 &&
                         <div className="tabContent">
