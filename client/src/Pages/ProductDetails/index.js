@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { IoMdGitCompare } from "react-icons/io";
 import Tooltip from '@mui/material/Tooltip';
-import CustomerReview from "../../Components/Customer Review/index"
 import RelatedProducts from "./RelatedProducts/index"
 import { useParams } from "react-router-dom";
 import { fetchDataFromApi } from "../../utils/api";
