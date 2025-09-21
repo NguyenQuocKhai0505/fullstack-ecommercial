@@ -268,7 +268,7 @@ const ProductDetails =()=>{
 
                                     </form>
                                 </div>
-                                <CustomerReview/>
+                               
 
                             </div>
                         </div>
