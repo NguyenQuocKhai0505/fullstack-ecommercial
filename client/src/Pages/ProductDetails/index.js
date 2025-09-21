@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { IoMdGitCompare } from "react-icons/io";
 import Tooltip from '@mui/material/Tooltip';
+
 import RelatedProducts from "./RelatedProducts/index"
 import { useParams } from "react-router-dom";
 import { fetchDataFromApi } from "../../utils/api";
@@ -211,7 +212,7 @@ const ProductDetails =()=>{
                         <li className="list-inline-item">
                             <Button className={`${activeTabs === 1 && "active"}`}
                             onClick={()=>{
-                                setActiveTabs(2)
+                                setActiveTabs(1)
                             }}
                             >Reviews</Button>
                         </li>
@@ -223,6 +224,8 @@ const ProductDetails =()=>{
                             <p>{productData.description} </p>
                          </div>   
                     }
+                   
+
                     {
                         activeTabs === 1 &&
                         <div className="tabContent">
