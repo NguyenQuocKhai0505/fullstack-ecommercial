@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 import { MyContext } from "../../App";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import CustomerReview from "../../Components/Customer Review/index"
 const ProductDetails =()=>{
     const [activeTabs, setActiveTabs] = useState(null)
     const [activeSize, setActiveSize] = useState(null)
@@ -229,123 +230,16 @@ const ProductDetails =()=>{
                             <p>{productData.description} </p>
                          </div>   
                     }
+                   
+
                     {
                         activeTabs === 1 &&
-                        <div className="tabContent"> 
-                            <div className="table-responsive">
-                                <table className="table table-bordered">
-                                    <tbody>
-                                        <tr className="stand-up">
-                                            <th>Stand Up</th>
-                                            <td>
-                                                <p>35''L x 24''W x 37-45''H(front to back wheel)</p>
-                                            </td>
-                                        </tr>
-                                        <tr className="folded-wo-wheels">
-                                            <th>Folded (w/o wheel) </th>
-                                            <td>
-                                                <p>35''L x24''W x 37-45''H(front to back wheel)</p>
-                                            </td>
-                                        </tr>
-
-                                        <tr className="folded-w-wheels">
-                                            <th>Folded (w/wheels)</th>
-                                            <td>
-                                                <p>32.5''L x 24''W x 18.5''H</p>
-                                            </td>
-                                        </tr>
-                                        <tr className="door-pass-through">
-                                            <th>Door Pass Through</th>
-                                            <td>
-                                               <p>24</p> 
-                                            </td>
-                                        </tr>
-                                        <tr className="frame">
-                                            <th>Frame</th>
-                                            <td>
-                                                <p>Alumninum</p>
-                                            </td>
-                                        </tr>
-                                        <tr className="weight-wo-wheels">
-                                            <th>Weight Capacity</th>
-                                            <td>
-                                                <p>60 LBS</p>
-                                            </td>
-                                        </tr>
-                                        <tr className="width">
-                                            <th>Width</th>
-                                            <td>
-                                                <p>24''</p>
-                                            </td>
-                                        </tr>
-                                        <tr className="handle-height-ground-to-handle">
-                                            <th>Handle height(ground to handle)</th>
-                                            <td>
-                                                <p>337-45''</p>
-                                            </td>
-                                        </tr>
-                                        <tr className="wheels">
-                                            <th>Wheels</th>
-                                            <td>
-                                                <p>12'' air / wide track slick tread</p>
-                                            </td>
-                                        </tr>
-                                        <tr className="seat-back-height">
-                                            <th>Seat back height</th>
-                                            <td>
-                                                <p>21.5''</p>
-                                            </td>
-                                        </tr>
-                                        <tr className="head-room-inside-canopy">
-                                            <th>Head room (inside capony)</th>
-                                            <td>
-                                                <p>25''</p>
-                                            </td>
-                                        </tr>
-                                        <tr className="pa_color">
-                                            <th>Color</th>
-                                            <td>
-                                                <p>Black, Blue, Red, White</p>
-                                            </td>
-                                        </tr>
-                                        <tr className="pa_size">
-                                            <th>Size</th>
-                                            <td>
-                                                <p>M,S</p>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    }
-
-                    {
-                        activeTabs === 2 &&
                         <div className="tabContent">
                             <div className="row">
                                 <div className="col-md-8">
                                     <h3>Customer questions & answers</h3>
                                     <br/>
-                                     <div className="card p-4 reviewsCard flex-row">
-                                        <div className="image">
-                                            <div className="rounded-circle">
-                                                <img src="https://wp.alithemes.com/html/nest/demo/assets/imgs/blog/author-2.png" alt="Author avatar"/>
-                                            </div>
-                                            <span className="text-g d-block text-center font-weight-bold">Ngoc Thien</span>
-                                        </div>
-
-                                        <div className="info pl-5">
-                                            <div className="d-flex align-items-center w-100">
-                                                <h5 className="text-ligth">01/11/2005</h5>
-                                                <div className="ml-auto">
-                                                    <Rating name="half-rating-read"
-                                                            value="4.5" precision={0.5} readOnly />
-                                                </div>
-                                            </div>
-                                            <p>Máy mới 100% , chính hãng Apple Việt Nam.Kmarket.vn hiện là đại lý bán lẻ uỷ quyền iPhone chính hãng VN/A của Apple Việt Nam</p>
-                                        </div>
-                                     </div>
+                                     <CustomerReview productId={productData?._id}/>
                                     
                                     <br className="res-hide"/>
                                     <br className="res-hide"/>
