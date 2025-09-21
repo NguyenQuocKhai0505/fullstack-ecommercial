@@ -9,6 +9,7 @@ import LogIn from './pages/LogIn';
 import ProductDetails from './pages/Products/ProductDetails';
 import Products from './pages/Products';
 import Category from './pages/Category';
+import Reviews from './pages/Reviews';
 import { SnackbarProvider, useSnackbar } from 'notistack';
 // Sửa import - dùng Alert từ Material-UI thay vì Bootstrap
 import Snackbar from '@mui/material/Snackbar';
@@ -21,6 +22,7 @@ import AddSubCategory from "./pages/SubCategory/addSubCategory"
 import SubCategory from './pages/SubCategory/index';
 import EditSubCategory from '../src/pages/SubCategory/EditSubCategory';
 import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes';
+
 const MyContext = createContext()
 function App() {
   const [isToggleSidebar,setisToggleSidebar] = useState(false)
@@ -173,6 +175,11 @@ function App() {
                 <Route exact={true} path="/subcat/edit/:id" element={
                   <ProtectedRoutes>
                     <EditSubCategory/>
+                  </ProtectedRoutes>
+                }/>
+                <Route exact={true} path="/reviews" element={
+                  <ProtectedRoutes>
+                    <Reviews/>
                   </ProtectedRoutes>
                 }/>
              </Routes>

@@ -45,18 +45,29 @@ const isActiveWeight = (index) => {
       setLoading(false)
     }
   }
-  const [quantity,setQuantity] = useState(1)
   const [selectedSize, setSelectedSize] = useState(null)
-  // const handleAddToCart = async()=>{
-  //   //Kiem tra dang nhap
-  //   if(!context.isLogin){
-  //     toast.error("You need to login first!")
-  //     navigate("/signIn")
-  //     return
-  //   }
-  //   //Bat buoc chon size 
-  //   if(products.prod)
-  // }
+  const [quantity,setQuantity] = useState(1)
+  const handleAddToCart = async()=>{
+    //Kiem tra dang nhap
+    if(!context.isLogin){
+      toast.error("You need to login first!")
+      navigate("/signIn")
+      return 
+    }
+    let option = null
+    if(products.productSize && selectedSize) option = selectedSize
+    else if(products.productRam && activeRam !== null) option = products.productRam[activeRam]
+    else if(products.productWeight && activeWeight !== null) option = products.productWeight[activeWeight]
+
+    //Goi API truyen them cac thuoc tinh bat buoc
+    const token = localStorage.getItem("token")
+    const res = await addToCartAPI(products._id,quantity,token,option)
+    if(res.message){
+      toast.error(res.message)
+    }else{
+      toast.success("You added this product to cart successfully")
+    }
+  }
 
 
 
@@ -130,7 +141,7 @@ const isActiveWeight = (index) => {
                </ul>
              </div>
            )}
-                   {/* Render productSize*/}
+            {/* Render productSize*/}
            {products?.productSize && products.productSize?.length > 0 && (
             <div className="productSize d-flex align-items-center ml-3 mb-3">
               <span className="spec-label mr-3">SIZE:</span>
@@ -149,7 +160,7 @@ const isActiveWeight = (index) => {
               </ul>
             </div>
           )}
-                     {/* Render product Weight */}
+            {/* Render product Weight */}
              {products?.productWeight && products.productWeight?.length > 0 && (
                         <div className="productSize d-flex align-items-center ml-3 mb-3">
                             <span className="spec-label mr-3">Weight:</span>

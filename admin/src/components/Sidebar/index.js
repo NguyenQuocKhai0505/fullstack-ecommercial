@@ -10,6 +10,7 @@ import { MyContext } from '../../App';
 import { MdCategory } from "react-icons/md";
 import { DiSublime } from "react-icons/di";
 import { useNavigate } from 'react-router-dom';
+import { MdRateReview } from "react-icons/md";
 const Sidebar = () =>{
     const [activeTab,setActiveTab] = useState(0)
     const [isToggleSubmenu,setisToggleSubmenu] = useState(false)
@@ -84,6 +85,21 @@ const Sidebar = () =>{
                     <ul className='submenu'>
                         <li><Link to="/subcat">S-Category List</Link></li>
                         <li><Link to="/subcat/create">Add S-Category</Link></li>
+                    </ul>
+                    </div>
+               </li> 
+            </ul>
+            {/*Reviews */}
+            <ul>
+               <li>
+                    <Button className={`w-100 ${activeTab===4  ? "active":' '}`}onClick={()=>isOpenSubmenu(4)}>
+                    <span className='icon'><MdRateReview /></span>Review
+                    <span className='arrow'><FaAngleRight /></span>
+                    </Button>
+                    {/* Product Menu */}
+                    <div className={`submenuWrapper ${activeTab===4 && isToggleSubmenu==true ? "colapse":"colapsed"}`}>
+                    <ul className='submenu'>
+                        <li><Link to="/reviews">Review Pending</Link></li>
                     </ul>
                     </div>
                </li> 
