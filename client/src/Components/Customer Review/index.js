@@ -1,7 +1,9 @@
 
 import Rating from '@mui/material/Rating';
-import { use, useEffect,useState } from 'react';
+import { useEffect,useState } from 'react';
 import { toast } from "react-toastify";
+import { MyContext } from '../../App';
+import {useContext} from 'react';
 const CustomerReview =({productId})=>{
     //State cho review va thong ke
     const [reviews,setReviews] = useState([])
@@ -10,6 +12,7 @@ const CustomerReview =({productId})=>{
         averageRating:0,
         ratings:(0,0,0,0,0)
     })
+    const context = useContext(MyContext)
     //State cho form 
     const [name,setName] = useState("")
     const [comment,setComment]= useState("")
@@ -38,6 +41,15 @@ const CustomerReview =({productId})=>{
     // Ham gui review
     const handleSubmitReview = async (e) => {
         e.preventDefault();
+        if(!context.isLogin){
+            toast.error("You need to sign in first!")
+            return
+        }
+        if(!name.trim() || !comment.trim() || !rating)
+        {
+            toast.error("Please fill all fields!")
+            return
+        }
         const res = await fetch(`${process.env.REACT_APP_API_URL}/api/reviews`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -118,6 +130,48 @@ const CustomerReview =({productId})=>{
                     ))
                 )}
             </div>
+            {/* Form gửi review */}
+            <form onSubmit={handleSubmitReview} className="reviewForm mt-4">
+              <h4>Add a review</h4>
+              <div className="form-group">
+                <textarea
+                  className="form-control"
+                  placeholder="Write a review"
+                  value={comment}
+                  onChange={e => setComment(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Name"
+                      value={name}
+                      onChange={e => setName(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="form-group">
+                    <Rating
+                      name="rating"
+                      value={rating}
+                      onChange={(_, v) => setRating(v)}
+                      precision={1}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="form-group">
+                <button type="submit" className="btn btn-success btn-lg btn-round">
+                  Submit Review
+                </button>
+              </div>
+            </form>
         </div>
     )
 }
