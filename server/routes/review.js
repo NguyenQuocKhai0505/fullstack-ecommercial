@@ -16,7 +16,9 @@ router.post("/",async(req,res) =>{
 // GET /api/reviews/pending - Lấy review chờ duyệt cho admin
 router.get("/pending", async (req, res) => {
     try {
-        const reviews = await Review.find({ approved: false }).sort({ createdAt: -1 });
+        const reviews = await Review.find({ approved: false })
+        .populate("product","name")
+        .sort({ createdAt: -1 });
         res.json(reviews);
     } catch (error) {
         res.status(500).json({ error: error.message });

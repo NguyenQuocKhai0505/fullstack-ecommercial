@@ -119,7 +119,7 @@ const Reviews = ()=>{
                 ) : (
                   reviews?.map(r => (
                     <tr key={r._id}>
-                      <td>{r.product}</td>
+                      <td>{r.product?.name || r.product}</td>
                       <td>{r.name}</td>
                       <td>{r.comment}</td>
                       <td>{r.rating}</td>
