@@ -13,7 +13,15 @@ router.post("/",async(req,res) =>{
         res.status(500).json({error: error.message})
     }
 })
-
+// GET /api/reviews/pending - Lấy review chờ duyệt cho admin
+router.get("/pending", async (req, res) => {
+    try {
+        const reviews = await Review.find({ approved: false }).sort({ createdAt: -1 });
+        res.json(reviews);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 //GET /api/reviews/:productId
 router.get("/:productId", async(req,res)=>{
     try{
@@ -46,13 +54,4 @@ router.delete("/:id", async(req,res)=>{
         res.status(500).json({error: error.message})
     }
 })
-// GET /api/reviews/pending - Lấy review chờ duyệt cho admin
-router.get("/pending", async (req, res) => {
-    try {
-        const reviews = await Review.find({ approved: false }).sort({ createdAt: -1 });
-        res.json(reviews);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
 module.exports = router;
