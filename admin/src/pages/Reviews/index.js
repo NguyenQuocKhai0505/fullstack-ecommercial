@@ -119,7 +119,21 @@ const Reviews = ()=>{
                 ) : (
                   reviews?.map(r => (
                     <tr key={r._id}>
-                      <td>{r.product?.name || r.product}</td>
+                      <td>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <img
+                            src={r.product?.images?.[0] || "/default-image.png"}
+                            alt={r.product?.name}
+                            style={{ width: 50, height: 50, objectFit: "cover", borderRadius: 6, marginRight: 8 }}
+                          />
+                          <div>
+                            <div style={{ fontWeight: 600 }}>{r.product?.name}</div>
+                            <div style={{ fontSize: 12, color: "#888" }}>
+                              {r.product?.description?.slice(0, 40)}...
+                            </div>
+                          </div>
+                        </div>
+                      </td>
                       <td>{r.name}</td>
                       <td>{r.comment}</td>
                       <td>{r.rating}</td>

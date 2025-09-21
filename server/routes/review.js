@@ -17,8 +17,8 @@ router.post("/",async(req,res) =>{
 router.get("/pending", async (req, res) => {
     try {
         const reviews = await Review.find({ approved: false })
-        .populate("product","name")
-        .sort({ createdAt: -1 });
+            .populate('product', 'name images description')
+            .sort({ createdAt: -1 });
         res.json(reviews);
     } catch (error) {
         res.status(500).json({ error: error.message });
