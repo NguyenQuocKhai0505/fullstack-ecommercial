@@ -5,7 +5,6 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
 import { MyContext } from "../../App";
 import { fetchDataFromApi, deleteData, patchData } from "../../utils/api";
-
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -20,67 +19,70 @@ const Reviews = ()=>{
   const [selectedID, setSelectedID] = useState(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [approveLoading, setApproveLoading] = useState(false);
-    //Lay danh sach cac cmt dang cho duyet 
-    const fetchReviews = async()=>{
-        try{
-            const res = await fetchDataFromApi("/api/reviews/pending")
-            setReviews(Array.isArray(res) ? res : []) // Đảm bảo luôn là array
-        }catch(error){
-            context.showSnackbar("Error to take reviews","eror")
-        }
-    }
-    useEffect(() => {
-        context.setisHiddenSidebarAndHeader(false);
-        window.scroll(0, 0);
-        fetchReviews();
-      }, []);
-      //Mo dialog xax nhan xoa 
-      const openDeleteDialog = (id)=>{
-        setSelectedID(id)
-        setDeleteDialogOpen(true)
-      }
-      const closeDeleteDialog = () => {
-        setDeleteDialogOpen(false);
-        setSelectedID(null);
-      };
-     //Mo dialog xac nhan duyet 
-     const openApproveDialog = (id)=>{
-        setSelectedID(id)
-        setApproveDialogOpen(true)
-     }
-     const closeApprovedDialog = (id)=>{
-      setApproveDialogOpen(false)
-      setSelectedID(null)
-   }
-   //Xoa review 
-   const handleDelete = async()=>{
-      setDeleteLoading(true)
-      try{
-        await deleteData(`/api/reviews/${selectedID}`)
-        setReviews(reviews.filter(r => r._id !== selectedID))
-        context.showSnackbar("Delete this reviews successfully !")
-        closeDeleteDialog()
-      }catch(error){
-        context.showSnackbar("Failed to delete this reviews","error")
-      }finally{
-        setDeleteLoading(false)
-      }
-   }
-   //Duyet review
-   const handleApprove = async()=>{
-      setApproveLoading(true)
+
+  // Lấy danh sách các review chờ duyệt
+  const fetchReviews = async()=>{
     try{
-        await patchData(`/api/reviews/approve/${selectedID}`)
-        setReviews(reviews.filter(r=>r._id !== selectedID))
-        context.showSnackbar("Prove this reviews successfully !")
-        closeApprovedDialog()
+      const res = await fetchDataFromApi("/api/reviews/pending")
+      setReviews(Array.isArray(res) ? res : [])
     }catch(error){
-      context.showSnackbar("Failed to approve this reviews","error")
+      context.showSnackbar("Error to take reviews","error")
+    }
+  }
+  useEffect(() => {
+    context.setisHiddenSidebarAndHeader(false);
+    window.scroll(0, 0);
+    fetchReviews();
+  }, []);
+
+  // Mở dialog xác nhận xóa
+  const openDeleteDialog = (id)=>{
+    setSelectedID(id)
+    setDeleteDialogOpen(true)
+  }
+  const closeDeleteDialog = () => {
+    setDeleteDialogOpen(false);
+    setSelectedID(null);
+  };
+  // Mở dialog xác nhận duyệt
+  const openApproveDialog = (id)=>{
+    setSelectedID(id)
+    setApproveDialogOpen(true)
+  }
+  const closeApprovedDialog = ()=>{
+    setApproveDialogOpen(false)
+    setSelectedID(null)
+  }
+  // Xóa review
+  const handleDelete = async()=>{
+    setDeleteLoading(true)
+    try{
+      await deleteData(`/api/reviews/${selectedID}`)
+      setReviews(reviews.filter(r => r._id !== selectedID))
+      context.showSnackbar("Delete this review successfully !")
+      closeDeleteDialog()
+    }catch(error){
+      context.showSnackbar("Failed to delete this review","error")
+    }finally{
+      setDeleteLoading(false)
+    }
+  }
+  // Duyệt review
+  const handleApprove = async()=>{
+    setApproveLoading(true)
+    try{
+      await patchData(`/api/reviews/approve/${selectedID}`)
+      setReviews(reviews.filter(r=>r._id !== selectedID))
+      context.showSnackbar("Approve this review successfully !")
+      closeApprovedDialog()
+    }catch(error){
+      context.showSnackbar("Failed to approve this review","error")
     }finally{
       setApproveLoading(false)
     }
-   }
-   return(
+  }
+
+  return(
     <>
     <div className="right-content w-100">
       {/* BREADCRUMB */}
@@ -169,8 +171,38 @@ const Reviews = ()=>{
         </div>
       </div>
     </div>
+    {/* Dialog xác nhận duyệt */}
+    <Dialog open={approveDialogOpen} onClose={closeApprovedDialog}>
+      <DialogTitle>Approve Review</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Are you sure you want to approve this review?
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={closeApprovedDialog}>Cancel</Button>
+        <Button onClick={handleApprove} color="primary" disabled={approveLoading}>
+          {approveLoading ? "Approving..." : "Approve"}
+        </Button>
+      </DialogActions>
+    </Dialog>
+    {/* Dialog xác nhận xóa */}
+    <Dialog open={deleteDialogOpen} onClose={closeDeleteDialog}>
+      <DialogTitle>Delete Review</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Are you sure you want to delete this review?
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={closeDeleteDialog}>Cancel</Button>
+        <Button onClick={handleDelete} color="error" disabled={deleteLoading}>
+          {deleteLoading ? "Deleting..." : "Delete"}
+        </Button>
+      </DialogActions>
+    </Dialog>
     </>
-   )
+  )
 }
 export default Reviews;
 
