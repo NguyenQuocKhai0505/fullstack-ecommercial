@@ -4,7 +4,8 @@ import { MdExpandMore, MdDelete, MdCheckCircle } from "react-icons/md";
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
 import { MyContext } from "../../App";
-import { fetchDataFromApi, deleteData } from "../../utils/api";
+import { fetchDataFromApi, deleteData, patchData } from "../../utils/api";
+
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -55,7 +56,7 @@ const Reviews = ()=>{
    const handleDelete = async()=>{
       setDeleteLoading(true)
       try{
-        await deleteData(`api/reviews/${selectedID}`)
+        await deleteData(`/api/reviews/${selectedID}`)
         setReviews(reviews.filter(r => r._id !== selectedID))
         context.showSnackbar("Delete this reviews successfully !")
         closeDeleteDialog()
@@ -69,7 +70,7 @@ const Reviews = ()=>{
    const handleApprove = async()=>{
       setApproveLoading(true)
     try{
-        await fetchDataFromApi(`/api/reviews/approve/${selectedID}`,"PATCH")
+        await patchData(`/api/reviews/approve/${selectedID}`)
         setReviews(reviews.filter(r=>r._id !== selectedID))
         context.showSnackbar("Prove this reviews successfully !")
         closeApprovedDialog()

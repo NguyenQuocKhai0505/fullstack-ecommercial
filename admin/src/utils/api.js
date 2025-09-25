@@ -44,3 +44,13 @@ export const deleteData = async (url)=>{
         throw error
     }
 }
+//PATH
+export const patchData = async(url,updateData = {}) =>{
+    try{
+        const {data} = await axios.patch(API_URL + url,updateData)
+        return data
+    }catch(error){
+        console.log(error)
+        throw error
+    }
+}
