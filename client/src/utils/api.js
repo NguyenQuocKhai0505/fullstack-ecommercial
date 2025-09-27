@@ -40,6 +40,8 @@ export const deleteData = async (url)=>{
         throw error
     }
 }
+
+
 //ADD PRODUCT IN CART 
 export const addToCartAPI = async (productId, quantity, token, option) => {
   return fetch(`${API_URL}/api/cart/add`, {
@@ -67,3 +69,27 @@ export const removeFromCartAPI = async (productId, token, option) => {
       }
     }).then(res => res.json());
   };
+
+//GET wishlist 
+export const getWishlistAPI = async(token) =>{
+  return fetch(`${API_URL}/api/wishlist`,
+  {
+    headers: { "Authorization": `Bearer ${token}` }
+  }).then(res=>res.json())
+}
+//ADD to wishlist 
+export const addToWishlistAPI = async(productId,token)=>{
+  return fetch(`${API_URL}/api/wishlist/add`,{
+    method:"POST",
+    headers:{"Content-Type":"application/json","Authorization":`Bearer ${token}`},
+    body:JSON.stringify({productId})
+  }).then(res => res.json())
+}
+// REMOVE from wishlist
+export const removeFromWishlistAPI = async (productId, token) => {
+  return fetch(`${API_URL}/api/wishlist/remove`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+    body: JSON.stringify({ productId })
+  }).then(res => res.json());
+};

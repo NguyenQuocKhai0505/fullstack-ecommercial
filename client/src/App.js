@@ -18,6 +18,9 @@ import "slick-carousel/slick/slick-theme.css";
 import {ToastContainer} from "react-toastify"
 import Verify from "./Pages/Auth/verify";
 import { getCartAPI } from "./utils/api";
+import { WishlistProvider } from "../contexts/WishlistContext";
+
+
 const MyContext = createContext();
 
 function App() {
@@ -66,27 +69,28 @@ function App() {
   return (
     <>
       <BrowserRouter>
-      <MyContext.Provider value ={values}>
-        <ScrollToTop />
-        {
-          isHeaderFooterShow === true && <Header />
-        }
-        <Routes>
-          <Route path="/" exact={true} element={<Home />} />
-          <Route path="/cat/:id" exact={true} element={<Listing />} />
-          <Route exact={true} path="/product/:id" element={<ProductDetails/>}/>
-          <Route exact={true} path="/cart" element={<Cart/>}/>
-          <Route exact={true} path="/signIn" element={<SignIn/>}/>
-          <Route exact={true} path="/signUp" element={<SignUp/>}/>
-          <Route exact={true} path="/verify/:token" element={<Verify/>}/>
-        </Routes>
-         
-        {isOpenProductModal === true && <ProductModal />}
-         
-        {
-          isHeaderFooterShow === true && <Footer/>
-        }
-        </MyContext.Provider>
+        <WishlistProvider>
+          <MyContext.Provider value ={values}>
+            <ScrollToTop />
+            {
+              isHeaderFooterShow === true && <Header />
+            }
+            <Routes>
+              <Route path="/" exact={true} element={<Home />} />
+              <Route path="/cat/:id" exact={true} element={<Listing />} />
+              <Route exact={true} path="/product/:id" element={<ProductDetails/>}/>
+              <Route exact={true} path="/cart" element={<Cart/>}/>
+              <Route exact={true} path="/signIn" element={<SignIn/>}/>
+              <Route exact={true} path="/signUp" element={<SignUp/>}/>
+              <Route exact={true} path="/verify/:token" element={<Verify/>}/>
+              <Route exact={true} path="/wishlist" element={<WishlistPage />} />
+            </Routes>
+            {isOpenProductModal === true && <ProductModal />}
+            {
+              isHeaderFooterShow === true && <Footer/>
+            }
+          </MyContext.Provider>
+        </WishlistProvider>
       </BrowserRouter>
       <ToastContainer position="top-center" autoClose={4000}/>
     </>
