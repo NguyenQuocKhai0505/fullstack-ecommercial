@@ -18,7 +18,7 @@ import "slick-carousel/slick/slick-theme.css";
 import {ToastContainer} from "react-toastify"
 import Verify from "./Pages/Auth/verify";
 import { getCartAPI } from "./utils/api";
-import { WishlistProvider } from "../contexts/WishlistContext";
+import { WishlistProvider } from "./contexts/WishlistContext";
 
 
 const MyContext = createContext();
