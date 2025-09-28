@@ -1,4 +1,4 @@
-import { useWishlist } from "../../../contexts/WishlistContext";
+import { useWishlist } from "../../contexts/WishlistContext";
 import { removeFromWishlistAPI } from "../../utils/api";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
