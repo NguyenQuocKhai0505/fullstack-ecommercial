@@ -14,7 +14,6 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import {useWishlist} from "../../contexts/WishlistContext"
 import {addToWishlistAPI,removeFromWishlistAPI} from "../../utils/api"
-import {toast} from "react-toastify"
 const ProductModal = () => {
   const context = useContext(MyContext);
   const navigate = useNavigate()
