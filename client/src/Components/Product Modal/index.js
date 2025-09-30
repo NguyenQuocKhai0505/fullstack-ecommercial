@@ -12,15 +12,35 @@ import { fetchDataFromApi } from "../../utils/api";
 import { addToCartAPI } from "../../utils/api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
+import {useWishlist} from "../../contexts/WishlistContext"
+import {addToWishlistAPI,removeFromWishlistAPI} from "../../utils/api"
+import {toast} from "react-toastify"
 const ProductModal = () => {
+  const context = useContext(MyContext);
   const navigate = useNavigate()
   const [products,setProducts]= useState(null)
   const [loading,setLoading] = useState(true)
-  const context = useContext(MyContext);
   const [activeSize, setActiveSize] = useState(null)
   const [activeRam, setActiveRam] = useState(null)
   const [activeWeight, setActiveWeight] = useState(null)
+  const {wishlist,setWishlist}= useWishlist()
+  const isWishlisted = wishlist.some(p=>p._id === context.selectedProductID)
+  const handleWishlist = async()=>{
+    const token = localStorage.getItem("token")
+    if(!token){
+      toast.error("You need to login first!")
+      return
+    }
+    if(isWishlisted){
+      await removeFromWishlistAPI(context.selectedProductID,token)
+      setWishlist(wishlist.filter(p=>p._id !== context.selectedProductID))
+      toast.info("Removed from wishlist!")
+    }else{
+      await addToWishlistAPI(context.selectedProductID,token)
+      setWishlist([...wishlist,products])
+      toast.info("Added to wishlist!")
+    }
+  }
   const isActive = (index) => {
     setActiveSize(index)
 }
@@ -189,8 +209,8 @@ const isActiveWeight = (index) => {
             </Button>
           </div>
           <div className="d-flex align-items-center mt-5 actions">
-            <Button className="btn-round btn-sml" variant="outlined">
-              <FaHeart /> &nbsp; ADD TO WISHLIST
+            <Button className="btn-round btn-sml" variant="outlined" onClick={handleWishlist} style={{ color: isWishlisted ? "red" : undefined }}>
+              <FaHeart color={isWishlisted ? "red" : undefined} /> &nbsp; {isWishlisted ?"REMOVE FROM WISHLIST":"ADD TO WISHLIST"}
             </Button>
             <Button className="btn-round btn-sml ml-3" variant="outlined">
               <IoGitCompare /> &nbsp; COMPARE

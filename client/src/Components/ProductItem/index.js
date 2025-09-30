@@ -6,9 +6,12 @@ import { useContext, useState, useRef } from 'react';
 import { MyContext } from '../../App';
 import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
-
+import {useWishlist} from "../../contexts/WishlistContext"
+import {addToWishlistAPI,removeFromWishlistAPI} from "../../utils/api"
+import {toast} from "react-toastify"
 const ProductItem = (props) => {
     const context = useContext(MyContext)
+    const {wishlist,setWishlist} = useWishlist()
     const product = props.product || {}
     const isListView = props.itemView === 'one'
     const [isHover, setIsHover] = useState(false)
@@ -60,7 +63,25 @@ const ProductItem = (props) => {
         if (text.length <= maxLen) return text
         return text.slice(0, maxLen).trim() + '...'
     }
-
+    //Kiem tra san pham xem co wishlist hay chua
+    const isWishlisted = wishlist.some(p => p._id === product._id)
+    //Ham nhan nut wishlist 
+    const handleWishlist = async ()=>{
+        const token = localStorage.getItem("token")
+        if(!token){
+            toast.error("You need to login first!")
+            return
+        }
+        if(isWishlisted){
+            await removeFromWishlistAPI(product._id,token)
+            setWishlist(wishlist.fitler(p => p._id !== product._id))
+            toast.info("Removed from wishlist!")
+        }else{
+            await addToWishlistAPI(product._id,token)
+            setWishlist([...wishlist,product])
+            toast.info("Added to wishlist!")
+        }
+    }
     return (
         <>
             <div 
@@ -135,8 +156,8 @@ const ProductItem = (props) => {
                         <Button onClick={() => viewProductDetails(product._id)}>
                             <TfiFullscreen />
                         </Button>
-                        <Button>
-                            <CiHeart />
+                        <Button onClick={handleWishlist}>
+                            <CiHeart color={isWishlisted ? 'red' : 'gray'} />
                         </Button>
                         </div>
                         <span className={`d-block ${product.countInStock > 0 ? 'text-success' : 'text-danger'}`}>
