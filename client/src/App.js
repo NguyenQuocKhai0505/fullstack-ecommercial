@@ -19,7 +19,7 @@ import {ToastContainer} from "react-toastify"
 import Verify from "./Pages/Auth/verify";
 import { getCartAPI } from "./utils/api";
 import { WishlistProvider } from "./contexts/WishlistContext";
-
+import WishlistPage from "./Pages/Wishlist";
 
 const MyContext = createContext();
 
