@@ -1,4 +1,4 @@
-import { useWishlist } from "../../contexts/WishlistContext";
+import {useWishlist} from "../../contexts/WishlistContext.js"
 import { removeFromWishlistAPI } from "../../utils/api";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -12,6 +12,7 @@ export default function WishlistPage() {
     setWishlist(wishlist.filter(p => p._id !== productId));
     toast.info("This product is deleted from wish list!");
   };
+
 
   if (!wishlist.length) return <div>There are no products in your wish list</div>;
 
