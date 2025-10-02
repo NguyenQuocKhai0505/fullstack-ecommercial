@@ -13,7 +13,7 @@ import { addToCartAPI } from "../../utils/api";
 import { toast } from "react-toastify"; // <-- chỉ 1 dòng này!
 import { useNavigate } from "react-router-dom";
 import { useWishlist } from "../../contexts/WishlistContext";
-import { addToWishlistAPI, removeFromWishlistAPI } from "../../utils/api";
+import { addToWishlistAPI, removeFromWishlistAPI,getWishlistAPI} from "../../utils/api";
 const ProductModal = () => {
   const context = useContext(MyContext);
   const navigate = useNavigate()

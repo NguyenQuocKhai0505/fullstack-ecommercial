@@ -7,7 +7,7 @@ import { MyContext } from '../../App';
 import { Link, useFetcher } from 'react-router-dom';
 import Slider from 'react-slick';
 import {useWishlist} from "../../contexts/WishlistContext"
-import {addToWishlistAPI,removeFromWishlistAPI} from "../../utils/api"
+import {addToWishlistAPI,removeFromWishlistAPI,getWishlistAPI} from "../../utils/api"
 import {toast} from "react-toastify"
 const ProductItem = (props) => {
     const context = useContext(MyContext)
