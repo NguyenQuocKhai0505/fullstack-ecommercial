@@ -24,6 +24,7 @@ const ProductModal = () => {
   const [activeWeight, setActiveWeight] = useState(null)
   const {wishlist,setWishlist}= useWishlist()
   const isWishlisted = wishlist.some(p=>p._id === context.selectedProductID)
+  //Add to wishlist
   const handleWishlist = async()=>{
     const token = localStorage.getItem("token")
     if(!token){
@@ -32,11 +33,13 @@ const ProductModal = () => {
     }
     if(isWishlisted){
       await removeFromWishlistAPI(context.selectedProductID,token)
-      setWishlist(wishlist.filter(p=>p._id !== context.selectedProductID))
+      const updated = await getWishlistAPI(token)
+      setWishlist(updated || [])
       toast.info("Removed from wishlist!")
     }else{
       await addToWishlistAPI(context.selectedProductID,token)
-      setWishlist([...wishlist,products])
+      const updated = await getWishlistAPI(token)
+      setWishlist(updated || [])
       toast.info("Added to wishlist!")
     }
   }
@@ -66,25 +69,45 @@ const isActiveWeight = (index) => {
   }
   const [selectedSize, setSelectedSize] = useState(null)
   const [quantity,setQuantity] = useState(1)
-  const handleAddToCart = async()=>{
-    //Kiem tra dang nhap
-    if(!context.isLogin){
-      toast.error("You need to login first!")
-      navigate("/signIn")
-      return 
+  const handleAddToCart = async () => {
+    if (!context.isLogin) {
+      toast.error("You need to login first!");
+      navigate("/signIn");
+      return;
     }
-    let option = null
-    if(products.productSize && selectedSize) option = selectedSize
-    else if(products.productRam && activeRam !== null) option = products.productRam[activeRam]
-    else if(products.productWeight && activeWeight !== null) option = products.productWeight[activeWeight]
-
-    //Goi API truyen them cac thuoc tinh bat buoc
-    const token = localStorage.getItem("token")
-    const res = await addToCartAPI(products._id,quantity,token,option)
-    if(res.message){
-      toast.error(res.message)
-    }else{
-      toast.success("You added this product to cart successfully")
+    let option = null;
+    // Kiểm tra bắt buộc chọn thuộc tính nếu có
+    if (products.productSize && products.productSize.length > 0) {
+      if (selectedSize === null || selectedSize === undefined) {
+        toast.error("Please select a size");
+        return;
+      }
+      option = products.productSize[selectedSize];
+    } else if (products.productRam && products.productRam.length > 0) {
+      if (activeRam === null || activeRam === undefined) {
+        toast.error("Please select a RAM");
+        return;
+      }
+      option = products.productRam[activeRam];
+    } else if (products.productWeight && products.productWeight.length > 0) {
+      if (activeWeight === null || activeWeight === undefined) {
+        toast.error("Please select a weight");
+        return;
+      }
+      option = products.productWeight[activeWeight];
+    }
+    if (quantity < 1) {
+      toast.error("Quantity must be at least 1!");
+      return;
+    }
+    const token = localStorage.getItem("token");
+    const res = await addToCartAPI(products._id, quantity, token, option);
+    if (res.message) {
+      toast.error(res.message);
+    } else {
+      toast.success("You added this product to cart successfully");
+      // Nếu có context cart, nên cập nhật lại ở đây
+      // context.updateCart && context.updateCart();
     }
   }
 
@@ -203,6 +226,7 @@ const isActiveWeight = (index) => {
             <Button 
               className="btn-blue btn-lg -btn-big btn-round ml-3"
               disabled={!products?.countInStock || products.countInStock === 0}
+              onClick={handleAddToCart}
             >
               Add to Cart
             </Button>

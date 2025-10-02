@@ -9,7 +9,8 @@ export default function WishlistPage() {
   const handleRemove = async (productId) => {
     const token = localStorage.getItem("token");
     await removeFromWishlistAPI(productId, token);
-    setWishlist(wishlist.filter(p => p._id !== productId));
+    const updated = await getWishlistAPI(token);
+    setWishlist(updated || []);
     toast.info("This product is deleted from wish list!");
   };
 

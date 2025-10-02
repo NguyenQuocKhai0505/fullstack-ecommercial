@@ -4,7 +4,7 @@ import Button from "@mui/material/Button"
 import { CiHeart } from "react-icons/ci";
 import { useContext, useState, useRef } from 'react';
 import { MyContext } from '../../App';
-import { Link } from 'react-router-dom';
+import { Link, useFetcher } from 'react-router-dom';
 import Slider from 'react-slick';
 import {useWishlist} from "../../contexts/WishlistContext"
 import {addToWishlistAPI,removeFromWishlistAPI} from "../../utils/api"
@@ -74,11 +74,13 @@ const ProductItem = (props) => {
         }
         if(isWishlisted){
             await removeFromWishlistAPI(product._id,token)
-            setWishlist(wishlist.fitler(p => p._id !== product._id))
+            const updated = await getWishlistAPI(token)
+            setWishlist(updated || [])
             toast.info("Removed from wishlist!")
         }else{
             await addToWishlistAPI(product._id,token)
-            setWishlist([...wishlist,product])
+            const updated = await getWishlistAPI(token)
+            setWishlist(updated || [])
             toast.info("Added to wishlist!")
         }
     }
