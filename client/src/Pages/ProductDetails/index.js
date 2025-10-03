@@ -9,7 +9,6 @@ import { IoMdGitCompare } from "react-icons/io";
 import Tooltip from '@mui/material/Tooltip';
 import {useWishlist} from "../../contexts/WishlistContext"
 import { getWishlistAPI, addToWishlistAPI, removeFromWishlistAPI } from "../../utils/api.js";
-import {toast} from "react-toastify"
 import RelatedProducts from "./RelatedProducts/index"
 import { useParams } from "react-router-dom";
 import { fetchDataFromApi } from "../../utils/api";
