@@ -79,14 +79,14 @@ const Header =()=>
                                                 'aria-labelledby': 'user-button',
                                             }}
                                             >
-                                            <MenuItem component={Link} to="#" onClick={handleClose}>
-                                                <RiResetLeftFill />&nbsp;Reset Password
-                                            </MenuItem>
                                             <MenuItem component={Link} to="/cart" onClick={handleClose}>
                                                 <FaShoppingCart />&nbsp;My Cart
                                             </MenuItem>
                                             <MenuItem component={Link} to="/wishlist" onClick={handleClose}>
                                                 <FaHeart />&nbsp;My Wishlist
+                                            </MenuItem>
+                                            <MenuItem component={Link} to="#" onClick={handleClose}>
+                                                <RiResetLeftFill />&nbsp;Reset Password
                                             </MenuItem>
                                             <MenuItem onClick={handleLogout}>
                                                 <RiLogoutBoxFill />&nbsp;Log Out
