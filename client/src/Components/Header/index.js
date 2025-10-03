@@ -78,11 +78,19 @@ const Header =()=>
                                             MenuListProps={{
                                                 'aria-labelledby': 'user-button',
                                             }}
-                                        >
-                                            <Link to="#"><MenuItem onClick={handleClose}><RiResetLeftFill/>&nbsp;Reset Password</MenuItem></Link>
-                                            <Link to="/cart"><MenuItem onClick={handleClose}><FaShoppingCart/>&nbsp;My Cart</MenuItem></Link>
-                                            <Link to="/wishlist"><MenuItem onClick={handleClose}><FaHeart/>&nbsp;My Wishlist</MenuItem></Link>
-                                            <Link to="/signIn"><MenuItem onClick={handleClose}><RiLogoutBoxFill/>&nbsp;Log Out</MenuItem></Link>
+                                            >
+                                            <MenuItem component={Link} to="#" onClick={handleClose}>
+                                                <RiResetLeftFill />&nbsp;Reset Password
+                                            </MenuItem>
+                                            <MenuItem component={Link} to="/cart" onClick={handleClose}>
+                                                <FaShoppingCart />&nbsp;My Cart
+                                            </MenuItem>
+                                            <MenuItem component={Link} to="/wishlist" onClick={handleClose}>
+                                                <FaHeart />&nbsp;My Wishlist
+                                            </MenuItem>
+                                            <MenuItem onClick={handleLogout}>
+                                                <RiLogoutBoxFill />&nbsp;Log Out
+                                            </MenuItem>
                                         </Menu>
                                     </>
                                 }
