@@ -13,7 +13,7 @@ import { addToCartAPI } from "../../utils/api";
 import { toast } from "react-toastify"; // <-- chỉ 1 dòng này!
 import { useNavigate } from "react-router-dom";
 import { useWishlist } from "../../contexts/WishlistContext";
-import { addToWishlistAPI, removeFromWishlistAPI,getWishlistAPI} from "../../utils/api";
+import { addToWishlistAPI, removeFromWishlistAPI,getWishlistAPI} from "../../utils/api.js";
 const ProductModal = () => {
   const context = useContext(MyContext);
   const navigate = useNavigate()
@@ -26,9 +26,11 @@ const ProductModal = () => {
   const isWishlisted = wishlist.some(p=>p._id === context.selectedProductID)
   //Add to wishlist
   const handleWishlist = async()=>{
+    console.log("handleWishlist called", {isWishlisted,selectedProductID:context.selectedProductID,wishlist,products})
     const token = localStorage.getItem("token")
     if(!token){
       toast.error("You need to login first!")
+      console.log("token not found")
       return
     }
     if(isWishlisted){
@@ -36,11 +38,13 @@ const ProductModal = () => {
       const updated = await getWishlistAPI(token)
       setWishlist(updated || [])
       toast.info("Removed from wishlist!")
+      console.log("Removed from wishlist",context.selectedProductID)
     }else{
       await addToWishlistAPI(context.selectedProductID,token)
       const updated = await getWishlistAPI(token)
       setWishlist(updated || [])
       toast.info("Added to wishlist!")
+      console.log("Added to wishlist",context.selectedProductID)
     }
   }
   const isActive = (index) => {

@@ -1,5 +1,5 @@
 import {useWishlist} from "../../contexts/WishlistContext.js"
-import { getWishlistAPI, removeFromWishlistAPI } from "../../utils/api";
+import { getWishlistAPI, removeFromWishlistAPI } from "../../utils/api.js";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 export default function WishlistPage() {

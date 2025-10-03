@@ -7,7 +7,7 @@ import { MyContext } from '../../App';
 import { Link, useFetcher } from 'react-router-dom';
 import Slider from 'react-slick';
 import {useWishlist} from "../../contexts/WishlistContext"
-import { getWishlistAPI, addToWishlistAPI, removeFromWishlistAPI } from "../../utils/api";
+import { getWishlistAPI, addToWishlistAPI, removeFromWishlistAPI } from "../../utils/api.js";
 import {toast} from "react-toastify"
 const ProductItem = (props) => {
     const context = useContext(MyContext)
@@ -67,9 +67,11 @@ const ProductItem = (props) => {
     const isWishlisted = wishlist.some(p => p._id === product._id)
     //Ham nhan nut wishlist 
     const handleWishlist = async ()=>{
+        console.log("handleWishlist called",{isWishlisted,setSelectedProductID:product._id,wishlist,product})
         const token = localStorage.getItem("token")
         if(!token){
             toast.error("You need to login first!")
+            console.log("No token found");
             return
         }
         if(isWishlisted){
@@ -77,11 +79,13 @@ const ProductItem = (props) => {
             const updated = await getWishlistAPI(token)
             setWishlist(updated || [])
             toast.info("Removed from wishlist!")
+            console.log("Removed from wishlist", context.selectedProductID);
         }else{
             await addToWishlistAPI(product._id,token)
             const updated = await getWishlistAPI(token)
             setWishlist(updated || [])
             toast.info("Added to wishlist!")
+            console.log("Added to wishlist", context.selectedProductID);
         }
     }
     return (
