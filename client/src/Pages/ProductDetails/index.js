@@ -213,7 +213,7 @@ const ProductDetails =()=>{
                             <FaShoppingCart/>&nbsp; Add to cart
                         </Button>
                         <Tooltip title="Add to WishList" placement="top">
-                            <Button className="btn-circle" onClick={handleWishlist}><FaHeart /></Button>
+                            <Button className="btn-circle" onClick={handleWishlist}><FaHeart color={isWishlisted ? "red" : "gray"}/></Button>
                         </Tooltip>
                         <Tooltip title="Compare Product" placement="top">
                             <Button className="btn-circle ml-3"><IoMdGitCompare /></Button>
