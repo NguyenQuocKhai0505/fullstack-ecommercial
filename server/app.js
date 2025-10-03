@@ -50,7 +50,7 @@ const subcatRoutes = require("./routes/subcat")
 const adminAuthRoutes = require("./routes/adminAuth")
 const cartRoutes = require("./routes/cart")
 const reviewRoutes = require("./routes/review");
-
+const wishlistRoutes = require("./routes/wishlist")
 app.use((req, res, next) => {
   console.log(`[ROUTE DEBUG] ${req.method} ${req.originalUrl}`);
   next();
@@ -63,6 +63,8 @@ app.use("/api/auth",authRoutes)
 app.use('/api/admin', adminAuthRoutes);
 app.use("/api/cart",cartRoutes)
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/wishlist",wishlistRoutes)
+
 //Database
 mongoose.connect(process.env.CONNECTION_STRING, {
     useNewUrlParser: true,
