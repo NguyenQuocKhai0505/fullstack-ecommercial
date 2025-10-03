@@ -1,6 +1,8 @@
 import logo from "../../assets/images/logo.png"
 import { Link } from 'react-router-dom';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import CountryDropDown from "../ContryDropDown";
 import Button from '@mui/material/Button';
 import { FaUserCircle } from "react-icons/fa";
@@ -8,13 +10,31 @@ import { FaCartPlus } from "react-icons/fa6";
 import SearchBox from "./SearchBox";
 import Navigation from "./Navigation";
 import { MyContext } from "../../App";
-
-
+import { RiResetLeftFill } from "react-icons/ri";
+import { FaShoppingCart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
+import { RiLogoutBoxFill } from "react-icons/ri";
 const Header =()=>
 {
     const context = useContext(MyContext);
     // Lấy số lượng sản phẩm trong giỏ hàng từ context (nếu có)
     const cartCount = context.cartCount || 0;
+    // Thêm state cho menu user
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+    const handleUserClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    const handleLogout = () => {
+        // Xử lý logout: xóa token, update context, chuyển hướng
+        localStorage.removeItem("token");
+        if (context.setIsLogin) context.setIsLogin(false);
+        handleClose();
+        window.location.href = "/signIn";
+    };
     return(
         <>
         <div className="headerWrapper">
@@ -39,7 +59,32 @@ const Header =()=>
                             <div className="part3 d-flex align-items-center ml-auto">
                                 {
                                     context.isLogin !==true ?<Link to="/signIn"><Button className="btn-blue btn-lg btn-big btn-round mr-2">Sign In</Button></Link>
-                                    :<Button className="circle mr-3"><FaUserCircle/></Button>
+                                    :
+                                    <>
+                                        <Button
+                                            className="circle mr-3"
+                                            onClick={handleUserClick}
+                                            aria-controls={open ? 'user-menu' : undefined}
+                                            aria-haspopup="true"
+                                            aria-expanded={open ? 'true' : undefined}
+                                        >
+                                            <FaUserCircle />
+                                        </Button>
+                                        <Menu
+                                            id="user-menu"
+                                            anchorEl={anchorEl}
+                                            open={open}
+                                            onClose={handleClose}
+                                            MenuListProps={{
+                                                'aria-labelledby': 'user-button',
+                                            }}
+                                        >
+                                            <Link to="#"><MenuItem onClick={handleClose}><RiResetLeftFill/>&nbsp;Reset Password</MenuItem></Link>
+                                            <Link to="/cart"><MenuItem onClick={handleClose}><FaShoppingCart/>&nbsp;My Cart</MenuItem></Link>
+                                            <Link to="/wishlist"><MenuItem onClick={handleClose}><FaHeart/>&nbsp;My Wishlist</MenuItem></Link>
+                                            <Link to="/signIn"><MenuItem onClick={handleClose}><RiLogoutBoxFill/>&nbsp;Log Out</MenuItem></Link>
+                                        </Menu>
+                                    </>
                                 }
                                 <div className="ml-auto cartTab" style={{position: 'relative'}}>
                                     {/* <span className="price ml-3">$3.29</span> */}
