@@ -14,7 +14,7 @@ export default function WishlistPage() {
   };
 
 
-  if (!wishlist.length) return <div>There are no products in your wish list</div>;
+  if (!wishlist.length) return <div className="text-center">There are no products in your wish list</div>;
 
   return (
     <div className="container py-4">
@@ -46,7 +46,7 @@ export default function WishlistPage() {
                 </Link>
               </td>
               <td style={{ color: "#d32f2f", fontWeight: 600 }}>
-                {product.price?.toLocaleString()} đ
+                ${product.price?.toLocaleString()} 
               </td>
               <td>
                 <button className="btn btn-outline-danger btn-sm" onClick={() => handleRemove(product._id)}>

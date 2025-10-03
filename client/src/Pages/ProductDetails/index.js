@@ -7,7 +7,9 @@ import { useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { IoMdGitCompare } from "react-icons/io";
 import Tooltip from '@mui/material/Tooltip';
-
+import {useWishlist} from "../../contexts/WishlistContext"
+import { getWishlistAPI, addToWishlistAPI, removeFromWishlistAPI } from "../../utils/api.js";
+import {toast} from "react-toastify"
 import RelatedProducts from "./RelatedProducts/index"
 import { useParams } from "react-router-dom";
 import { fetchDataFromApi } from "../../utils/api";
@@ -75,7 +77,30 @@ const ProductDetails =()=>{
             toast.success("You added this product to cart successfully")
         }
     }
-    
+    const {wishlist,setWishlist} = useWishlist()
+    const isWishlisted = wishlist.some(p => p._id === productData._id)
+    const handleWishlist = async()=>{
+        console.log("handleWishlist called",{isWishlisted,productId:productData._id,wishlist})
+        const token = localStorage.getItem("token")
+        if(!token){
+            toast.error("You need to login first!")
+            console.log("No token found")
+            return
+        }
+        if(isWishlisted){
+            await removeFromWishlistAPI(productData._id,token)
+            const updated = await getWishlistAPI(token)
+            setWishlist(updated || [])
+            toast.info("Removed from wishlist!")
+            console.log("Removed from wishlist",productData._id)
+        }else{
+            await addToWishlistAPI(productData._id,token)
+            const updated = await getWishlistAPI(token)
+            setWishlist(updated || [])
+            toast.info("Added to wishlist!")
+            console.log("Added to wishlist",productData._id)
+        }
+    }
     return(
         <>
            <section className="productDetails section">
@@ -188,7 +213,7 @@ const ProductDetails =()=>{
                             <FaShoppingCart/>&nbsp; Add to cart
                         </Button>
                         <Tooltip title="Add to WishList" placement="top">
-                            <Button className="btn-circle"><FaHeart /></Button>
+                            <Button className="btn-circle" onClick={handleWishlist}><FaHeart /></Button>
                         </Tooltip>
                         <Tooltip title="Compare Product" placement="top">
                             <Button className="btn-circle ml-3"><IoMdGitCompare /></Button>
