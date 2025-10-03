@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 const wishlistSchema = new mongoose.Schema({
-    use:{type:mongoose.Schema.Types.ObjectId,ref:"User",required:true,unique:true},
+    URLSearchParams:{type:mongoose.Schema.Types.ObjectId,ref:"User",required:true,unique:true},
     products:[{type:mongoose.Schema.Types.ObjectId,ref:"Product"}]
 })
 module.exports = mongoose.model("Wishlist",wishlistSchema)
