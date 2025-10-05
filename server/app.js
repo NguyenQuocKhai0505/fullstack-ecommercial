@@ -51,6 +51,7 @@ const adminAuthRoutes = require("./routes/adminAuth")
 const cartRoutes = require("./routes/cart")
 const reviewRoutes = require("./routes/review");
 const wishlistRoutes = require("./routes/wishlist")
+const orderRoutes = require("./routes/order")
 app.use((req, res, next) => {
   console.log(`[ROUTE DEBUG] ${req.method} ${req.originalUrl}`);
   next();
@@ -64,7 +65,7 @@ app.use('/api/admin', adminAuthRoutes);
 app.use("/api/cart",cartRoutes)
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/wishlist",wishlistRoutes)
-
+app.use("/api/orders",orderRoutes)
 //Database
 mongoose.connect(process.env.CONNECTION_STRING, {
     useNewUrlParser: true,
