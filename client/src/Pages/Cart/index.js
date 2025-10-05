@@ -17,6 +17,7 @@ import { MyContext } from "../../App";
 const Cart = () => {
     const [cart,setCart] = useState({items:[]})
     const context = useContext(MyContext);
+    const [selectedItems,setSelectedItems] = useState([])
     //Lay cart tu backend khi load trang
     useEffect(()=>{
         const token = localStorage.getItem("token")
@@ -28,6 +29,14 @@ const Cart = () => {
             })
         }
     },[])
+    const handleSelectItem = (productId, option) => {
+      const key = productId + "-" + (option || '');
+      setSelectedItems(prev =>
+        prev.includes(key)
+          ? prev.filter(itemKey => itemKey !== key)
+          : [...prev, key]
+      );
+    };
     //Tang giam so luong
     const updateQuantity = async(productId, option, newQuantity) =>{
         const token = localStorage.getItem("token")
@@ -63,10 +72,10 @@ const Cart = () => {
                   <table className="table table-striped ">
                     <thead>
                       <tr>
+                        <th width="5%" className="text-center"></th>
                         <th width="40%">Product</th>
                         <th width="10%" className="text-center">Size</th>
                         <th width="15%" className="text-center">Unit Price</th>
-
                         <th width="20%" className="text-center">Quantity</th>
                         <th width="15%" className="text-center">Subtotal</th>
                         <th width="10%" className="text-center">Remove</th>
@@ -75,6 +84,12 @@ const Cart = () => {
                     <tbody>
                       {cart.items.map(item => (
                         <tr key={item.product._id + '-' + (item.option || '')}>
+                          <td className="text-center align-middle" 
+                              checked = {selectedItems.includes(item.product._id + '-' +(item.option || ''))}
+                              onChange={()=>handleSelectItem(item.product._id,item.option)}>
+                            <input type="checkbox">
+                            </input>
+                          </td>
                           <td width="40%" className="align-middle">
                             <div className="d-flex align-items-center cartItemimgWrapper">
                               <div className="imgWrapper">
@@ -139,7 +154,13 @@ const Cart = () => {
                     <span className="ml-auto text-red">${total.toFixed(2)}</span>
                   </div>
                   <br/>
-                  <Button className="btn-blue bg-red btn-lg btn-big btn-round ml-2">
+                  <Button
+                    className="btn-blue bg-red btn-lg btn-big btn-round ml-2"
+                    disabled={selectedItems.length === 0}
+                    onClick={() => {
+                      window.location.href = `/checkout?items=${encodeURIComponent(JSON.stringify(selectedItems))}`;
+                    }}
+                  >
                     Proceed to Checkout
                   </Button>
                 </div>
