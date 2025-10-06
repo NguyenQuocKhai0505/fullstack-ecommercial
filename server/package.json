@@ -21,6 +21,7 @@
     "mongoose": "^8.15.1",
     "nodemailer": "^7.0.6",
     "nodemon": "^3.1.10",
-    "p-limit": "^6.2.0"
+    "p-limit": "^6.2.0",
+    "stripe": "^19.1.0"
   }
 }

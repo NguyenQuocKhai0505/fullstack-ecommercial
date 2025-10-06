@@ -1,27 +1,28 @@
-const express = require("express")
-const router = express.Router()
-const Order = require("../models/Order")
-const requireAuth = require("../middleware/requireAuth")
+const express = require('express');
+const router = express.Router();
+const Order = require('../models/Order');
+const requireAuth = require('../middleware/requireAuth');
 
-//Tạo đơn hàng mới
-router.post("/", requireAuth, async (req, res) => {
-    try {
-      const order = new Order({
-        user: req.userId,
-        ...req.body
-      });
-      await order.save();
-      res.status(201).json(order);
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  });
-//Lấy danh sách đơn hàng cho admin
-router.get("/",requireAuth,async(req,res)=>{
-    try{
+router.post('/', requireAuth, async (req, res) => {
+  try {
+    const order = new Order({
+      user: req.userId,
+      ...req.body
+    });
+    await order.save();
+    res.status(201).json(order);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
-    }catch(error){
-        res.status(500).json({error:error.message})
-    }
-})
-module.exports = router 
+router.get('/', requireAuth, async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+module.exports = router;

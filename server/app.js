@@ -12,7 +12,6 @@ const allowedOrigins = [
   "http://localhost:4000",
   // Client
   "https://fullstack-ecommercial.vercel.app",
-  "https://fullstack-ecommercial-1eon289hq-nguyen-quoc-khais-projects.vercel.app", // <-- Thêm dòng này
   // Admin
   "https://fullstack-ecommercial-gvu6.vercel.app"
 ];
@@ -52,6 +51,7 @@ const cartRoutes = require("./routes/cart")
 const reviewRoutes = require("./routes/review");
 const wishlistRoutes = require("./routes/wishlist")
 const orderRoutes = require("./routes/order")
+const paymentRoutes = require("./routes/payment")
 app.use((req, res, next) => {
   console.log(`[ROUTE DEBUG] ${req.method} ${req.originalUrl}`);
   next();
@@ -66,6 +66,7 @@ app.use("/api/cart",cartRoutes)
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/wishlist",wishlistRoutes)
 app.use("/api/orders",orderRoutes)
+app.use("/api/payment",paymentRoutes)
 //Database
 mongoose.connect(process.env.CONNECTION_STRING, {
     useNewUrlParser: true,
