@@ -25,6 +25,7 @@ const Cart = () => {
             getCartAPI(token).then(cart => {
                 console.log("[DEBUG] Cart API result:", cart); // Thêm log này
                 setCart(cart);
+                localStorage.setItem("cartItems",JSON.stringify(cart.items || []))
                 if (context.setCartCount) context.setCartCount(cart.items ? cart.items.length : 0);
             })
         }
@@ -48,6 +49,7 @@ const Cart = () => {
             toast.error(res.message)
         }else{
             setCart(res)
+            localStorage.setItem("cartItems", JSON.stringify(res.items || []));
             if (context.setCartCount) context.setCartCount(res.items ? res.items.length : 0);
         }
     }
@@ -56,6 +58,7 @@ const Cart = () => {
         const token = localStorage.getItem("token")
         const res = await removeFromCartAPI(productId, token, option)
         setCart(res)
+        localStorage.setItem("cartItems", JSON.stringify(res.items || []));
         if (context.setCartCount) context.setCartCount(res.items ? res.items.length : 0);
     }
     //Tinh tong tien
