@@ -14,7 +14,9 @@ export default function CheckoutPage() {
   const selectedKeys = (() => {
     try {
       const params = new URLSearchParams(location.search);
-      return JSON.parse(decodeURIComponent(params.get("items") || "[]"));
+      const keys = JSON.parse(decodeURIComponent(params.get("items") || "[]"));
+      console.log('[DEBUG] selectedKeys from query:', keys);
+      return keys;
     } catch {
       return [];
     }
@@ -22,9 +24,11 @@ export default function CheckoutPage() {
 
   // Lấy cartItems từ localStorage (hoặc context/API)
   const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+  console.log('[DEBUG] cartItems from localStorage:', cartItems);
   const selectedProducts = cartItems.filter(item =>
     selectedKeys.includes(item.product._id + '-' + (item.option || ''))
   );
+  console.log('[DEBUG] selectedProducts for checkout:', selectedProducts);
 
   // State cho form
   const [shipping, setShipping] = useState({ name: "", phone: "", address: "", email: "" });

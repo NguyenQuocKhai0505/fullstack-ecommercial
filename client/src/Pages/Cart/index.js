@@ -31,11 +31,13 @@ const Cart = () => {
     },[])
     const handleSelectItem = (productId, option) => {
       const key = productId + "-" + (option || '');
-      setSelectedItems(prev =>
-        prev.includes(key)
+      setSelectedItems(prev => {
+        const updated = prev.includes(key)
           ? prev.filter(itemKey => itemKey !== key)
-          : [...prev, key]
-      );
+          : [...prev, key];
+        console.log('[DEBUG] selectedItems after change:', updated);
+        return updated;
+      });
     };
     //Tang giam so luong
     const updateQuantity = async(productId, option, newQuantity) =>{
@@ -158,6 +160,7 @@ const Cart = () => {
                     className="btn-blue bg-red btn-lg btn-big btn-round ml-2"
                     disabled={selectedItems.length === 0}
                     onClick={() => {
+                      console.log('[DEBUG] Proceed to Checkout with selectedItems:', selectedItems);
                       window.location.href = `/checkout?items=${encodeURIComponent(JSON.stringify(selectedItems))}`;
                     }}
                   >
