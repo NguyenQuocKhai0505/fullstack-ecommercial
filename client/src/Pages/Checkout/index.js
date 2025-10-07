@@ -13,6 +13,7 @@ export default function CheckoutPage() {
   // Lấy danh sách key sản phẩm đã chọn từ query string
   const selectedKeys = (() => {
     try {
+
       const params = new URLSearchParams(location.search);
       const keys = JSON.parse(decodeURIComponent(params.get("items") || "[]"));
       console.log('[DEBUG] selectedKeys from query:', keys);

@@ -3,6 +3,7 @@ import './App.css';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./Components/Header/index"
 import Home from "./Pages/Home/index"
+import CheckoutPage from "./Pages/Checkout";
 import Listing from "./Pages/Listing"
 import ProductDetails from "./Pages/ProductDetails"
 import { createContext, useState,useEffect } from "react";
@@ -84,6 +85,7 @@ function App() {
               <Route exact={true} path="/signUp" element={<SignUp/>}/>
               <Route exact={true} path="/verify/:token" element={<Verify/>}/>
               <Route exact={true} path="/wishlist" element={<WishlistPage />} />
+              <Route exact={true} path="/checkout" element={<CheckoutPage/>}/>
             </Routes>
             {isOpenProductModal === true && <ProductModal />}
             {
