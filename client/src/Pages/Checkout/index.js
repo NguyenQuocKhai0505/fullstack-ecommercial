@@ -26,9 +26,12 @@ export default function CheckoutPage() {
   // Lấy cartItems từ localStorage (hoặc context/API)
   const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
   console.log('[DEBUG] cartItems from localStorage:', cartItems);
-  const selectedProducts = cartItems.filter(item =>
-    selectedKeys.includes(item.product._id + '-' + (item.option || ''))
-  );
+  // Sửa: ép option về string khi tạo key để so sánh đúng
+  const selectedProducts = cartItems.filter(item => {
+    const key = item.product._id + '-' + String(item.option || '');
+    console.log('[DEBUG] CartItem key:', key);
+    return selectedKeys.includes(key);
+  });
   console.log('[DEBUG] selectedProducts for checkout:', selectedProducts);
 
   // State cho form
