@@ -42,7 +42,16 @@ const MyOrders = () => {
       const res = await axios.get(`/api/orders/my-orders?page=${page}&perPage=${pageSize}`, {
         headers: token ? { 'Authorization': `Bearer ${token}` } : {},
       });
-      setOrders(res.data.orders || []);
+      // ĐẢM BẢO fixes lỗi .map is not a function
+      let ordersData = [];
+      if (Array.isArray(res.data.orders)) {
+        ordersData = res.data.orders;
+      } else if (Array.isArray(res.data)) {
+        ordersData = res.data;
+      } else {
+        ordersData = [];
+      }
+      setOrders(ordersData);
       setTotalPages(res.data.totalPages || 1);
     } catch (error) {
       setSnackbarMsg('Không thể tải đơn hàng. Vui lòng đăng nhập hoặc thử lại sau.');
@@ -85,7 +94,7 @@ const MyOrders = () => {
                 <tr>
                   <td colSpan={5}><Box display="flex" justifyContent="center"><CircularProgress /></Box></td>
                 </tr>
-              ) : orders.length > 0 ? (
+              ) : Array.isArray(orders) && orders.length > 0 ? (
                 orders.map(order => (
                   <tr key={order._id}>
                     <td>
