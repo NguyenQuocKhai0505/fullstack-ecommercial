@@ -24,5 +24,22 @@ router.get('/', requireAuth, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
+router.patch("/:id/status",requireAuth, async(req,res)=>{
+    try{
+      const {status} = req.body
+      const order = await Order.findByIdAndUpdate(req.params.id,{status},{new:true})
+      if(!order) return res.status(404).json({error:"Order not found"})
+      res.json(order)
+    }catch(error){
+      res.status(500).json({error:error.message})
+    }
+})
+router.get("/my-orders",requireAuth,async(req,res)=>{
+    try{
+      const orders = await Order.find({user:req.userId}).sort({createdAt:-1})
+      res.json({orders})
+    }catch(error){
+      res.status(500).json({error:err.message})
+    }
+})
 module.exports = router;

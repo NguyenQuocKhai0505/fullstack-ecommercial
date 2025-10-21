@@ -21,7 +21,7 @@ import Verify from "./Pages/Auth/verify";
 import { getCartAPI } from "./utils/api";
 import { WishlistProvider } from "./contexts/WishlistContext";
 import WishlistPage from "./Pages/Wishlist";
-
+import MyOrders from "./Pages/Orders/index"
 const MyContext = createContext();
 
 function App() {
@@ -86,6 +86,7 @@ function App() {
               <Route exact={true} path="/verify/:token" element={<Verify/>}/>
               <Route exact={true} path="/wishlist" element={<WishlistPage />} />
               <Route exact={true} path="/checkout" element={<CheckoutPage/>}/>
+              <Route exact={true} path="/orders" element={<MyOrders/>}/>
             </Routes>
             {isOpenProductModal === true && <ProductModal />}
             {

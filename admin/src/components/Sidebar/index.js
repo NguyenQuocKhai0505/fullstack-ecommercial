@@ -11,6 +11,7 @@ import { MdCategory } from "react-icons/md";
 import { DiSublime } from "react-icons/di";
 import { useNavigate } from 'react-router-dom';
 import { MdRateReview } from "react-icons/md";
+import { FaShoppingCart } from "react-icons/fa";
 const Sidebar = () =>{
     const [activeTab,setActiveTab] = useState(0)
     const [isToggleSubmenu,setisToggleSubmenu] = useState(false)
@@ -100,6 +101,21 @@ const Sidebar = () =>{
                     <div className={`submenuWrapper ${activeTab===4 && isToggleSubmenu==true ? "colapse":"colapsed"}`}>
                     <ul className='submenu'>
                         <li><Link to="/reviews">Review Pending</Link></li>
+                    </ul>
+                    </div>
+               </li> 
+            </ul>
+            {/* Orders */}
+            <ul>
+               <li>
+                    <Button className={`w-100 ${activeTab===5 ? "active":' '}`}onClick={()=>isOpenSubmenu(5)}>
+                    <span className='icon'><FaShoppingCart /></span>Orders
+                    <span className='arrow'><FaAngleRight /></span>
+                    </Button>
+                    {/* Product Menu */}
+                    <div className={`submenuWrapper ${activeTab===5 && isToggleSubmenu==true ? "colapse":"colapsed"}`}>
+                    <ul className='submenu'>
+                        <li><Link to="/orders">Order Status</Link></li>
                     </ul>
                     </div>
                </li> 
