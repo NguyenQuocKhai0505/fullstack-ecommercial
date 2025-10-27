@@ -12,7 +12,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
-const AdminOrders = () => {
+const Orders = () => {
   const context = useContext(MyContext);
   const [orders, setOrders] = useState([]);
   const [page, setPage] = useState(1);
@@ -150,4 +150,4 @@ const AdminOrders = () => {
   )
 };
 
-export default AdminOrders;
+export default Orders;

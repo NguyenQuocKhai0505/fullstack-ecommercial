@@ -22,7 +22,7 @@ import AddSubCategory from "./pages/SubCategory/addSubCategory"
 import SubCategory from './pages/SubCategory/index';
 import EditSubCategory from '../src/pages/SubCategory/EditSubCategory';
 import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes';
-import AdminOrders from './pages/Orders/index';
+import Orders from './pages/Orders/index';
 const MyContext = createContext()
 function App() {
   const [isToggleSidebar,setisToggleSidebar] = useState(false)
@@ -184,7 +184,7 @@ function App() {
                 }/>
                  <Route exact={true} path="/orders" element={
                   <ProtectedRoutes>
-                    <AdminOrders/>
+                    <Orders/>
                   </ProtectedRoutes>
                 }/>
              </Routes>
