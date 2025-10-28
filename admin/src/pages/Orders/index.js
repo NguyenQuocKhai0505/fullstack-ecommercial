@@ -31,9 +31,23 @@ const Orders = () => {
     setLoading(true);
     try {
       const res = await axios.get(`/api/orders?page=${page}&perPage=${pageSize}`);
-      // Giả sử backend trả về {orders: [...], totalPages: N}
-      setOrders(res.data.orders || res.data);
+      // Log response để debug lỗi map
+      console.log('[DEBUG] Orders API response:', res.data);
+      // Xử lý trường hợp trả về object hoặc array
+      let ordersData = [];
+      if (Array.isArray(res.data.orders)) {
+        ordersData = res.data.orders;
+      } else if (Array.isArray(res.data)) {
+        ordersData = res.data;
+      } else {
+        ordersData = [];
+      }
+      setOrders(ordersData);
       setTotalPages(res.data.totalPages || 1);
+      // Báo lỗi nếu dữ liệu không phải array
+      if (!Array.isArray(ordersData)) {
+        context.showSnackbar('Dữ liệu đơn hàng trả về sai định dạng!', 'error');
+      }
     } catch (err) {
       context.showSnackbar('Failed to load orders', 'error');
     } finally {
@@ -87,13 +101,13 @@ const Orders = () => {
               </tr>
             </thead>
             <tbody>
-              {!loading && orders && orders.length > 0 ? orders.map((order) => (
+              {!loading && Array.isArray(orders) && orders.length > 0 ? orders.map((order) => (
                 <tr key={order._id}>
                   <td>{order._id}</td>
                   <td>{order.shipping?.name}</td>
                   <td>{order.shipping?.email}</td>
                   <td>{order.total}</td>
-                  <td>{order.createAt ? new Date(order.createAt).toLocaleString() : ''}</td>
+                  <td>{order.createdAt ? new Date(order.createdAt).toLocaleString() : (order.createAt ? new Date(order.createAt).toLocaleString() : '')}</td>
                   <td>{order.status}</td>
                   <td>
                     <Button 
@@ -106,7 +120,7 @@ const Orders = () => {
                     </Button>
                   </td>
                 </tr>
-              )) : <tr><td colSpan={7}>No orders found.</td></tr>}
+              )) : <tr><td colSpan={7}>No orders found or data error.</td></tr>}
             </tbody>
           </table>
           {/* PAGINATION FOOTER */}
