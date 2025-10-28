@@ -19,16 +19,23 @@ router.post('/', requireAuth, async (req, res) => {
   }
 });
 
-router.get('/', requireAuth, async (req, res) => {
-  try {
-    console.log('[DEBUG] GET /orders, user:', req.user && req.user._id);
-    const orders = await Order.find().sort({ createdAt: -1 });
-    res.json(orders);
-  } catch (err) {
-    console.error('[ERROR] GET /orders:', err.message);
-    res.status(500).json({ error: err.message });
-  }
-});
+router.get("/", requireAuth, async(req,res)=>{
+    try{
+      const page = Number(req.query.page) || 1
+      const perPage = Number(req.query.perPage) || 10
+      const totalOrders = await Order.countDocuments()
+      const totalPages = Math.ceil(totalOrders/perPage)
+
+      const orders = await Order.find()
+        .sort({createdAt:-1})
+        .skip((page-1)*perPage)
+        .limit(perPage)
+      
+        res.json({orders,totalPages})
+    }catch(error){
+      res.status(500).json({error:error.message})
+    }
+})
 router.patch('/:id/status', requireAuth, async (req, res) => {
   try {
     const { status } = req.body;
