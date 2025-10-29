@@ -31,7 +31,7 @@ const Orders = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token")
-      const res = await axios.get(`/api/orders?page=${page}&perPage=${pageSize}`,{
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/orders?page=${page}&perPage=${pageSize}`,{
         headers:token?{"Authorization" : `Bearer ${token}` } : {},
       }
       );
