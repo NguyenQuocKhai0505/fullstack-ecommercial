@@ -5,16 +5,16 @@ import Pagination from '@mui/material/Pagination';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Chip, Box, Typography, Paper } from '@mui/material';
+import { Chip, Box, Typography, Paper, Button } from '@mui/material';
 // import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'; // Optional for title
 
-// Mapping trạng thái đơn hàng với màu sắc
+// Mapping order status to English labels
 const statusColorMap = {
-  pending: { label: 'Chờ xử lý', color: 'warning' },
-  processing: { label: 'Đang xử lý', color: 'info' },
-  shipped: { label: 'Đã giao', color: 'primary' },
-  completed: { label: 'Hoàn thành', color: 'success' },
-  cancelled: { label: 'Đã hủy', color: 'error' },
+  pending: { label: 'Pending', color: 'warning' },
+  processing: { label: 'Processing', color: 'info' },
+  shipped: { label: 'Shipped', color: 'primary' },
+  completed: { label: 'Completed', color: 'success' },
+  cancelled: { label: 'Cancelled', color: 'error' },
 };
 
 const MyOrders = () => {
@@ -28,6 +28,7 @@ const MyOrders = () => {
   const [snackbarMsg, setSnackbarMsg] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
+  
   // Fetch data khi vào trang hoặc đổi page
   useEffect(() => {
     fetchOrders();
@@ -62,6 +63,30 @@ const MyOrders = () => {
     }
   };
 
+  // Handle cancel order (translate confirm and messages)
+  const handleCancelOrder = async (orderId) => {
+    if (!window.confirm('Are you sure you want to cancel this order?')) return;
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('token');
+      await axios.patch(
+        `/api/orders/${orderId}/status`,
+        { status: 'cancelled' },
+        { headers: token ? { Authorization: `Bearer ${token}` } : {} }
+      );
+      setSnackbarMsg('Order cancelled successfully!');
+      setSnackbarSeverity('success');
+      setOpenSnackbar(true);
+      fetchOrders();
+    } catch (err) {
+      setSnackbarMsg('Failed to cancel the order. Please try again!');
+      setSnackbarSeverity('error');
+      setOpenSnackbar(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Đổi trang
   const handleChangePage = (_, value) => setPage(value);
 
@@ -75,24 +100,25 @@ const MyOrders = () => {
     <Box sx={{ p: { xs: 1, md: 4 }, maxWidth: 1000, margin: '0 auto' }}>
       <Typography variant="h4" mb={2} sx={{ fontWeight: 700, letterSpacing: 1 }}>
         {/* <ShoppingCartIcon fontSize="large" sx={{ mr: 1, color: '#1976d2' }} /> */}
-        Theo dõi đơn hàng của bạn
+        Your Orders
       </Typography>
       <Paper elevation={3} sx={{ p: { xs: 0.5, md: 3 }, borderRadius: 3, boxShadow: 3 }}>
         <div className="table-responsive">
           <table className="table table-hover table-borderless align-middle" style={{ minWidth: 680 }}>
             <thead style={{ background: '#1e88e5' }}>
               <tr style={{ color: '#fff', fontWeight: 600 }}>
-                <th>MÃ ĐƠN</th>
-                <th>NGÀY ĐẶT</th>
-                <th>TỔNG TIỀN</th>
-                <th>PHƯƠNG THỨC</th>
-                <th>TRẠNG THÁI</th>
+                <th>ORDER ID</th>
+                <th>DATE</th>
+                <th>TOTAL</th>
+                <th>PAYMENT METHOD</th>
+                <th>STATUS</th>
+                <th>ACTION</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={5}><Box display="flex" justifyContent="center"><CircularProgress /></Box></td>
+                  <td colSpan={6}><Box display="flex" justifyContent="center"><CircularProgress /></Box></td>
                 </tr>
               ) : Array.isArray(orders) && orders.length > 0 ? (
                 orders.map(order => (
@@ -100,7 +126,7 @@ const MyOrders = () => {
                     <td>
                       <Typography fontWeight="bold" color="primary">{order._id.slice(-6).toUpperCase()}</Typography>
                     </td>
-                    <td>{order.createAt ? new Date(order.createAt).toLocaleString() : ''}</td>
+                    <td>{order.createdAt ? new Date(order.createdAt).toLocaleString() : (order.createAt ? new Date(order.createAt).toLocaleString() : '')}</td>
                     <td>
                       <b style={{ color: '#388e3c' }}>{order.total?.toLocaleString()} đ</b>
                     </td>
@@ -115,11 +141,24 @@ const MyOrders = () => {
                         sx={{ fontWeight: 700, letterSpacing: 1, fontSize: 14 }}
                       />
                     </td>
+                    <td>
+                      {order.status === 'pending' && (
+                        <Button
+                          variant="outlined"
+                          color="error"
+                          size="small"
+                          onClick={() => handleCancelOrder(order._id)}
+                          disabled={loading}
+                        >
+                          Cancel
+                        </Button>
+                      )}
+                    </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={5} style={{ textAlign: 'center', opacity: 0.7 }}>Không có đơn hàng nào.</td>
+                  <td colSpan={6} style={{ textAlign: 'center', opacity: 0.7 }}>No orders found.</td>
                 </tr>
               )}
             </tbody>

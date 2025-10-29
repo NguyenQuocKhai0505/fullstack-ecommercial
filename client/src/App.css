@@ -4031,3 +4031,8 @@ footer img {
     margin-right: 10px;
   }
 }
+
+/* Overlay/Menu fix: Ensure MUI dropdown menus are always clickable above header/nav overlays */
+.MuiPopover-root, .MuiMenu-root, .MuiPopover-paper {
+  z-index: 2200 !important;
+}
