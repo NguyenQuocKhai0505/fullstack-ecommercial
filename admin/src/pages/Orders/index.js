@@ -30,7 +30,11 @@ const Orders = () => {
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`/api/orders?page=${page}&perPage=${pageSize}`);
+      const token = localStorage.getItem("token")
+      const res = await axios.get(`/api/orders?page=${page}&perPage=${pageSize}`,{
+        headers:token?{"Authorization" : `Bearer ${token}` } : {},
+      }
+      );
       // Log response để debug lỗi map
       console.log('[DEBUG] Orders API response:', res.data);
       // Xử lý trường hợp trả về object hoặc array
