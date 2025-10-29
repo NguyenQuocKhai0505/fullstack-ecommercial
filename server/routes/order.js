@@ -55,7 +55,10 @@ router.get('/my-orders', requireAuth, async (req, res) => {
   try {
     const userId = req.user._id;
     console.log('[DEBUG] GET /my-orders, user:', userId);
-    const orders = await Order.find({ user: userId }).sort({ createdAt: -1 });
+    // Populate items.product for each order
+    const orders = await Order.find({ user: userId })
+      .populate('items.product')
+      .sort({ createdAt: -1 });
     console.log('[DEBUG] /my-orders Orders found:', orders.length);
     res.json({ orders });
   } catch (error) {

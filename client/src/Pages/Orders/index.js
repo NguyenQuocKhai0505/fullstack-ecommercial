@@ -122,39 +122,63 @@ const MyOrders = () => {
                 </tr>
               ) : Array.isArray(orders) && orders.length > 0 ? (
                 orders.map(order => (
-                  <tr key={order._id}>
-                    <td>
-                      <Typography fontWeight="bold" color="primary">{order._id.slice(-6).toUpperCase()}</Typography>
-                    </td>
-                    <td>{order.createdAt ? new Date(order.createdAt).toLocaleString() : (order.createAt ? new Date(order.createAt).toLocaleString() : '')}</td>
-                    <td>
-                      <b style={{ color: '#388e3c' }}>{order.total?.toLocaleString()} đ</b>
-                    </td>
-                    <td>
-                      <Chip label={order.paymentMethod} color="secondary" variant="outlined" size="small" sx={{ fontSize: 13 }} />
-                    </td>
-                    <td>
-                      <Chip
-                        label={statusColorMap[order.status]?.label || order.status}
-                        color={statusColorMap[order.status]?.color || 'default'}
-                        variant="filled"
-                        sx={{ fontWeight: 700, letterSpacing: 1, fontSize: 14 }}
-                      />
-                    </td>
-                    <td>
-                      {order.status === 'pending' && (
-                        <Button
-                          variant="outlined"
-                          color="error"
-                          size="small"
-                          onClick={() => handleCancelOrder(order._id)}
-                          disabled={loading}
-                        >
-                          Cancel
-                        </Button>
-                      )}
-                    </td>
-                  </tr>
+                  <React.Fragment key={order._id}>
+                    {/* Order summary row */}
+                    <tr>
+                      <td>
+                        <Typography fontWeight="bold" color="primary">{order._id.slice(-6).toUpperCase()}</Typography>
+                      </td>
+                      <td>{order.createdAt ? new Date(order.createdAt).toLocaleString() : (order.createAt ? new Date(order.createAt).toLocaleString() : '')}</td>
+                      <td>
+                        <b style={{ color: '#388e3c' }}>{order.total?.toLocaleString()} đ</b>
+                      </td>
+                      <td>
+                        <Chip label={order.paymentMethod} color="secondary" variant="outlined" size="small" sx={{ fontSize: 13 }} />
+                      </td>
+                      <td>
+                        <Chip
+                          label={statusColorMap[order.status]?.label || order.status}
+                          color={statusColorMap[order.status]?.color || 'default'}
+                          variant="filled"
+                          sx={{ fontWeight: 700, letterSpacing: 1, fontSize: 14 }}
+                        />
+                      </td>
+                      <td>
+                        {order.status === 'pending' && (
+                          <Button
+                            variant="outlined"
+                            color="error"
+                            size="small"
+                            onClick={() => handleCancelOrder(order._id)}
+                            disabled={loading}
+                          >
+                            Cancel
+                          </Button>
+                        )}
+                      </td>
+                    </tr>
+                    {/* Product list row */}
+                    <tr>
+                      <td colSpan={6} style={{ background: '#fafcff', borderTop: '0px' }}>
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, p: 1 }}>
+                          {order.items && order.items.length > 0 ? (
+                            order.items.map((item, idx) => (
+                              <Box key={idx} sx={{ mr: 4, minWidth: 220, display: 'flex', alignItems: 'center', gap: 1 }}>
+                                <img src={item.product && item.product.image ? item.product.image : '/no-image.png'} alt={item.product && item.product.name ? item.product.name : item.name} style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 8, marginRight: 12, border: '1px solid #eee', background: '#fff' }} />
+                                <div>
+                                  <Typography sx={{ fontSize: 15, fontWeight: 600 }}>{item.product && item.product.name ? item.product.name : item.name}</Typography>
+                                  <Typography variant="body2" sx={{ color: '#555' }}>Qty: {item.quantity}</Typography>
+                                  {item.option && <Typography variant="body2">Option: {item.option}</Typography>}
+                                </div>
+                              </Box>
+                            ))
+                          ) : (
+                            <Typography variant="body2" color="textSecondary">No products</Typography>
+                          )}
+                        </Box>
+                      </td>
+                    </tr>
+                  </React.Fragment>
                 ))
               ) : (
                 <tr>
