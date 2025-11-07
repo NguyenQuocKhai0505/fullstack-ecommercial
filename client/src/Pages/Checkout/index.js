@@ -142,8 +142,6 @@ export default function CheckoutPage() {
             </div>
           </div>
         </form>
-            <Button
-            variant="contained"
         <Modal
           open={openPayment}
           onClose={() => {setOpenPayment(false); setPaymentType("")}}
