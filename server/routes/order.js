@@ -79,23 +79,4 @@ router.patch('/:id/pay',requireAuth,async(req,res)=>{
     res.status(500).json({error:error.message})
   }
 })
-router.post('/stripe-payment-intent', async (req, res) => {
-  try {
-    const { items, shipping, total } = req.body;
-    // Bạn có thể tính lại total từ items nếu muốn tránh scam FE
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(total * 100), // đơn vị là cent
-      currency: 'usd',
-      payment_method_types: ['card'],
-      receipt_email: shipping?.email || undefined,
-      metadata: {
-        items: JSON.stringify(items),
-        customer_name: shipping?.name || "",
-      }
-    });
-    res.json({ clientSecret: paymentIntent.client_secret });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 module.exports = router;
