@@ -8,8 +8,6 @@ import {loadStripe} from "@stripe/stripe-js"
 import {Elements} from "@stripe/react-stripe-js"
 import {PayPalScriptProvider,PayPalButtons} from "@paypal/react-paypal-js"
 import StripeElementForm from "./StripeElementForm";
-import StripeLogo from "../../assets/images/stripe.png";    // Cần tải logo stripe vào đúng path này
-import PaypalLogo from "../../assets/images/paypal.png";    // Tải logo paypal
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY)
 export default function CheckoutPage() {
@@ -58,8 +56,9 @@ export default function CheckoutPage() {
   // Xử lý đặt hàng (dùng selectedProducts, shipping)
   const handleOrder = async (e) => {
     e.preventDefault();
+    console.log('[DEBUG] handleOrder called');
     const required = ["name", "country", "address", "city", "state", "zip", "phone", "email"];
-    if (required.some(f=>!shipping[f])) {
+    if (required.some(f => !shipping[f])) {
       setSnackbar({ open: true, message: "Please fill all required information!", severity: "error" });
       return;
     }
@@ -68,6 +67,7 @@ export default function CheckoutPage() {
       return;
     }
     setOpenPayment(true);
+    console.log('[DEBUG] setOpenPayment(true), paymentType:', paymentType, {shipping, selectedProducts, total, shippingFee});
   };
 
   const afterOrderSuccess = () => {
@@ -163,48 +163,51 @@ export default function CheckoutPage() {
 
                 <Button
                   variant="outlined"
-                  onClick={()=>setPaymentType("stripe")}
-                  fullWidth sx={{ mb:2, justifyContent:'flex-start', pl:3, py:1.5, fontWeight:600, fontSize:17 }}
+                  onClick={() => { console.log('[DEBUG] Click Pay With Stripe'); setPaymentType("stripe"); }}
+                  fullWidth sx={{ mb:2, py:1.5, fontWeight:600, fontSize:17 }}
                 >
-                  <img src={StripeLogo} alt="stripe" style={{height:28, marginRight:16}}/>
                   Pay with Stripe
                 </Button>
 
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={()=>setPaymentType("paypal")}
-                  fullWidth sx={{ mb:2, justifyContent:'flex-start', pl:3, py:1.5, fontWeight:600, fontSize:17, bgcolor:'#0070ba', '&:hover': {bgcolor:'#005ea6'} }}
+                  onClick={() => { console.log('[DEBUG] Click Pay With PayPal'); setPaymentType("paypal"); }}
+                  fullWidth sx={{ mb:2, py:1.5, fontWeight:600, fontSize:17, bgcolor:'#0070ba', '&:hover': {bgcolor:'#005ea6'} }}
                 >
-                  <img src={PaypalLogo} alt="paypal" style={{height:28, marginRight:16}}/>
                   Pay with PayPal
                 </Button>
 
                 <Button
                   variant="contained"
                   color="secondary"
-                  onClick={async()=>{
-                    setLoading(true)
-                    //API tao don Shipcod
+                  onClick={async () => {
+                    console.log('[DEBUG] Click Shipcode');
+                    setLoading(true);
+                    const params = {
+                      shipping,
+                      items:selectedProducts.map(item=>({
+                        product: item.product._id,
+                        name:item.product.name,
+                        option: item.option,
+                        quantity: item.quantity,
+                        price: item.product.price
+                      })),
+                      paymentMethod:"cod",
+                      total,
+                      shippingFee,
+                      discount:0
+                    };
+                    console.log('[DEBUG] Shipcode API params:', params);
                     const res = await fetch(`${process.env.REACT_APP_API_URL}/api/orders`,{
                       method:"POST",
                       headers:{"Content-Type":"application/json","Authorization":`Bearer ${localStorage.getItem("token")}`},
-                      body:JSON.stringify({
-                        shipping,
-                        items:selectedProducts.map(item=>({
-                          product: item.product._id,
-                          name:item.product.name,
-                          option: item.option,
-                          quantity: item.quantity,
-                          price: item.product.price
-                        })),
-                        paymentMethod:"cod",
-                        total,
-                        shippingFee,
-                        discount:0
-                      })
+                      body:JSON.stringify(params)
                     })
-                    setLoading(false)
+                    let respJson;
+                    try { respJson = await res.json(); } catch { respJson = undefined; }
+                    setLoading(false);
+                    console.log('[DEBUG] Shipcode API response:', res.status, respJson);
                     if(res.ok){
                       afterOrderSuccess()
                     }else{
@@ -212,7 +215,7 @@ export default function CheckoutPage() {
                     }
                   }}
                   disabled={loading}
-                  fullWidth sx={{ justifyContent:'flex-start', pl:3, py:1.5, fontWeight:600, fontSize:17, bgcolor:'#5bb85d', '&:hover':{bgcolor:'#388e3c'} }}
+                  fullWidth sx={{ py:1.5, fontWeight:600, fontSize:17, bgcolor:'#5bb85d', '&:hover':{bgcolor:'#388e3c'} }}
                 >
                   <AttachMoneyIcon sx={{fontSize:28, mr:1.5}} />
                   Cash on Delivery (Shipcod)
@@ -227,8 +230,9 @@ export default function CheckoutPage() {
                   selectedProducts={selectedProducts}
                   total={total}
                   shippingFee={shippingFee}
-                  onSuccess={()=>{
-                    afterOrderSuccess()
+                  onSuccess={() => {
+                    console.log('[DEBUG] Stripe payment onSuccess called');
+                    afterOrderSuccess();
                   }}/>
               </Elements>
             )}
@@ -242,8 +246,9 @@ export default function CheckoutPage() {
                     amount:{value:total.toFixed(2)}
                   }]
                 })}
-                onApprove={async(data,actions)=>{
-                  const details = await actions.order.capture()
+                onApprove={async (data,actions)=>{
+                  const details = await actions.order.capture();
+                  console.log('[DEBUG] PayPal onApprove', data, details);
                   //Tao don da thanh toan voi paypal
                   await fetch(`${process.env.REACT_APP_API_URL}/api/orders`,{
                     method:"POST",
