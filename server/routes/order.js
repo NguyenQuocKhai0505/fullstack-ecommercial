@@ -66,4 +66,36 @@ router.get('/my-orders', requireAuth, async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+//Xac nhan order da thanh toan thanh cong
+router.patch('/:id/pay',requireAuth,async(req,res)=>{
+  try{
+    const {paymentId,paymentResult} = req.body
+    const order = await Order.findByIdAndUpdate(req.params.id,{paymentId,paymentResult,paid:true,status:"processing"}, {new:true})
+    if(!order){
+      return res.status(404).json({error:"Order not found"})
+      res.json(order)
+    }
+  }catch(error){
+    res.status(500).json({error:error.message})
+  }
+})
+router.post('/stripe-payment-intent', async (req, res) => {
+  try {
+    const { items, shipping, total } = req.body;
+    // Bạn có thể tính lại total từ items nếu muốn tránh scam FE
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: Math.round(total * 100), // đơn vị là cent
+      currency: 'usd',
+      payment_method_types: ['card'],
+      receipt_email: shipping?.email || undefined,
+      metadata: {
+        items: JSON.stringify(items),
+        customer_name: shipping?.name || "",
+      }
+    });
+    res.json({ clientSecret: paymentIntent.client_secret });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 module.exports = router;

@@ -52,6 +52,7 @@ const reviewRoutes = require("./routes/review");
 const wishlistRoutes = require("./routes/wishlist")
 const orderRoutes = require("./routes/order")
 const paymentRoutes = require("./routes/payment")
+
 app.use((req, res, next) => {
   console.log(`[ROUTE DEBUG] ${req.method} ${req.originalUrl}`);
   next();

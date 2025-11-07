@@ -22,6 +22,7 @@ import { getCartAPI } from "./utils/api";
 import { WishlistProvider } from "./contexts/WishlistContext";
 import WishlistPage from "./Pages/Wishlist";
 import MyOrders from "./Pages/Orders/index"
+import ThankYou from "./Pages/ThankYou/index"
 const MyContext = createContext();
 
 function App() {
@@ -87,6 +88,7 @@ function App() {
               <Route exact={true} path="/wishlist" element={<WishlistPage />} />
               <Route exact={true} path="/checkout" element={<CheckoutPage/>}/>
               <Route exact={true} path="/orders" element={<MyOrders/>}/>
+              <Route exact={true} path="/thank-you" element={<ThankYou/>}/>
             </Routes>
             {isOpenProductModal === true && <ProductModal />}
             {
