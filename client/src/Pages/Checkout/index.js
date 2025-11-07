@@ -8,6 +8,9 @@ import {loadStripe} from "@stripe/stripe-js"
 import {Elements} from "@stripe/react-stripe-js"
 import {PayPalScriptProvider,PayPalButtons} from "@paypal/react-paypal-js"
 import StripeElementForm from "./StripeElementForm";
+import StripeLogo from "../../assets/images/stripe.png";    // Cần tải logo stripe vào đúng path này
+import PaypalLogo from "../../assets/images/paypal.png";    // Tải logo paypal
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY)
 export default function CheckoutPage() {
   const location = useLocation();
@@ -139,116 +142,139 @@ export default function CheckoutPage() {
             </div>
           </div>
         </form>
-        <Modal open={openPayment} onClose={() => {setOpenPayment(false); setPaymentType("")}}>
-          <Box sx={{
-            width:380, mx: "auto", mt:"10vh", bgcolor:"white", p:3, borderRadius:3, boxShadow:3,
-            maxWidth:"calc(100vw-24px)"
-          }}>
-            {/* Chon cong thanh toan */}
-            <Typography variant="h6" fontWeight={700} mb={2}>Choose Payment Method</Typography>
-            <Button
-              variant="outlined"
-              onClick={() => setPaymentType("stripe")}
-              fullWidth sx={{mb:2}}>
-                Pay with Stripe
-            </Button>
             <Button
             variant="contained"
-            color="primary"
-            onClick={()=>setPaymentType("paypal")}
-            fullWidth sx={{mb:2}}>
-              Pay with Paypal
-            </Button>
-            <Button
-            variant="contained"
-            color="secondary"
-            onClick={async()=>{
-              setLoading(true)
-              //API tao don Shipcod
-              const res = await fetch(`${process.env.REACT_APP_API_URL}/api/orders`,{
-                method:"POST",
-                headers:{"Content-Type":"application/json","Authorization":`Bearer ${localStorage.getItem("token")}`},
-                body:JSON.stringify({
-                  shipping,
-                  items:selectedProducts.map(item=>({
-                    product: item.product._id,
-                    name:item.product.name,
-                    option: item.option,
-                    quantity: item.quantity,
-                    price: item.product.price
-                  })),
-                  paymentMethod:"cod",
-                  total,
-                  shippingFee,
-                  discount:0
-                })
-              })
-              setLoading(false)
-              if(res.ok){
-                afterOrderSuccess()
-              }else{
-                setSnackbar({open:true,severity:"error",message:"Create order failed"})
-              }
-            }}
-            disabled={loading}
-            fullWidth
-            >
-              Cash on Delivery(Shipcod)
-            </Button>
-        {/* Stripe*/} 
-        {paymentType === "stripe" && (
-          <Elements stripe={stripePromise}>
-              <StripeElementForm
-              shipping={shipping}
-              selectedProducts={selectedProducts}
-              total={total}
-              shippingFee={shippingFee}
-              onSuccess={()=>{
-                afterOrderSuccess()
-              }}/>
-          </Elements>
-        )}
-        {/* Paypal */}
-        {paymentType==="paypal" &&(
-          <PayPalScriptProvider options={{"client-id":process.env.REACT_APP_PAYPAL_CLIENT_ID}}>
-            <PayPalButtons 
-            style={{layout:"vertical"}}
-            createOrder={(data,actions) => actions.order.create({
-              purchase_units:[{
-                amount:{value:total.toFixed(2)}
-              }]
-            })}
-            onApprove={async(data,actions)=>{
-              const details = await actions.order.capture()
-              //Tao don da thanh toan voi paypal
-              await fetch(`${process.env.REACT_APP_API_URL}/api/orders`,{
-                method:"POST",
-                headers:{"Content-Type":"application/json", Authorization:"Bearer " + localStorage.getItem("token")},
-                body:JSON.stringify({
-                  shipping,
-                  items: selectedProducts.map(item =>({
-                    product: item.product._id || item.product.id,
-                    name: item.product.name,
-                    option: item.option,
-                    quantity: item.quantity,
-                    price: item.product.price
-                  })),
-                  paymentMethod:"paypal",
-                  paid:true,
-                  total,
-                  shippingFee,
-                  paymentId: data.orderID,
-                  paymentResult:details,
-                  discount:0
-                })
-              })
-              afterOrderSuccess()
-            }}
-            >
+        <Modal
+          open={openPayment}
+          onClose={() => {setOpenPayment(false); setPaymentType("")}}
+          sx={{
+            '& .MuiBackdrop-root': {
+              opacity: 0.24,
+              zIndex: 2000,
+              background: '#101828', // overlay nhẹ
+            },
+            '& .MuiPaper-root, & .MuiBox-root': {zIndex:2100},
+          }}
+          disableAutoFocus
+          disableEnforceFocus
+        >
+          <Box sx={{width: 380, mx: 'auto', mt: '10vh', bgcolor:'white', p:3, borderRadius:3, boxShadow:3, maxWidth:'calc(100vw - 24px)'}}>
+            {!paymentType && (
+              <>
+                <Typography variant="h6" fontWeight={700} mb={2}>Choose Payment Method</Typography>
 
-            </PayPalButtons>
-          </PayPalScriptProvider>
-        )}
+                <Button
+                  variant="outlined"
+                  onClick={()=>setPaymentType("stripe")}
+                  fullWidth sx={{ mb:2, justifyContent:'flex-start', pl:3, py:1.5, fontWeight:600, fontSize:17 }}
+                >
+                  <img src={StripeLogo} alt="stripe" style={{height:28, marginRight:16}}/>
+                  Pay with Stripe
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={()=>setPaymentType("paypal")}
+                  fullWidth sx={{ mb:2, justifyContent:'flex-start', pl:3, py:1.5, fontWeight:600, fontSize:17, bgcolor:'#0070ba', '&:hover': {bgcolor:'#005ea6'} }}
+                >
+                  <img src={PaypalLogo} alt="paypal" style={{height:28, marginRight:16}}/>
+                  Pay with PayPal
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={async()=>{
+                    setLoading(true)
+                    //API tao don Shipcod
+                    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/orders`,{
+                      method:"POST",
+                      headers:{"Content-Type":"application/json","Authorization":`Bearer ${localStorage.getItem("token")}`},
+                      body:JSON.stringify({
+                        shipping,
+                        items:selectedProducts.map(item=>({
+                          product: item.product._id,
+                          name:item.product.name,
+                          option: item.option,
+                          quantity: item.quantity,
+                          price: item.product.price
+                        })),
+                        paymentMethod:"cod",
+                        total,
+                        shippingFee,
+                        discount:0
+                      })
+                    })
+                    setLoading(false)
+                    if(res.ok){
+                      afterOrderSuccess()
+                    }else{
+                      setSnackbar({open:true,severity:"error",message:"Create order failed"})
+                    }
+                  }}
+                  disabled={loading}
+                  fullWidth sx={{ justifyContent:'flex-start', pl:3, py:1.5, fontWeight:600, fontSize:17, bgcolor:'#5bb85d', '&:hover':{bgcolor:'#388e3c'} }}
+                >
+                  <AttachMoneyIcon sx={{fontSize:28, mr:1.5}} />
+                  Cash on Delivery (Shipcod)
+                </Button>
+              </>
+            )}
+            {/* Stripe*/}
+            {paymentType === "stripe" && (
+              <Elements stripe={stripePromise}>
+                  <StripeElementForm
+                  shipping={shipping}
+                  selectedProducts={selectedProducts}
+                  total={total}
+                  shippingFee={shippingFee}
+                  onSuccess={()=>{
+                    afterOrderSuccess()
+                  }}/>
+              </Elements>
+            )}
+            {/* Paypal */}
+            {paymentType==="paypal" &&(
+              <PayPalScriptProvider options={{"client-id":process.env.REACT_APP_PAYPAL_CLIENT_ID}}>
+                <PayPalButtons
+                style={{layout:"vertical"}}
+                createOrder={(data,actions) => actions.order.create({
+                  purchase_units:[{
+                    amount:{value:total.toFixed(2)}
+                  }]
+                })}
+                onApprove={async(data,actions)=>{
+                  const details = await actions.order.capture()
+                  //Tao don da thanh toan voi paypal
+                  await fetch(`${process.env.REACT_APP_API_URL}/api/orders`,{
+                    method:"POST",
+                    headers:{"Content-Type":"application/json", Authorization:"Bearer " + localStorage.getItem("token")},
+                    body:JSON.stringify({
+                      shipping,
+                      items: selectedProducts.map(item =>({
+                        product: item.product._id || item.product.id,
+                        name: item.product.name,
+                        option: item.option,
+                        quantity: item.quantity,
+                        price: item.product.price
+                      })),
+                      paymentMethod:"paypal",
+                      paid:true,
+                      total,
+                      shippingFee,
+                      paymentId: data.orderID,
+                      paymentResult:details,
+                      discount:0
+                    })
+                  })
+                  afterOrderSuccess()
+                }}
+                >
+
+                </PayPalButtons>
+              </PayPalScriptProvider>
+            )}
           </Box>
         </Modal>
         <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={()=>setSnackbar({ ...snackbar, open: false })}>
