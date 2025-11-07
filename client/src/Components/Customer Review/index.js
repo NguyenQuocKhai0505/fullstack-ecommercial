@@ -73,17 +73,17 @@ const CustomerReview =({productId})=>{
             <h3>Customer Reviews</h3>
             {/* Tong quan */}
             <div className='reviewSummary d-flex align-items-center mb-3'>
-                <Rating
-                name="overall-rating"
+                                                <Rating 
+                                                    name="overall-rating" 
                 value={Number(stats.averageRating)}
-                precision={0.1}
-                readOnly
-                size="small"
-                />
+                                                    precision={0.1} 
+                                                    readOnly 
+                                                    size="small"
+                                                />
                 <span className='ml-2 font-weight-bold'>
                     {stats.averageRating} / 5 ({stats.totalReviews} reviews)
-                </span>
-            </div>
+                                                </span>
+                                            </div>
             {/* Bieu do so sao */}
             <div className='ratingBars'>
                 {[5,4,3,2,1].map((star,idx)=>{
@@ -91,22 +91,22 @@ const CustomerReview =({productId})=>{
                     const percent = stats.totalReviews ? Math.round((count / stats.totalReviews)* 100) : 0
                     return(
                         <div key={star} className='progressBarBox d-flex align-items-center'>
-                            <div className="ratingLabel">
+                                                    <div className="ratingLabel">
                                 <span className='font-weight-bold'>{star}</span>
-                                <br/>
+                                                        <br/>
                                 <small className='text-muted'>star</small>
-                            </div>
+                                                    </div>
                             <div className='ratingBar flex-grow-1 mx-3'>
                                 <div className='progress'>
                                     <div className='progress-bar bg-success' style={{width:`${percent}%`}}></div>
-                                </div>
-                            </div>
-                            <div className="ratingPercentage">
-                            <span className="font-weight-bold text-success">
+                                                        </div>
+                                                    </div>
+                                                    <div className="ratingPercentage">
+                                                        <span className="font-weight-bold text-success">
                             {percent}%
-                            </span>
-                        </div>
-                        </div>
+                                                        </span>
+                                                    </div>
+                                                </div>
                     )
                 })}
             </div>
@@ -163,9 +163,9 @@ const CustomerReview =({productId})=>{
                       onChange={(_, v) => setRating(v)}
                       precision={1}
                     />
-                  </div>
-                </div>
-              </div>
+                                        </div>
+                                    </div>
+                                </div>
               <div className="form-group">
                 <button type="submit" className="btn btn-success btn-lg btn-round">
                   Submit Review
