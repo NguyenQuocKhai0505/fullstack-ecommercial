@@ -139,16 +139,6 @@ export default function CheckoutPage() {
         <Modal
           open={openPayment}
           onClose={() => {setOpenPayment(false); setPaymentType("")}}
-          sx={{
-            '& .MuiBackdrop-root': {
-              opacity: 0.24,
-              zIndex: 2000,
-              background: '#101828', // overlay nhẹ
-            },
-            '& .MuiPaper-root, & .MuiBox-root': {zIndex:2100},
-          }}
-          disableAutoFocus
-          disableEnforceFocus
         >
           <Box sx={{width: 380, mx: 'auto', mt: '10vh', bgcolor:'white', p:3, borderRadius:3, boxShadow:3, maxWidth:'calc(100vw - 24px)'}}>
             {!paymentType && (
