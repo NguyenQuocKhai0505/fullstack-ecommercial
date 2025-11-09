@@ -1,6 +1,5 @@
 import ProductZoom from "../../Components/ProductZoom"
 import Rating from '@mui/material/Rating';
-import QuantityBox from "../../Components/QuantityBox"
 import Button from '@mui/material/Button';
 import { FaShoppingCart } from "react-icons/fa";
 import { useEffect, useState } from "react";
@@ -20,7 +19,6 @@ import { useNavigate } from "react-router-dom";
 import CustomerReview from "../../Components/Customer Review/index"
 const ProductDetails =()=>{
     const [activeTabs, setActiveTabs] = useState(null)
-    const [activeSize, setActiveSize] = useState(null)
     const [activeRam, setActiveRam] = useState(null)
     const [activeWeight, setActiveWeight] = useState(null)
     const {id} = useParams()
@@ -43,9 +41,6 @@ const ProductDetails =()=>{
         if(viewed.length > 10) viewed = viewed.slice(0,10)
         localStorage.setItem("recentlyViewed",JSON.stringify(viewed))
     },[productData._id])
-    const isActive = (index) => {
-        setActiveSize(index)
-    }
     const isActiveRam = (index) => {
         setActiveRam(index)
     }

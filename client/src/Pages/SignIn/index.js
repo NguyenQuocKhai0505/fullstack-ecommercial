@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import { Button} from "@mui/material";
 import googleImg from "../../assets/images/googleImg.png"
 import { Link } from 'react-router-dom';
-import {fetchDataFromApi,postData} from "../../utils/api"
+import {postData} from "../../utils/api"
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 const SignIn =()=>{

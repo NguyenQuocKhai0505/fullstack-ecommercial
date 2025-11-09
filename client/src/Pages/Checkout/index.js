@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
-  TextField, Button, Snackbar, Alert, Grid, Box, Paper
+  TextField, Button, Snackbar, Alert, Box, Modal, Typography
 } from "@mui/material";
-import { Modal, Typography } from "@mui/material";
 import {loadStripe} from "@stripe/stripe-js"
-import {Elements} from "@stripe/react-stripe-js"
 import {PayPalScriptProvider,PayPalButtons} from "@paypal/react-paypal-js"
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY)
+
 export default function CheckoutPage() {
   const location = useLocation();
   const navigate = useNavigate();

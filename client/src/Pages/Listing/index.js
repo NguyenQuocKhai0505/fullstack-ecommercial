@@ -6,7 +6,7 @@ import { CgMenuGridR } from "react-icons/cg";
 // import { IoGrid } from "react-icons/io5";
 import { PiDotsNineBold } from "react-icons/pi";
 import { FaAngleDown } from "react-icons/fa";
-import { useState,useEffect,useMemo } from "react";
+import { useState,useEffect } from "react";
 import ProductItem from "../../Components/ProductItem";
 import Pagination from '@mui/material/Pagination';
 import { useParams, useSearchParams } from "react-router-dom";
@@ -21,8 +21,6 @@ const Listing = ()=>{
             const [productView, setProductView] = useState('four')
             const openDropDown = Boolean(anchorEl);
             const [sortBy,setSortBy] = useState("newest")
-            const open = Boolean(anchorEl);
-            const [anchorElSort, setAnchorElSort] = useState(null); // Cho menu Sort By
             const openSort = Boolean(anchorElSort); // Cho menu Sort By
             const [showFilter,setShowFilter] = useState(true)
 

@@ -1,7 +1,5 @@
-import { IoIosArrowRoundForward } from "react-icons/io";
 import Slider from "react-slick";
 import ProductItem from "../../../Components/ProductItem";
-import Button from "@mui/material/Button"
 import { useEffect,useState} from "react"
 import {fetchDataFromApi} from "../../../utils/api"
 const RelatedProducts = ({categoryId,subcatId,excludeId,title,ids}) => {

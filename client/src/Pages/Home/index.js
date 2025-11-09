@@ -15,7 +15,6 @@ import Tab from '@mui/material/Tab';
 import { MyContext } from "../../App";
 
 const Home = () => {
-    const context = useContext(MyContext);
     
     // State cho Tabs
     const [tabValue, setTabValue] = useState(0);
@@ -59,10 +58,8 @@ const Home = () => {
     }), [])
     
     const [catData, setCatData] = useState([])
-    const [loading, setLoading] = useState(true)
     const [productsLoading, setProductsLoading] = useState(true)
     const [error, setError] = useState(null)
-    const [isFeaturedProduct, setIsFeaturedProduct] =useState([])
     //Phân trang
     const [currentPage, setCurrentPage]= useState(1)
     const [totalPages, setTotalPages] = useState(1);
@@ -79,7 +76,6 @@ const Home = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                setLoading(true)
                 setError(null)
                 const res = await fetchDataFromApi("/api/category?all=true")
                 if (res && Array.isArray(res.categoryList)) {
@@ -91,7 +87,7 @@ const Home = () => {
                 setError('Failed to load categories')
                 setCatData([])
             } finally {
-                setLoading(false)
+                // setLoading(false) // This line was removed
             }
         }
 
@@ -104,12 +100,12 @@ const Home = () => {
             try {
                 const res = await fetchDataFromApi("/api/products?isFeatured=true")
                 if (res && res.success && Array.isArray(res.data)) {
-                    setIsFeaturedProduct(res.data)
+                    // setIsFeaturedProduct(res.data) // This line was removed
                 } else {
-                    setIsFeaturedProduct([])
+                    // setIsFeaturedProduct([]) // This line was removed
                 }
             } catch (err) {
-                setIsFeaturedProduct([])
+                // setIsFeaturedProduct([]) // This line was removed
             }
         }
 
