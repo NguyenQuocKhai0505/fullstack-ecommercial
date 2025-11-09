@@ -11,6 +11,7 @@ const Navigation =()=>
     const [categories, setCategories] = useState([]);
     const [subByCat, setSubByCat] = useState({});
     const [hoveredCatId,setHoveredCatId] = useState(null)
+    const [hoveredCatId2, setHoveredCatId2] = useState(null);
     useEffect(()=>{
         const load = async ()=>{
             try{
