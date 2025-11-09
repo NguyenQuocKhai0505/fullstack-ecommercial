@@ -22,6 +22,7 @@ const ProductModal = () => {
   const [activeSize, setActiveSize] = useState(null)
   const [activeRam, setActiveRam] = useState(null)
   const [activeWeight, setActiveWeight] = useState(null)
+  const [quantity, setQuantity] = useState(1);
   const {wishlist,setWishlist}= useWishlist()
   const isWishlisted = wishlist.some(p=>p._id === context.selectedProductID)
   //Add to wishlist
@@ -220,7 +221,7 @@ const isActiveWeight = (index) => {
                         </div>
                     )} 
           <div className="d-flex align-items-center">
-            <QuantityBox />
+            <QuantityBox value={quantity} setValue={setQuantity} />
             <Button 
               className="btn-blue btn-lg -btn-big btn-round ml-3"
               disabled={!products?.countInStock || products.countInStock === 0}
