@@ -7,7 +7,6 @@ import { Modal, Typography } from "@mui/material";
 import {loadStripe} from "@stripe/stripe-js"
 import {Elements} from "@stripe/react-stripe-js"
 import {PayPalScriptProvider,PayPalButtons} from "@paypal/react-paypal-js"
-import StripeElementForm from "./StripeElementForm";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY)
 export default function CheckoutPage() {
@@ -232,7 +231,6 @@ export default function CheckoutPage() {
                   onClick={async()=>{
                     setLoading(true);
                     try {
-                      // Chuẩn bị dữ liệu gửi lên backend
                       const items = selectedProducts.map(item => ({
                         name: item.product.name,
                         price: item.product.price,
