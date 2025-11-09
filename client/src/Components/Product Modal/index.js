@@ -67,8 +67,6 @@ const isActiveWeight = (index) => {
       setLoading(false)
     }
   }
-  const [selectedSize, setSelectedSize] = useState(null)
-  const [quantity,setQuantity] = useState(1)
   const handleAddToCart = async () => {
     if (!context.isLogin) {
       toast.error("You need to login first!");
@@ -78,11 +76,11 @@ const isActiveWeight = (index) => {
     let option = null;
     // Kiểm tra bắt buộc chọn thuộc tính nếu có
     if (products.productSize && products.productSize.length > 0) {
-      if (selectedSize === null || selectedSize === undefined) {
+      if (activeSize === null || activeSize === undefined) {
         toast.error("Please select a size");
         return;
       }
-      option = products.productSize[selectedSize];
+      option = products.productSize[activeSize];
     } else if (products.productRam && products.productRam.length > 0) {
       if (activeRam === null || activeRam === undefined) {
         toast.error("Please select a RAM");
@@ -183,7 +181,7 @@ const isActiveWeight = (index) => {
                </ul>
              </div>
            )}
-            {/* Render productSize*/}
+                   {/* Render productSize*/}
            {products?.productSize && products.productSize?.length > 0 && (
             <div className="productSize d-flex align-items-center ml-3 mb-3">
               <span className="spec-label mr-3">SIZE:</span>
@@ -202,7 +200,7 @@ const isActiveWeight = (index) => {
               </ul>
             </div>
           )}
-            {/* Render product Weight */}
+                     {/* Render product Weight */}
              {products?.productWeight && products.productWeight?.length > 0 && (
                         <div className="productSize d-flex align-items-center ml-3 mb-3">
                             <span className="spec-label mr-3">Weight:</span>
