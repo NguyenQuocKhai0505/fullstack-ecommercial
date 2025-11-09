@@ -12,7 +12,6 @@ import { fetchDataFromApi } from "../../utils/api";
 import Pagination from '@mui/material/Pagination';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { MyContext } from "../../App";
 
 const Home = () => {
     

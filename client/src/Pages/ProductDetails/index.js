@@ -74,11 +74,9 @@ const ProductDetails =()=>{
     const {wishlist,setWishlist} = useWishlist()
     const isWishlisted = wishlist.some(p => p._id === productData._id)
     const handleWishlist = async()=>{
-        console.log("handleWishlist called",{isWishlisted,productId:productData._id,wishlist})
         const token = localStorage.getItem("token")
         if(!token){
             toast.error("You need to login first!")
-            console.log("No token found")
             return
         }
         if(isWishlisted){
@@ -86,13 +84,11 @@ const ProductDetails =()=>{
             const updated = await getWishlistAPI(token)
             setWishlist(updated || [])
             toast.info("Removed from wishlist!")
-            console.log("Removed from wishlist",productData._id)
         }else{
             await addToWishlistAPI(productData._id,token)
             const updated = await getWishlistAPI(token)
             setWishlist(updated || [])
             toast.info("Added to wishlist!")
-            console.log("Added to wishlist",productData._id)
         }
     }
     return(

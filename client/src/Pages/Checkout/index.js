@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   TextField, Button, Snackbar, Alert, Box, Modal, Typography
 } from "@mui/material";
-import {loadStripe} from "@stripe/stripe-js"
 import {PayPalScriptProvider,PayPalButtons} from "@paypal/react-paypal-js"
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
@@ -53,7 +52,6 @@ export default function CheckoutPage() {
   // Xử lý đặt hàng (dùng selectedProducts, shipping)
   const handleOrder = async (e) => {
     e.preventDefault();
-    console.log('[DEBUG] handleOrder called');
     const required = ["name", "country", "address", "city", "state", "zip", "phone", "email"];
     if (required.some(f => !shipping[f])) {
       setSnackbar({ open: true, message: "Please fill all required information!", severity: "error" });
@@ -64,7 +62,6 @@ export default function CheckoutPage() {
       return;
     }
     setOpenPayment(true);
-    console.log('[DEBUG] setOpenPayment(true), paymentType:', paymentType, {shipping, selectedProducts, total, shippingFee});
   };
 
   const afterOrderSuccess = () => {
@@ -160,7 +157,7 @@ export default function CheckoutPage() {
 
                 <Button
                   variant="outlined"
-                  onClick={() => { console.log('[DEBUG] Click Pay With Stripe'); setPaymentType("stripe"); }}
+                  onClick={() => { setPaymentType("stripe"); }}
                   fullWidth sx={{ mb:2, py:1.5, fontWeight:600, fontSize:17 }}
                 >
                   Pay with Stripe
@@ -169,7 +166,7 @@ export default function CheckoutPage() {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => { console.log('[DEBUG] Click Pay With PayPal'); setPaymentType("paypal"); }}
+                  onClick={() => { setPaymentType("paypal"); }}
                   fullWidth sx={{ mb:2, py:1.5, fontWeight:600, fontSize:17, bgcolor:'#0070ba', '&:hover': {bgcolor:'#005ea6'} }}
                 >
                   Pay with PayPal
@@ -179,7 +176,6 @@ export default function CheckoutPage() {
                   variant="contained"
                   color="secondary"
                   onClick={async () => {
-                    console.log('[DEBUG] Click Shipcode');
                     setLoading(true);
                     const params = {
                       shipping,
@@ -195,7 +191,6 @@ export default function CheckoutPage() {
                       shippingFee,
                       discount:0
                     };
-                    console.log('[DEBUG] Shipcode API params:', params);
                     const res = await fetch(`${process.env.REACT_APP_API_URL}/api/orders`,{
                       method:"POST",
                       headers:{"Content-Type":"application/json","Authorization":`Bearer ${localStorage.getItem("token")}`},
@@ -204,7 +199,6 @@ export default function CheckoutPage() {
                     let respJson;
                     try { respJson = await res.json(); } catch { respJson = undefined; }
                     setLoading(false);
-                    console.log('[DEBUG] Shipcode API response:', res.status, respJson);
                     if(res.ok){
                       afterOrderSuccess()
                     }else{
@@ -276,7 +270,6 @@ export default function CheckoutPage() {
                 })}
                 onApprove={async (data,actions)=>{
                   const details = await actions.order.capture();
-                  console.log('[DEBUG] PayPal onApprove', data, details);
                   //Tao don da thanh toan voi paypal
                   await fetch(`${process.env.REACT_APP_API_URL}/api/orders`,{
                     method:"POST",

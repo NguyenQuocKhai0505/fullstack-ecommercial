@@ -7,14 +7,9 @@ import React, { use } from 'react';
 import {useState,useEffect} from "react"
 import { useParams,useSearchParams } from 'react-router-dom';
 import {fetchDataFromApi} from "../../utils/api"
-import { Rating } from '@mui/material';
 
 const Sidebar = ({showFilter}) => {
      const [value,setValue] = useState([0,10000])
-     const [ratingValue,setRatingValue] = useState([0,5])
-     const [categories,setCategories]= useState([])
-     const statusProduct = []
-     const brandProduct =[]
      const {id: categoryId} = useParams()
      const [searchParams,setSearchParams] = useSearchParams()
      const selectedSubcats = (searchParams.get("subcat") || "").split(",").filter(Boolean)

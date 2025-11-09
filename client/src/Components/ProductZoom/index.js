@@ -4,7 +4,7 @@ import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { useState,useRef,useEffect, use } from "react";
+import { useState,useRef,useEffect } from "react";
 
 const ProductZoom = (props) => {
     const sliderBigRef = useRef()

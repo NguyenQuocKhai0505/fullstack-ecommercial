@@ -1,13 +1,5 @@
-import { Link } from "react-router-dom"
-import cartItem1 from "../../assets/images/cartItem1.webp"
-// import cartItem2 from "../../assets/images/cartItem2.webp"
-// import cartItem3 from "../../assets/images/cartItem3.webp"
-import Rating from '@mui/material/Rating';
-import QuantityBox from "../../Components/QuantityBox"
 import { IoClose } from "react-icons/io5";
 import Button from '@mui/material/Button';
-// import { FaShoppingCart } from "react-icons/fa"
-import { IoBagCheckOutline } from "react-icons/io5";
 import { useState } from "react";
 import { getCartAPI, addToCartAPI, removeFromCartAPI } from "../../utils/api";
 import { toast } from "react-toastify";
@@ -36,7 +28,6 @@ const Cart = () => {
         const updated = prev.includes(key)
           ? prev.filter(itemKey => itemKey !== key)
           : [...prev, key];
-        console.log('[DEBUG] selectedItems after change:', updated);
         return updated;
       });
     };
@@ -65,7 +56,6 @@ const Cart = () => {
     const subtotal = cart.items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
     const shipping = 20.12
     const total = subtotal + shipping
-    console.log('[DEBUG] cart.items:', cart.items);
     return (
         <section className="section mr-2 cartPage">
           <div className="container">
