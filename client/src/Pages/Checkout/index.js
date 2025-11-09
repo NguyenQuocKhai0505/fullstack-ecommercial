@@ -163,48 +163,51 @@ export default function CheckoutPage() {
 
                 <Button
                   variant="outlined"
-                  onClick={()=>setPaymentType("stripe")}
-                  fullWidth sx={{ mb:2, justifyContent:'flex-start', pl:3, py:1.5, fontWeight:600, fontSize:17 }}
+                  onClick={() => { console.log('[DEBUG] Click Pay With Stripe'); setPaymentType("stripe"); }}
+                  fullWidth sx={{ mb:2, py:1.5, fontWeight:600, fontSize:17 }}
                 >
-                  <img src={StripeLogo} alt="stripe" style={{height:28, marginRight:16}}/>
                   Pay with Stripe
                 </Button>
 
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={()=>setPaymentType("paypal")}
-                  fullWidth sx={{ mb:2, justifyContent:'flex-start', pl:3, py:1.5, fontWeight:600, fontSize:17, bgcolor:'#0070ba', '&:hover': {bgcolor:'#005ea6'} }}
+                  onClick={() => { console.log('[DEBUG] Click Pay With PayPal'); setPaymentType("paypal"); }}
+                  fullWidth sx={{ mb:2, py:1.5, fontWeight:600, fontSize:17, bgcolor:'#0070ba', '&:hover': {bgcolor:'#005ea6'} }}
                 >
-                  <img src={PaypalLogo} alt="paypal" style={{height:28, marginRight:16}}/>
                   Pay with PayPal
                 </Button>
 
                 <Button
                   variant="contained"
                   color="secondary"
-                  onClick={async()=>{
-                    setLoading(true)
-                    //API tao don Shipcod
+                  onClick={async () => {
+                    console.log('[DEBUG] Click Shipcode');
+                    setLoading(true);
+                    const params = {
+                      shipping,
+                      items:selectedProducts.map(item=>({
+                        product: item.product._id,
+                        name:item.product.name,
+                        option: item.option,
+                        quantity: item.quantity,
+                        price: item.product.price
+                      })),
+                      paymentMethod:"cod",
+                      total,
+                      shippingFee,
+                      discount:0
+                    };
+                    console.log('[DEBUG] Shipcode API params:', params);
                     const res = await fetch(`${process.env.REACT_APP_API_URL}/api/orders`,{
                       method:"POST",
                       headers:{"Content-Type":"application/json","Authorization":`Bearer ${localStorage.getItem("token")}`},
-                      body:JSON.stringify({
-                        shipping,
-                        items:selectedProducts.map(item=>({
-                          product: item.product._id,
-                          name:item.product.name,
-                          option: item.option,
-                          quantity: item.quantity,
-                          price: item.product.price
-                        })),
-                        paymentMethod:"cod",
-                        total,
-                        shippingFee,
-                        discount:0
-                      })
+                      body:JSON.stringify(params)
                     })
-                    setLoading(false)
+                    let respJson;
+                    try { respJson = await res.json(); } catch { respJson = undefined; }
+                    setLoading(false);
+                    console.log('[DEBUG] Shipcode API response:', res.status, respJson);
                     if(res.ok){
                       afterOrderSuccess()
                     }else{
@@ -212,7 +215,7 @@ export default function CheckoutPage() {
                     }
                   }}
                   disabled={loading}
-                  fullWidth sx={{ justifyContent:'flex-start', pl:3, py:1.5, fontWeight:600, fontSize:17, bgcolor:'#5bb85d', '&:hover':{bgcolor:'#388e3c'} }}
+                  fullWidth sx={{ py:1.5, fontWeight:600, fontSize:17, bgcolor:'#5bb85d', '&:hover':{bgcolor:'#388e3c'} }}
                 >
                   <AttachMoneyIcon sx={{fontSize:28, mr:1.5}} />
                   Cash on Delivery (Shipcod)
@@ -221,16 +224,49 @@ export default function CheckoutPage() {
             )}
             {/* Stripe*/}
             {paymentType === "stripe" && (
-              <Elements stripe={stripePromise}>
-                  <StripeElementForm
-                  shipping={shipping}
-                  selectedProducts={selectedProducts}
-                  total={total}
-                  shippingFee={shippingFee}
-                  onSuccess={()=>{
-                    afterOrderSuccess()
-                  }}/>
-              </Elements>
+              <Box sx={{textAlign:"center",p:2}}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  disabled={loading}
+                  onClick={async()=>{
+                    setLoading(true);
+                    try {
+                      // Chuẩn bị dữ liệu gửi lên backend
+                      const items = selectedProducts.map(item => ({
+                        name: item.product.name,
+                        price: item.product.price,
+                        quantity: item.quantity,
+                      }));
+                      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/create-checkout-session`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify([items, shipping, shipping.email || ""])
+                      });
+                      const data = await res.json();
+                      if (data.url) {
+                        window.location.href = data.url;
+                      } else {
+                        setSnackbar({ open:true, severity:"error", message:"Cannot create Stripe checkout session" });
+                        setLoading(false);
+                      }
+                    } catch (err) {
+                      setSnackbar({ open:true, severity:"error", message:"Stripe checkout error" });
+                      setLoading(false);
+                    }
+                  }}
+                  sx={{fontWeight:700,fontSize:17,py:1.8,minWidth:220,boxShadow:2}}
+                >
+                  Pay via Stripe (Secure Checkout)
+                </Button>
+                <Button
+                  variant="text"
+                  onClick={()=>{ setPaymentType("") }}
+                  sx={{mt:1,fontSize:15}}
+                  color="primary"
+                  disabled={loading}
+                >Back to payment options</Button>
+              </Box>
             )}
             {/* Paypal */}
             {paymentType==="paypal" &&(
@@ -242,8 +278,9 @@ export default function CheckoutPage() {
                     amount:{value:total.toFixed(2)}
                   }]
                 })}
-                onApprove={async(data,actions)=>{
-                  const details = await actions.order.capture()
+                onApprove={async (data,actions)=>{
+                  const details = await actions.order.capture();
+                  console.log('[DEBUG] PayPal onApprove', data, details);
                   //Tao don da thanh toan voi paypal
                   await fetch(`${process.env.REACT_APP_API_URL}/api/orders`,{
                     method:"POST",
@@ -269,6 +306,7 @@ export default function CheckoutPage() {
                   afterOrderSuccess()
                 }}
                 >
+
                 </PayPalButtons>
               </PayPalScriptProvider>
             )}
