@@ -4,7 +4,7 @@ import Button from "@mui/material/Button"
 import { CiHeart } from "react-icons/ci";
 import { useContext, useState, useRef } from 'react';
 import { MyContext } from '../../App';
-import { Link, useFetcher } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import Slider from 'react-slick';
 import {useWishlist} from "../../contexts/WishlistContext"
 import { getWishlistAPI, addToWishlistAPI, removeFromWishlistAPI } from "../../utils/api.js";
