@@ -141,69 +141,66 @@ export default function CheckoutPage() {
           onClose={() => {setOpenPayment(false); setPaymentType("")}}
         >
           <Box sx={{width: 380, mx: 'auto', mt: '10vh', bgcolor:'white', p:3, borderRadius:3, boxShadow:3, maxWidth:'calc(100vw - 24px)'}}>
-            {!paymentType && (
+            {/* Fallback debug */}
+            {(!paymentType || paymentType === "") && (
               <>
                 <Typography variant="h6" fontWeight={700} mb={2}>Choose Payment Method</Typography>
-
                 <Button
                   variant="outlined"
                   onClick={() => { setPaymentType("stripe"); }}
                   fullWidth sx={{ mb:2, py:1.5, fontWeight:600, fontSize:17 }}
-                >
-                  Pay with Stripe
-                </Button>
-
+                >Pay with Stripe</Button>
                 <Button
                   variant="contained"
                   color="primary"
                   onClick={() => { setPaymentType("paypal"); }}
                   fullWidth sx={{ mb:2, py:1.5, fontWeight:600, fontSize:17, bgcolor:'#0070ba', '&:hover': {bgcolor:'#005ea6'} }}
-                >
-                  Pay with PayPal
-                </Button>
-
+                >Pay with PayPal</Button>
                 <Button
                   variant="contained"
-                  color="secondary"
-                  onClick={async () => {
+                  color="success"
+                  onClick={async()=>{
                     setLoading(true);
-                    const params = {
-                      shipping,
-                      items:selectedProducts.map(item=>({
-                        product: item.product._id,
-                        name:item.product.name,
-                        option: item.option,
-                        quantity: item.quantity,
-                        price: item.product.price
-                      })),
-                      paymentMethod:"cod",
-                      total,
-                      shippingFee,
-                      discount:0
-                    };
-                    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/orders`,{
-                      method:"POST",
-                      headers:{"Content-Type":"application/json","Authorization":`Bearer ${localStorage.getItem("token")}`},
-                      body:JSON.stringify(params)
-                    })
-                    let respJson;
-                    try { respJson = await res.json(); } catch { respJson = undefined; }
-                    setLoading(false);
-                    if(res.ok){
-                      afterOrderSuccess()
-                    }else{
-                      setSnackbar({open:true,severity:"error",message:"Create order failed"})
+                    try{
+                      const params = {
+                        shipping,
+                        items: selectedProducts.map(item => ({
+                          product: item.product._id || item.product.id,
+                          name: item.product.name,
+                          option: item.option,
+                          quantity: item.quantity,
+                          price: item.product.price
+                        })),
+                        paymentMethod: "shipcod",
+                        paid: false,
+                        total,
+                        shippingFee,
+                        discount: 0
+                      };
+                      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/orders`,{
+                        method: "POST",
+                        headers: {"Content-Type":"application/json","Authorization":`Bearer ${localStorage.getItem("token")}`},
+                        body: JSON.stringify(params)
+                      })
+                      let respJson;
+                      try { respJson = await res.json(); } catch { respJson = undefined; }
+                      setLoading(false);
+                      if(res.ok){
+                        afterOrderSuccess()
+                      }else{
+                        setSnackbar({open:true,severity:"error",message:"Create order failed"})
+                      }
+                    }catch(e){
+                      setLoading(false);
+                      setSnackbar({open:true,severity:"error",message:"Create order crashed!"})
                     }
                   }}
                   disabled={loading}
                   fullWidth sx={{ py:1.5, fontWeight:600, fontSize:17, bgcolor:'#5bb85d', '&:hover':{bgcolor:'#388e3c'} }}
-                >
-                  <AttachMoneyIcon sx={{fontSize:28, mr:1.5}} />
-                  Cash on Delivery (Shipcod)
-                </Button>
+                ><AttachMoneyIcon sx={{fontSize:28, mr:1.5}} />Cash on Delivery (Shipcod)</Button>
               </>
             )}
-            {/* Stripe*/}
+            {/* Stripe */}
             {paymentType === "stripe" && (
               <Box sx={{textAlign:"center",p:2}}>
                 <Button
@@ -236,9 +233,7 @@ export default function CheckoutPage() {
                     }
                   }}
                   sx={{fontWeight:700,fontSize:17,py:1.8,minWidth:220,boxShadow:2}}
-                >
-                  Pay via Stripe (Secure Checkout)
-                </Button>
+                >Pay via Stripe (Secure Checkout)</Button>
                 <Button
                   variant="text"
                   onClick={()=>{ setPaymentType("") }}
@@ -249,45 +244,49 @@ export default function CheckoutPage() {
               </Box>
             )}
             {/* Paypal */}
-            {paymentType==="paypal" &&(
-              <PayPalScriptProvider options={{"client-id":process.env.REACT_APP_PAYPAL_CLIENT_ID}}>
-                <PayPalButtons
-                style={{layout:"vertical"}}
-                createOrder={(data,actions) => actions.order.create({
-                  purchase_units:[{
-                    amount:{value:total.toFixed(2)}
-                  }]
-                })}
-                onApprove={async (data,actions)=>{
-                  const details = await actions.order.capture();
-                  //Tao don da thanh toan voi paypal
-                  await fetch(`${process.env.REACT_APP_API_URL}/api/orders`,{
-                    method:"POST",
-                    headers:{"Content-Type":"application/json", Authorization:"Bearer " + localStorage.getItem("token")},
-                    body:JSON.stringify({
-                      shipping,
-                      items: selectedProducts.map(item =>({
-                        product: item.product._id || item.product.id,
-                        name: item.product.name,
-                        option: item.option,
-                        quantity: item.quantity,
-                        price: item.product.price
-                      })),
-                      paymentMethod:"paypal",
-                      paid:true,
-                      total,
-                      shippingFee,
-                      paymentId: data.orderID,
-                      paymentResult:details,
-                      discount:0
-                    })
-                  })
-                  afterOrderSuccess()
-                }}
-                >
-
-                </PayPalButtons>
-              </PayPalScriptProvider>
+            {paymentType === "paypal" && (
+              process.env.REACT_APP_PAYPAL_CLIENT_ID ?
+              (<PayPalScriptProvider options={{"client-id":process.env.REACT_APP_PAYPAL_CLIENT_ID}}>
+                  <PayPalButtons
+                    style={{layout:"vertical"}}
+                    createOrder={(data,actions) => actions.order.create({
+                      purchase_units:[{
+                        amount:{value:total.toFixed(2)}
+                      }]
+                    })}
+                    onApprove={async (data,actions)=>{
+                      const details = await actions.order.capture();
+                      await fetch(`${process.env.REACT_APP_API_URL}/api/orders`,{
+                        method:"POST",
+                        headers:{"Content-Type":"application/json", Authorization:"Bearer " + localStorage.getItem("token")},
+                        body:JSON.stringify({
+                          shipping,
+                          items: selectedProducts.map(item =>({
+                            product: item.product._id || item.product.id,
+                            name: item.product.name,
+                            option: item.option,
+                            quantity: item.quantity,
+                            price: item.product.price
+                          })),
+                          paymentMethod:"paypal",
+                          paid:true,
+                          total,
+                          shippingFee,
+                          paymentId: data.orderID,
+                          paymentResult:details,
+                          discount:0
+                        })
+                      })
+                      afterOrderSuccess()
+                    }}
+                  >
+                  </PayPalButtons>
+                </PayPalScriptProvider>)
+              : (<div style={{color:'red',fontWeight:700,fontSize:18,padding:24, textAlign:'center'}}>Missing PAYPAL_CLIENT_ID environment variable! Please check your deployment .env setup.</div>)
+            )}
+            {/* fallback for unknown state - should never blank! */}
+            {!["", "stripe", "paypal"].includes(paymentType) && (
+              <div style={{color: 'red', padding:32}}>Unknown paymentType: {JSON.stringify(paymentType)}. Something went wrong.</div>
             )}
           </Box>
         </Modal>
