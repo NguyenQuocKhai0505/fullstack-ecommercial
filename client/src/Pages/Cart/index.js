@@ -77,11 +77,12 @@ const Cart = () => {
                     <tbody>
                       {cart.items.map(item => (
                         <tr key={item.product._id + '-' + (item.option || '')}>
-                          <td className="text-center align-middle" 
-                              checked = {selectedItems.includes(item.product._id + '-' +(item.option || ''))}
-                              onChange={()=>handleSelectItem(item.product._id,item.option)}>
-                            <input type="checkbox">
-                            </input>
+                          <td className="text-center align-middle">
+                            <input
+                              type="checkbox"
+                              checked={selectedItems.includes(item.product._id + '-' + (item.option || ''))}
+                              onChange={()=>handleSelectItem(item.product._id,item.option)}
+                            />
                           </td>
                           <td width="40%" className="align-middle">
                             <div className="d-flex align-items-center cartItemimgWrapper">
