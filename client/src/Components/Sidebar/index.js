@@ -3,7 +3,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import RangeSlider from "react-range-slider-input"
 import "react-range-slider-input/dist/style.css"
-import React, { use } from 'react';
+import React from 'react';
 import {useState,useEffect} from "react"
 import { useParams,useSearchParams } from 'react-router-dom';
 import {fetchDataFromApi} from "../../utils/api"

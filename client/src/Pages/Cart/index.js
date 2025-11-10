@@ -1,10 +1,8 @@
 import { IoClose } from "react-icons/io5";
 import Button from '@mui/material/Button';
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import { getCartAPI, addToCartAPI, removeFromCartAPI } from "../../utils/api";
 import { toast } from "react-toastify";
-import { useEffect } from "react";
-import { useContext } from "react";
 import { MyContext } from "../../App";
 const Cart = () => {
     const [cart,setCart] = useState({items:[]})
