@@ -6,7 +6,7 @@ import ProductItem from "../../Components/ProductItem";
 import HomeCat from "../../Components/HomeCat";
 import coupon from "../../assets/images/banner3.png"
 import { IoMdMail } from "react-icons/io";
-import { useState, useMemo, useContext } from "react";
+import { useState, useMemo } from "react";
 import { useEffect } from "react";
 import { fetchDataFromApi } from "../../utils/api";
 import Pagination from '@mui/material/Pagination';

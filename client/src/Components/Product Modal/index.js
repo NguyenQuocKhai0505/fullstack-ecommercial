@@ -55,19 +55,18 @@ const isActiveWeight = (index) => {
 }
   useEffect(()=>{
     if(context.selectedProductID){
-      fetchProduct()
+      const fetchProduct = async ()=>{
+        try{
+          setLoading(true)
+          const response = await fetchDataFromApi(`/api/products/${context.selectedProductID}`)
+          setProducts(response)
+        }catch(err){}finally{
+          setLoading(false)
+        }
+      }
+      fetchProduct();
     }
   },[context.selectedProductID])
-  const fetchProduct = async ()=>{
-    try{
-      setLoading(true)
-      const response = await fetchDataFromApi(`/api/products/${context.selectedProductID}`)
-      setProducts(response)
-    }catch(err){
-    }finally{
-      setLoading(false)
-    }
-  }
   const handleAddToCart = async () => {
     if (!context.isLogin) {
       toast.error("You need to login first!");

@@ -182,8 +182,7 @@ export default function CheckoutPage() {
                         headers: {"Content-Type":"application/json","Authorization":`Bearer ${localStorage.getItem("token")}`},
                         body: JSON.stringify(params)
                       })
-                      let respJson;
-                      try { respJson = await res.json(); } catch { respJson = undefined; }
+                      await res.json();
                       setLoading(false);
                       if(res.ok){
                         afterOrderSuccess()
