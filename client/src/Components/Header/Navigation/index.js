@@ -76,12 +76,11 @@ const Navigation =()=>
                     
                 </div>
 
-                <div className ="col-sm-10 navPart2 d-flex align-items-center"
-                     onMouseLeave={()=>setHoveredCatId2(null)}>
+                <div className ="col-sm-10 navPart2 d-flex align-items-center">
                     <ul className="list list-inline ml-1">
                         <li className="list-inline-item"><Link to="/"><Button>Home</Button></Link></li>
                         {categories.map((cat) => (
-                            <li className="list-inline-item" onMouseEnter={()=>setHoveredCatId2(cat._id)} key={cat._id}>
+                            <li className="list-inline-item" key={cat._id}>
                                 <Link to={`/cat/${cat._id}`}>
                                     <Button>{cat.name}</Button>
                                 </Link>
