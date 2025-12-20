@@ -1,5 +1,5 @@
 /* Đưa toàn bộ thanh navigation lên trên cùng để dropdown đè được mọi lớp bên dưới */
-nav{ position: relative; z-index: 9999; }
+nav{ position: relative; z-index: 100; }
 /* Global small backdrop for nav when sidebar open */
 .navBackdrop{
     position: fixed;
