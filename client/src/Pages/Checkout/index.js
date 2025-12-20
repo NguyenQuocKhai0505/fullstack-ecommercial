@@ -64,11 +64,19 @@ export default function CheckoutPage() {
     setOpenPayment(true);
   };
 
-  const afterOrderSuccess = () => {
-    localStorage.removeItem("cartItems");
-    setOpenPayment(false);
-    setSnackbar({open:true, severity:"success", message:"Order success!"});
-    setTimeout(() => navigate("/thank-you"), 1200);
+  const afterOrderSuccess = async () => {
+    const token = localStorage.getItem("token")
+    //delete deliveried product out of cart 
+    for(let item of selectedProducts)
+    {
+      await removeFromCartAPI(item.product._id,token,item.option)
+    }
+    //after deleting 
+    const newCart = await getCartAPI(token)
+    localStorage.setItem("cartItems",JSON.stringify(newCart.items || []))
+    setOpenPayment(false)
+    setSnackbar({open:true,severity:"success",message:"Order successfully"})
+    setTimeout(()=>navigate("/thank-you"),1200)
   };
 
   return (
