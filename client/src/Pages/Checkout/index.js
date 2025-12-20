@@ -5,7 +5,7 @@ import {
 } from "@mui/material";
 import {PayPalScriptProvider,PayPalButtons} from "@paypal/react-paypal-js"
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-
+import { removeFromCartAPI,getCartAPI } from "../../utils/api";
 export default function CheckoutPage() {
   const location = useLocation();
   const navigate = useNavigate();
