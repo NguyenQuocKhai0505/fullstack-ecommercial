@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { TextField, Button } from "@mui/material";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { postData } from "../../utils/api";
+import Logo from "../../assets/images/logo.png";
+import { MyContext } from "../../App";
 
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState("");
@@ -10,7 +12,12 @@ const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const context = useContext(MyContext);
   const token = searchParams.get("token");
+
+  useEffect(() => {
+    context.setisHeaderFooterShow(false);
+  }, [context]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,55 +44,64 @@ const ResetPassword = () => {
   };
 
   return (
-    <section className="section signInPage">
-      <div className="container">
-        <div className="box card p-3 shadow border-0">
-          <form className="mt-3" onSubmit={handleSubmit}>
-            <h2>Reset Password</h2>
-            <div className="form-group">
-              <TextField
-                label="New Password"
-                variant="standard"
-                type="password"
-                className="w-100"
-                required
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-              />
-            </div>
-            <div className="form-group mt-2">
-              <TextField
-                label="Confirm Password"
-                variant="standard"
-                type="password"
-                className="w-100"
-                required
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-            </div>
-            <div className="d-flex gap-3 mt-3 mb-3">
-              <Button
-                type="submit"
-                disabled={loading}
-                className="btn-blue col btn-lg btn-big"
-              >
-                {loading ? "Resetting..." : "Reset Password"}
-              </Button>
-              <Button
-                className="btn-lg btn-big"
-                variant="outlined"
-                onClick={() => navigate("/signIn")}
-              >
-                Cancel
-              </Button>
-            </div>
-          </form>
+    <section 
+      className="d-flex align-items-center justify-content-center"
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(135deg, #7474BF 0%, #348AC7 100%)"
+      }}
+    >
+      <div className="card p-4 shadow" style={{ minWidth: 350, maxWidth: 380, borderRadius: 16 }}>
+        <div className="text-center">
+          <img src={Logo} alt="Logo" style={{ width: 70, marginBottom: 10 }} />
+          <h3 style={{ fontWeight: 700, letterSpacing: 1 }}>Set New Password</h3>
+          <p style={{ color: '#888', fontSize: 15 }}>
+            Enter your new password below. After submitting, your password will be updated if your link is valid.
+          </p>
         </div>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="New Password"
+            type="password"
+            variant="standard"
+            fullWidth
+            required
+            className="mb-3"
+            value={newPassword}
+            onChange={e => setNewPassword(e.target.value)}
+          />
+          <TextField
+            label="Confirm Password"
+            type="password"
+            variant="standard"
+            fullWidth
+            required
+            className="mb-3"
+            value={confirmPassword}
+            onChange={e => setConfirmPassword(e.target.value)}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            disabled={loading}
+            fullWidth
+            style={{ borderRadius: 8, fontWeight: 600 }}
+          >
+            {loading ? "Resetting..." : "Reset Password"}
+          </Button>
+          <Button
+            variant="text"
+            fullWidth
+            style={{ marginTop: 10, color: "#555" }}
+            onClick={() => navigate("/signIn")}
+          >
+            Cancel
+          </Button>
+        </form>
       </div>
     </section>
   );
 };
 
 export default ResetPassword;
-
