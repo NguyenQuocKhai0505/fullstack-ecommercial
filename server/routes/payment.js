@@ -25,6 +25,7 @@ router.post("/create-checkout-session",async(req,res)=>{
         })
         res.json({url:session.url})
     }catch(error){
+        console.error("STRIPE CHECKOUT SESSION ERROR:", error);
         res.status(500).json({error:error.message})
     }
 })
@@ -45,6 +46,7 @@ router.post('/stripe-payment-intent', async (req, res) => {
     });
     res.json({ clientSecret: paymentIntent.client_secret });
   } catch (error) {
+    console.error("STRIPE PAYMENT INTENT ERROR:", error);
     res.status(500).json({ error: error.message });
   }
 });
