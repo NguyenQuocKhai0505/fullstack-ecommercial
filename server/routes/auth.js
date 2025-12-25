@@ -118,4 +118,63 @@ router.post("/signIn", async(req,res)=>{
         res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
     }
 })
+//Quen mat khau - Yeu cau gui link dat lai mat khau
+router.post("/forgot-password" , async(req,res) =>{
+    const {email} = req.body
+    const user = await User.findOne(email)
+
+    if(!user) {
+        return res.json({success:true, message:"Invalid email. Please check again"})
+    }
+    //Reset token 
+    const token = jwt.sign({id:user._id},process.env.JWT_SECRET,{expiresIn:"15m"})
+    user.resetToken = token
+    user.resetTokenExpiry = Date.now() + 15 * 60 * 1000
+    await user.save()
+
+    //Gui mail
+    const url = `https://fullstack-ecommercial.vercel.app/reset-password?token=${token}`;
+    const msg = {
+        to: email,
+        from:process.env.EMAIL_FROM,
+        subject: 'Email Verification',
+        html: `
+        <div style="font-family: Arial, sans-serif; color: #222;">
+            <h2>Hello ${name},</h2>
+            <p>Thank you for registering an account at <b>Kmarket</b>.</p>
+            <p>Please click the button below to verify your account:</p>
+            <a href="${url}" target="_blank" style="display:inline-block;padding:12px 24px;background:#0f288e;color:#fff;text-decoration:none;border-radius:6px;font-weight:bold;margin:16px 0;">Verify Account</a>
+            <p>If the button does not work, copy and paste the link below into your browser:</p>
+            <p><a href="${url}" target="_blank">${url}</a></p>
+            <p style="color:#888;font-size:13px;">If you did not register for this account, please disregard this email.</p>
+        </div>
+        `
+        }
+        try{
+            await sgMail.send(msg)
+            res.json({success:true,message:"If valid email, please check your gmail letter"})
+        }catch(error)
+        {
+            res.status(500).json({success: false, message:"Failed send mail", error: error.message})
+        }
+})
+// ĐẶT LẠI MẬT KHẨU - Khi user nhận đc token từ mail
+router.post('/reset-password', async (req, res) => {
+    const { token, newPassword } = req.body;
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const user = await User.findById(decoded.id);
+      // Kiểm tra token còn hạn và hợp lệ
+      if (!user || user.resetToken !== token || user.resetTokenExpiry < Date.now())
+        return res.status(400).json({ success: false, message: 'Invalid Token' });
+      // Hash và lưu password mới
+      user.password = await bcrypt.hash(newPassword, 10);
+      user.resetToken = null;
+      user.resetTokenExpiry = null;
+      await user.save();
+      res.json({ success: true, message: 'Change password succesfully!' });
+    } catch (err) {
+      res.status(400).json({ success: false, message: 'Invalid Token' });
+    }
+  });
 module.exports = router;

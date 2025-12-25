@@ -23,6 +23,8 @@ import { WishlistProvider } from "./contexts/WishlistContext";
 import WishlistPage from "./Pages/Wishlist";
 import MyOrders from "./Pages/Orders/index"
 import ThankYou from "./Pages/ThankYou/index"
+import ForgotPassword from "./Pages/Auth/ForgotPassword";
+import ResetPassword from "./Pages/Auth/ResetPassword";
 const MyContext = createContext();
 
 function App() {
@@ -89,6 +91,8 @@ function App() {
               <Route exact={true} path="/checkout" element={<CheckoutPage/>}/>
               <Route exact={true} path="/orders" element={<MyOrders/>}/>
               <Route exact={true} path="/thank-you" element={<ThankYou/>}/>
+              <Route exact={true} path="/forgot-password" element={<ForgotPassword/>}/>
+              <Route exact={true} path="/reset-password" element={<ResetPassword/>}/>
             </Routes>
             {isOpenProductModal === true && <ProductModal />}
             {

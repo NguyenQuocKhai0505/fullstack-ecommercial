@@ -5,9 +5,11 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   phone: { type: String },
   password: { type: String, required: true },
-  status: { type: Boolean, default: false }, // Sẽ cập nhật thành true sau khi verify thành công
+  status: { type: Boolean, default: false }, // Will update to true after successful verification
   isVerified: { type: Boolean, default: false },
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+  resetToken: { type: String },
+  resetTokenExpiry: { type: Date },
 });
 
 module.exports = mongoose.model('User', userSchema);
