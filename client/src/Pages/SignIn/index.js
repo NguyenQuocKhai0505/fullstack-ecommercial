@@ -110,7 +110,7 @@ const SignIn =()=>{
                         </Link>
                 </div>
 
-                    <button type="button" className="border-effect cursor mb-3" style={{background: 'none', border: 'none', color: 'inherit', textDecoration: 'underline'}}>Forget Password?</button>
+                  <Link to={"/forgot-password"}>  <button type="button" className="border-effect cursor mb-3" style={{background: 'none', border: 'none', color: 'inherit', textDecoration: 'underline'}}>Forget Password?</button></Link>
                     
 
                    <p>Not Registered? <Link to="/signUp" className="border-effect cursor mb-3 ml-2">Sign Up</Link></p>
