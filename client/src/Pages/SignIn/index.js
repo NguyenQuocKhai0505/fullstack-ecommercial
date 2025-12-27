@@ -119,23 +119,26 @@ const SignIn =()=>{
                    <h6 className="mt-3 text-center font-weight-bold">Or continue with your social account</h6>
                     <GoogleLogin
                     width="100%"
-                    onSuccess={async (credentialResponse) =>{
-                        const tokenId = credentialResponse.credential
-                        const res = await postData("/api/auth/google-login",{tokenId})
-                        if(res.success) 
-                        {
-                            toast.success("Login with Google successfully")
-                            if(res.token) localStorage.setItem("token",res.token)
-                            context.setIsLogin(true)
-                            setTimeout(()=>{navigate("/")},800)
-                        }else{
-                            toast.error(res.message || "Google Login Failed")
+                    onSuccess={async (credentialResponse) => {
+                        console.log('GoogleLogin clicked, credentialResponse:', credentialResponse);
+                        const tokenId = credentialResponse.credential;
+                        const res = await postData("/api/auth/google-login", { tokenId });
+                        console.log('Response from backend Google Login:', res);
+                        if (res.success) {
+                        toast.success("Login with Google successfully");
+                        if (res.token) localStorage.setItem("token", res.token);
+                        context.setIsLogin(true);
+                        setTimeout(() => { navigate("/"); }, 800);
+                        } else {
+                        toast.error(res.message || "Google Login Failed");
                         }
                     }}
-                    onError={()=>toast.error("Google Login Failed")}
-                    >
+                    onError={() => {
+                        console.log('GoogleLogin Error');
+                        toast.error("Google Login Failed");
+                    }}
+                    />
 
-                    </GoogleLogin>
                 </form>
                 
                 
