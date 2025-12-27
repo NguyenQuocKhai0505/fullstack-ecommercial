@@ -26,6 +26,7 @@ import ThankYou from "./Pages/ThankYou/index"
 import ForgotPassword from "./Pages/Auth/ForgotPassword";
 import ResetPassword from "./Pages/Auth/ResetPassword";
 import {GoogleOAuthProvider} from "@react-oauth/google"
+import SearchPage from "./Pages/Search";
 const MyContext = createContext();
 
 function App() {

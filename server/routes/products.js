@@ -42,6 +42,11 @@ router.get("/", async (req, res) => {
         if (isFeatured !== undefined) {
             filter.isFeatured = isFeatured === 'true';
         }
+        // Lọc theo tên sản phẩm nếu có truy vấn 'name' (search suggest)
+        if (req.query.name) {
+            const regex = new RegExp(req.query.name, 'i');
+            filter.name = { $regex: regex };
+        }
         // Lọc theo nhiều subCat (hỗ trợ chuỗi cách nhau bởi dấu phẩy)
         if (subCatQuery) {
             const ids = String(subCatQuery).split(',').map(s => s.trim()).filter(Boolean);
