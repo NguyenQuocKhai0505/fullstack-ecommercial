@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import {postData} from "../../utils/api"
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { GoogleLogin } from "@react-oauth/google";
 const SignIn =()=>{
     
     const [email,setEmail] = useState("")
@@ -116,7 +117,25 @@ const SignIn =()=>{
                    <p>Not Registered? <Link to="/signUp" className="border-effect cursor mb-3 ml-2">Sign Up</Link></p>
 
                    <h6 className="mt-3 text-center font-weight-bold">Or continue with your social account</h6>
-                    <Button className="loginWithGoogle mt-2 mb-3" variant="outlined"><img src={googleImg} alt="Google"/>Sign In with Google</Button>
+                    <GoogleLogin
+                    width="100%"
+                    onSuccess={async (credentialResponse) =>{
+                        const tokenId = credentialResponse.credential
+                        const res = await postData("/api/auth/google-login",{tokenId})
+                        if(res.success) 
+                        {
+                            toast.success("Login with Google successfully")
+                            if(res.token) localStorage.setItem("token",res.token)
+                            context.setIsLogin(true)
+                            setTimeout(()=>{navigate("/")},800)
+                        }else{
+                            toast.error(res.message || "Google Login Failed")
+                        }
+                    }}
+                    onError={()=>toast.error("Google Login Failed")}
+                    >
+
+                    </GoogleLogin>
                 </form>
                 
                 

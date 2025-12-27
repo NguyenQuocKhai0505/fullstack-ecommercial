@@ -4,10 +4,10 @@ const User = require("../models/user")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const sgMail = require('@sendgrid/mail');
+const {OAuth2Client} = require("google-auth-library")
+const clientGoogle = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
 require("dotenv").config()
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-
 //Đăng kí tài khoản
 router.post("/signUp", async(req,res)=>{
     console.log("[signUp] Nhận request:", req.body);
@@ -176,5 +176,46 @@ router.post('/reset-password', async (req, res) => {
     } catch (err) {
       res.status(400).json({ success: false, message: 'Invalid Token' });
     }
-  });
+});
+//LOGIN WITH GOOGLE
+router.post("/google-login",async(req,res) =>{
+    const {tokenId} = req.body
+    try{
+        const ticket = await clientGoogle.verifyIdToken({
+            idToken: tokenId,
+            audience: process.env.GOOGLE_CLIENT_ID
+        })
+        const payload = ticket.getPayload()
+        const {email, name} = payload
+
+        //Check or create user 
+        let user = await User.findOne({email})
+        if(!user){
+            user = new User({
+                name,
+                email,
+                password:"GOOGLE_SIGNIN",
+                isVerified: true,
+                status: true
+            })
+            await user.save()
+        }
+        //Phat token login 
+        const myToken = jwt.sign({id: user._id},process.env.JWT_SECRET,{expiresIn:"1d"})
+        res.json({
+            success: true,
+            message:"Google Login Successfully",
+            token: myToken,
+            user:{
+                id:user._id,
+                name: user.name,
+                email: user.email,
+                status: user.status
+            }
+        })
+    }catch(error)
+    {
+        res.status(400).json({success: false, message:"Google Login Failed",error: error.message})
+    }
+})
 module.exports = router;

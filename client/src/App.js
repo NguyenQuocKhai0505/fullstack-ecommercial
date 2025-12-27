@@ -25,6 +25,7 @@ import MyOrders from "./Pages/Orders/index"
 import ThankYou from "./Pages/ThankYou/index"
 import ForgotPassword from "./Pages/Auth/ForgotPassword";
 import ResetPassword from "./Pages/Auth/ResetPassword";
+import {GoogleOAuthProvider} from "@react-oauth/google"
 const MyContext = createContext();
 
 function App() {
@@ -35,7 +36,7 @@ function App() {
   const [isHeaderFooterShow, setisHeaderFooterShow] = useState(true)
   const [isLogin, setIsLogin] = useState(false)
   const [cartCount, setCartCount] = useState(0);
-
+  const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
   useEffect(()=>{
     getCountry("https://countriesnow.space/api/v0.1/countries/")
   },[])
@@ -71,6 +72,7 @@ function App() {
     setCartCount // Để cập nhật khi thêm vào cart
   }
   return (
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
     <>
       <BrowserRouter>
         <WishlistProvider>
@@ -103,6 +105,7 @@ function App() {
       </BrowserRouter>
       <ToastContainer position="top-center" autoClose={4000}/>
     </>
+    </GoogleOAuthProvider>
   );
 }
 
