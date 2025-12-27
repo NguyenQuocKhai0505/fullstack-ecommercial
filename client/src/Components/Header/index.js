@@ -85,8 +85,11 @@ const Header =()=>
                                             <MenuItem component={Link} to="/wishlist" onClick={handleClose}>
                                                 <FaHeart />&nbsp;My Wishlist
                                             </MenuItem>
-                                            <MenuItem component={Link} to="#" onClick={handleClose}>
+                                            <MenuItem component={Link} to="/reset-password" onClick={handleClose}>
                                                 <RiResetLeftFill />&nbsp;Reset Password
+                                            </MenuItem>
+                                            <MenuItem component={Link} to="/my-orders">
+                                                <RiLogoutBoxFill />&nbsp;Check Order Process
                                             </MenuItem>
                                             <MenuItem onClick={handleLogout}>
                                                 <RiLogoutBoxFill />&nbsp;Log Out
