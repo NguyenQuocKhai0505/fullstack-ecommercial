@@ -45,7 +45,7 @@ const SearchBox = () => {
         <div className="headerSearch ml-3 mr-3" style={{ position: 'relative' }}>
             <input
                 type="text"
-                placeholder="Searching for Products...."
+                placeholder="Searching...."
                 value={key}
                 onChange={handleChange}
                 onFocus={()=> {if(suggests.length > 0) setShowSuggest(true)}}
@@ -61,7 +61,7 @@ const SearchBox = () => {
                     width: "100%",
                     background: '#fff',
                     boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-                    zIndex: 1500,
+                    zIndex: 2000,
                     borderRadius: 8,
                     maxHeight: 330,
                     overflowY: 'auto',
