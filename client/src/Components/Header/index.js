@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import React, { useContext, useState } from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import CountryDropDown from "../ContryDropDown";
 import Button from '@mui/material/Button';
 import { FaUserCircle } from "react-icons/fa";
 import { FaCartPlus } from "react-icons/fa6";
@@ -51,10 +50,7 @@ const Header =()=>
                             <Link to={'/'}><img src={logo} alt='Logo'/></Link>
                         </div>
                         <div className="col-sm-10 d-flex align-items-center part2">
-                            {
-                                context.countryList.length !==0 && <CountryDropDown/>
-                            }
-                           <SearchBox/>
+                            <SearchBox/>
                            
                             <div className="part3 d-flex align-items-center ml-auto">
                                 {
