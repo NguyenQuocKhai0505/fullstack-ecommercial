@@ -61,7 +61,7 @@ const SearchBox = () => {
                     width: '100%',
                     background: '#fff',
                     boxShadow: '0 8px 32px rgba(0,0,0,.17)',
-                    zIndex: 3010,
+                    zIndex: 12001,
                     borderRadius: 8,
                     maxHeight: 350,
                     overflowY: 'auto',
