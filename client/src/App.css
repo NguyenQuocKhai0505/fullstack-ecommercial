@@ -162,14 +162,13 @@ nav .navPart2{
 }
  .headerSearch {
     position: relative; 
-    width: 60%;
-    height: 60px;
+    width: 430px;
+    height: 54px;
     background: #f3f4f7;
-    padding: 10px;
-    border: 1px 
-    solid rgba(0,0,0,1);
+    padding: 0 10px;
+    border: 1px solid rgba(0,0,0,0.10);
     border-radius: 8px;
-
+    z-index: 3100;
   }
 .headerSearch input {
     background: transparent !important;
