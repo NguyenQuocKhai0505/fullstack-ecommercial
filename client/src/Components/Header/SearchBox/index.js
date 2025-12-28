@@ -42,7 +42,7 @@ const SearchBox = () => {
     };
 
     return (
-        <div className="headerSearch ml-3 mr-3" style={{ position: 'relative' }}>
+        <div className="headerSearch ml-3 mr-3" style={{ position: 'relative', zIndex: 3000 }}>
             <input
                 type="text"
                 placeholder="Searching...."
@@ -50,20 +50,20 @@ const SearchBox = () => {
                 onChange={handleChange}
                 onFocus={()=> {if(suggests.length > 0) setShowSuggest(true)}}
                 onBlur={handleBlur}
-                style={{ width: 180, minWidth: 140 }}
+                style={{ width: 380, minWidth: 320, zIndex: 3001 }}
             />
-            <Button type="submit" onClick={() => setShowSuggest(false)}><IoIosSearch /></Button>
+            <Button type="submit" style={{ zIndex: 3001 }} onClick={() => setShowSuggest(false)}><IoIosSearch /></Button>
             {showSuggest && suggests.length > 0 && (
                 <div className="dropdown-suggest" style={{
                     position: 'absolute',
                     top: 40,
                     left: 0,
-                    width: "100%",
+                    width: '100%',
                     background: '#fff',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-                    zIndex: 2000,
+                    boxShadow: '0 8px 32px rgba(0,0,0,.17)',
+                    zIndex: 3010,
                     borderRadius: 8,
-                    maxHeight: 330,
+                    maxHeight: 350,
                     overflowY: 'auto',
                 }}>
                     {suggests.map(item =>
